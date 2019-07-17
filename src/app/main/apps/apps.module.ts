@@ -1,65 +1,68 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { FuseSharedModule } from '@fuse/shared.module';
+import {FuseSharedModule} from '@fuse/shared.module';
 
 const routes = [
     {
-        path        : 'dashboards/analytics',
+        path: 'dashboards/analytics',
         loadChildren: './dashboards/analytics/analytics.module#AnalyticsDashboardModule'
     },
     {
-        path        : 'dashboards/project',
+        path: 'dashboards/project',
         loadChildren: './dashboards/project/project.module#ProjectDashboardModule'
     },
     {
-        path        : 'mail',
+        path: 'mail',
         loadChildren: './mail/mail.module#MailModule'
     },
     {
-        path        : 'mail-ngrx',
+        path: 'mail-ngrx',
         loadChildren: './mail-ngrx/mail.module#MailNgrxModule'
     },
     {
-        path        : 'chat',
+        path: 'chat',
         loadChildren: './chat/chat.module#ChatModule'
     },
     {
-        path        : 'calendar',
+        path: 'calendar',
         loadChildren: './calendar/calendar.module#CalendarModule'
     },
     {
-        path        : 'e-commerce',
+        path: 'e-commerce',
         loadChildren: './e-commerce/e-commerce.module#EcommerceModule'
     },
     {
-        path        : 'academy',
+        path: 'academy',
         loadChildren: './academy/academy.module#AcademyModule'
     },
     {
-        path        : 'todo',
+        path: 'todo',
         loadChildren: './todo/todo.module#TodoModule'
     },
     {
-        path        : 'file-manager',
+        path: 'file-manager',
         loadChildren: './file-manager/file-manager.module#FileManagerModule'
     },
     {
-        path        : 'contacts',
+        path: 'contacts',
         loadChildren: './contacts/contacts.module#ContactsModule'
     },
     {
-        path        : 'scrumboard',
+        path: 'scrumboard',
         loadChildren: './scrumboard/scrumboard.module#ScrumboardModule'
+    },
+    {
+        path: 'fretamento',
+        loadChildren: './fretamento/fretamento.module#FretamentoModule'
     }
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
         FuseSharedModule
     ]
 })
-export class AppsModule
-{
+export class AppsModule {
 }
