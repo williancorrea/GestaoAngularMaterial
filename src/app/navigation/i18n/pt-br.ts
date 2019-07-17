@@ -2,6 +2,15 @@ export const locale = {
     lang: 'pt-br',
     data: {
         NAV: {
+            FRETAMENTO: {
+                TITULO : 'Fretamento',
+                EVENTUAL : 'Eventual',
+                CONTINUO : 'Contínuo'
+            },
+
+
+
+
             APPLICATIONS: 'Aplicações',
             DASHBOARDS: 'Painel de Controle',
             CALENDAR: 'Calendário',

@@ -2,6 +2,36 @@ import { FuseNavigation } from '@fuse/types';
 
 export const navigation: FuseNavigation[] = [
     {
+        id: 'fretamento',
+        title: 'Fretamento',
+        translate: 'NAV.FRETAMENTO.TITULO',
+        type: 'group',
+        icon: 'apps',
+        children: [
+            {
+                id   : 'eventual',
+                title: 'eventual',
+                translate: 'NAV.FRETAMENTO.EVENTUAL',
+                type : 'item',
+                icon : 'today',
+                url  : '/apps/dashboards/project'
+            }
+            // ,
+            // {
+            //     id   : 'continuo',
+            //     title: 'continuo',
+            //     translate: 'NAV.FRETAMENTO.CONTINUO',
+            //     type : 'item',
+            //     icon : 'today',
+            //     url  : '/apps/dashboards/project'
+            // }
+        ]
+    },
+
+
+
+
+    {
         id       : 'applications',
         title    : 'Applications',
         translate: 'NAV.APPLICATIONS',
