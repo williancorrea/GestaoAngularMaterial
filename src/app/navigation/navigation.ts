@@ -3,15 +3,13 @@ import { FuseNavigation } from '@fuse/types';
 export const navigation: FuseNavigation[] = [
     {
         id: 'fretamento',
-        title: 'Fretamento',
-        translate: 'NAV.FRETAMENTO.TITULO',
+        title: 'Transporte',
         type: 'group',
         icon: 'apps',
         children: [
             {
                 id   : 'eventual',
-                title: 'eventual',
-                translate: 'NAV.FRETAMENTO.EVENTUAL',
+                title: 'Fretamento Eventual',
                 type : 'item',
                 icon : 'directions_bus',
                 url  : '/apps/fretamento'
