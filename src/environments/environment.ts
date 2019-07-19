@@ -11,8 +11,8 @@ export const environment = {
     // apiUrl: 'http://192.168.0.100:8080',
     apiUrl: 'http://localhost:8080',
 
-    tokebWhitelistedDomains: [/localhost:8080/],
-    tokenBlacklistedRoutes: [/\/oauth\/token/],
+    tokebWhitelistedDomains: [new RegExp('localhost:8080')],
+    tokenBlacklistedRoutes: [new RegExp('\/oauth\/token')],
 
     // ng serve --proxy-config proxy.config.json
     // apiUrl: 'api',

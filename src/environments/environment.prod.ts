@@ -6,8 +6,8 @@ export const environment = {
     // Verificar arquivo de proxy - proxy.config.json
     // apiUrl: '/api',
 
-    tokebWhitelistedDomains: [/gestao-api-wcorrea.herokuapp.com/],
-    tokenBlacklistedRoutes: [/\/oauth\/token/],
+    tokebWhitelistedDomains: [new RegExp('gestao-api-wcorrea.herokuapp.com')],
+    tokenBlacklistedRoutes: [new RegExp('\/oauth\/token')],
 
     dataTable: {
         filterDelay: 500,
