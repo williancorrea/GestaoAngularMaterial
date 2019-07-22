@@ -54,12 +54,12 @@ export class LoginComponent implements OnInit {
                 Validators.required,
                 Validators.email
             ]],
-            password: ['', Validators.required]
+            password: ['', Validators.required, Validators.minLength(3)]
         });
     }
 
     login(): void {
-        console.log('email', this.loginForm.get('email').value);
+        // console.log('email', this.loginForm.get('email').value);
 
 
 
