@@ -6,15 +6,20 @@ import {ErroManipuladorService} from './erro-manipulador.service';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
 import {AuthService} from '../seguranca/auth.service';
+import {MessageComponent} from './message/message.component';
 
 @NgModule({
     imports: [
         CommonModule,
         HttpClientModule,
-        RouterModule
+        RouterModule,
     ],
-    declarations: [],
-    exports: [],
+    declarations: [
+        MessageComponent
+    ],
+    exports: [
+        MessageComponent
+    ],
     providers: [
         ErroManipuladorService,
         AuthService,

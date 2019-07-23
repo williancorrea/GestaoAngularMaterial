@@ -1,18 +1,19 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
 
-import { FuseSharedModule } from '@fuse/shared.module';
+import {FuseSharedModule} from '@fuse/shared.module';
 
-import { Login2Component } from 'app/main/pages/authentication/login-2/login-2.component';
+import {Login2Component} from 'app/main/pages/authentication/login-2/login-2.component';
+import {CoreModule} from '../../../../core/core.module';
 
 const routes = [
     {
-        path     : 'auth/login-2',
+        path: 'auth/login-2',
         component: Login2Component
     }
 ];
@@ -21,7 +22,7 @@ const routes = [
     declarations: [
         Login2Component
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         MatButtonModule,
@@ -30,9 +31,9 @@ const routes = [
         MatIconModule,
         MatInputModule,
 
-        FuseSharedModule
+        FuseSharedModule,
+        CoreModule
     ]
 })
-export class Login2Module
-{
+export class Login2Module {
 }

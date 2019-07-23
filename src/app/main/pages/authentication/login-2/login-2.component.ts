@@ -16,6 +16,7 @@ import {Router} from '@angular/router';
 })
 export class Login2Component implements OnInit {
     loginForm: FormGroup;
+    mensagensErro = null;
 
     /**
      * Constructor
@@ -27,7 +28,7 @@ export class Login2Component implements OnInit {
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         private auth: AuthService,
-        private errorHandler: ErroManipuladorService,
+        private erroManipuladorService: ErroManipuladorService,
         private router: Router
     ) {
         // Configure the layout
@@ -73,15 +74,13 @@ export class Login2Component implements OnInit {
         // this.loading = true;
         this.auth.login(this.loginForm.get('email').value, this.loginForm.get('password').value)
             .then(() => {
-
+                this.mensagensErro = null;
                 this.router.navigate(['/']); // Vai redirecionar para a pagina principal da aplicação (Dashboard)
                 // this.loading = false;
             })
             .catch(erro => {
-                //TODO: Fazer o tratamento para usuário e senha errados
                 // this.loading = false;
-                this.errorHandler.handle(erro);
-                // this.password = '';
+                this.mensagensErro = this.erroManipuladorService.handle(erro);
                 this.loginForm.setValue({password: ''});
             });
     }

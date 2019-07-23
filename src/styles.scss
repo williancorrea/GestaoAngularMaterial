@@ -3,3 +3,13 @@
 
 // Import app.theme.scss
 @import "app/app.theme";
+
+.card-error{
+    border-radius: 5px;
+    background: #ff000038;
+    color: red;
+    border-bottom: 2px solid #ff0000;
+    font-weight: 500;
+    padding: 9px;
+    text-align: -webkit-center;
+}
