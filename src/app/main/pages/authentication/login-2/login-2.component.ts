@@ -68,6 +68,8 @@ export class Login2Component implements OnInit {
                 Validators.minLength(3)
             ]]
         });
+
+        this.mensagensErro = null;
     }
 
     login(): void {

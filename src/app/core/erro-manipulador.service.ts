@@ -22,16 +22,17 @@ export class ErroManipuladorService {
         } else if (errorResponse instanceof HttpErrorResponse && errorResponse.status >= 400 && errorResponse.status <= 499) {
             mensagemErro = 'Ocorreu um erro ao processar a sua solicitação, tente novamente.';
 
-            if (errorResponse['error']['error'] === 'invalid_grant') {
-                mensagemErro = 'Usuário e/ou senha incorreto(s)';
-            }
-
-            if (errorResponse.status === 403) {
-                mensagemErro = 'Você não tem permissão para executar esta ação.';
-                this.router.navigate(['/acesso-negado']);
-            }
-
             try {
+                if (errorResponse['error']['error'] === 'invalid_grant') {
+                    mensagemErro = 'Usuário e/ou senha incorreto(s)';
+                }
+
+                if (errorResponse.status === 403) {
+                    mensagemErro = 'Você não tem permissão para executar esta ação.';
+                    this.router.navigate(['/acesso-negado']);
+                }
+
+
                 mensagemErro = errorResponse.error[0].userMessage;
             } catch (e) {
             }
