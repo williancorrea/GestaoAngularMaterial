@@ -8,11 +8,11 @@ import {
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatPaginatorModule,
+    MatPaginatorModule, MatRadioModule,
     MatRippleModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatSortModule,
+    MatSortModule, MatStepperModule,
     MatTableModule,
     MatTabsModule
 } from '@angular/material';
@@ -24,6 +24,7 @@ import {FretamentoEventualNovoComponent} from './fretamentoEventual/fretamento-e
 import {FretamentoEventualPesquisaComponent} from './fretamentoEventual/fretamento-eventual-pesquisa/fretamento-eventual-pesquisa.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {TranslateModule} from '@ngx-translate/core';
+import {CoreModule} from '../../../core/core.module';
 
 
 const routes = [
@@ -66,13 +67,17 @@ const routes = [
         MatSnackBarModule,
         MatTableModule,
         MatTabsModule,
+        MatStepperModule,
+        MatRadioModule,
 
         NgxChartsModule,
 
         TranslateModule,
 
         FuseSharedModule,
-        FuseWidgetModule
+        FuseWidgetModule,
+
+        CoreModule
     ]
 })
 export class FretamentoModule {

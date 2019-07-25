@@ -3,6 +3,7 @@ import {MatSnackBar} from '@angular/material';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '@fuse/animations';
 import {ActivatedRoute, Router} from '@angular/router';
+import {PessoaTipo} from '../../../../../core/modelos/PessoaTipo';
 
 @Component({
     selector: 'app-fretamento-eventual-novo',
@@ -14,10 +15,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class FretamentoEventualNovoComponent implements OnInit {
 
     form: FormGroup;
-
-
     tipoPagina: string;
 
+    formCliente: FormGroup;
+    horizontalStepperStep2: FormGroup;
+    horizontalStepperStep3: FormGroup;
 
     constructor(
         private _matSnackBar: MatSnackBar,
@@ -70,6 +72,50 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     ]
                 ]
             })
+        });
+
+
+        // TODO: AJUSTAR A QUANTIDADE MAXIMA DE CADA CAMPO
+        this.formCliente = this.formBuild.group({
+            key: [null],
+            tipoPessoa: [PessoaTipo.FISICA, Validators.required],
+            cpf: ['', Validators.required],
+            rg: [''],
+            cnpj: ['', Validators.required],
+            inscricaoEstadual: [''],
+            nomeRazao: ['', [Validators.required, Validators.minLength(10)]],
+            apelidoFantasia: [''],
+            estado: [null],
+            cidade: [null],
+            endereco: [''],
+            fotoLogo: [''],
+            email: ['', Validators.email],
+            telefone1: [''],
+            obsTelefone1: [''],
+            telefone2: [''],
+            obsTelefone2: ['']
+        });
+
+        this.formCliente.get('tipoPessoa').valueChanges.subscribe(valor => {
+            if (valor === PessoaTipo.JURIDICA) {
+                this.formCliente.get('cpf').setValidators(null);
+                this.formCliente.get('cnpj').setValidators([Validators.required]);
+            } else {
+                this.formCliente.get('cpf').setValidators([Validators.required]);
+                this.formCliente.get('cnpj').setValidators(null);
+            }
+            this.formCliente.updateValueAndValidity();
+        });
+
+
+        this.horizontalStepperStep2 = this.formBuild.group({
+            address: ['', Validators.required]
+        });
+
+        this.horizontalStepperStep3 = this.formBuild.group({
+            city: ['', Validators.required],
+            state: ['', Validators.required],
+            postalCode: ['', [Validators.required, Validators.maxLength(5)]]
         });
     }
 
