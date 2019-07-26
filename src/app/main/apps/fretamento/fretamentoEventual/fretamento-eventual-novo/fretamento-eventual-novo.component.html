@@ -68,35 +68,181 @@
 
                                     <mat-step [stepControl]="formCliente">
 
+
                                         <form fxLayout="column" [formGroup]="formCliente">
 
                                             <ng-template matStepLabel>Cliente</ng-template>
 
+
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
-                                                <mat-radio-group formControlName="tipoPessoa" class="centralizar-radio-button"
-                                                                    STYLE="width: 100%; text-align: center;">
-                                                    <mat-radio-button style="margin: 10px" class="radio-button-espacamento" value="FISICA">Pessoa Física</mat-radio-button>
-                                                    <mat-radio-button style="margin: 10px" class="radio-button-espacamento" value="JURIDICA">Pessoa Jurídica</mat-radio-button>
-                                                </mat-radio-group>
+                                                <div fxFlex="50" class="text-right">
+                                                    <mat-radio-group formControlName="tipoPessoa" class="centralizar-radio-button" style="width: 100%; text-align: center;">
+                                                        <mat-radio-button style="margin: 10px" class="radio-button-espacamento" value="FISICA">Pessoa Física</mat-radio-button>
+                                                        <mat-radio-button style="margin: 10px" class="radio-button-espacamento" value="JURIDICA">Pessoa Jurídica</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+                                                <div fxFlex="25" fxLayoutAlign="end center" class="pr-4">
+                                                    <mat-icon class="secondary-text s-48" style="margin-bottom: 20px;">add</mat-icon>
+                                                </div>
+                                                <div fxFlex="25" fxLayoutAlign="rigth center">
+                                                    <mat-form-field appearance="fill" fxFlex="100" class="pr-4">
+                                                        <mat-label>Pesquisar</mat-label>
+                                                        <input matInput>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <mat-grid-list cols="5" rowHeight="87px">
+                                                <mat-grid-tile colspan="1" rowspan="2">
+                                                    <div style="background: gray; height: 160px; width: 140px; border-radius: 20px; margin-bottom: auto;">
+
+                                                    </div>
+                                                </mat-grid-tile>
+                                                <mat-grid-tile colspan="4" rowspan="1">
+                                                    <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
+                                                                        *ngIf="formCliente.get('tipoPessoa').value === 'FISICA' ? true : false">
+                                                            <mat-label>CPF</mat-label>
+                                                            <input matInput formControlName="cpf">
+                                                            <mat-error>
+                                                                <app-message [control]="formCliente.get('cpf')"></app-message>
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
+                                                                        *ngIf="formCliente.get('tipoPessoa').value === 'FISICA' ? false : true">
+                                                            <mat-label>CNPJ</mat-label>
+                                                            <input matInput formControlName="cnpj">
+                                                            <mat-error>
+                                                                <app-message [control]="formCliente.get('cnpj')"></app-message>
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                                            <mat-label>{{formCliente.get('tipoPessoa').value === 'FISICA' ? 'Nome' : 'Razão Social' }}</mat-label>
+                                                            <input matInput formControlName="nomeRazao">
+                                                            <mat-error>
+                                                                <app-message [control]="formCliente.get('nomeRazao')"></app-message>
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                            <mat-label>{{formCliente.get('tipoPessoa').value === 'FISICA' ? 'Apelido' : 'Nome Fantasia' }}</mat-label>
+                                                            <input matInput formControlName="apelidoFantasia">
+                                                            <mat-error>
+                                                                <app-message [control]="formCliente.get('apelidoFantasia')"></app-message>
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                    </div>
+                                                </mat-grid-tile>
+                                                <mat-grid-tile colspan="4" rowspan="1">
+                                                    <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
+                                                                        *ngIf="formCliente.get('tipoPessoa').value === 'FISICA' ? true : false">
+                                                            <mat-label>RG</mat-label>
+                                                            <input matInput formControlName="rg">
+                                                            <mat-error>
+                                                                <app-message [control]="formCliente.get('rg')"></app-message>
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
+                                                                        *ngIf="formCliente.get('tipoPessoa').value === 'FISICA' ? false : true">
+                                                            <mat-label>Inscrição Estadual</mat-label>
+                                                            <input matInput formControlName="inscricaoEstadual">
+                                                            <mat-error>
+                                                                <app-message [control]="formCliente.get('inscricaoEstadual')"></app-message>
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" fxFlex="75" class="pr-4">
+                                                            <mat-label>E-mail</mat-label>
+                                                            <input matInput formControlName="email">
+                                                            <mat-error>
+                                                                <app-message [control]="formCliente.get('email')"></app-message>
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </mat-grid-tile>
+                                            </mat-grid-list>
+
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                    <mat-label>Telefone 1</mat-label>
+                                                    <input matInput formControlName="telefone1">
+                                                    <mat-error>
+                                                        <app-message [control]="formCliente.get('telefone1')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                    <mat-label>Contato 1</mat-label>
+                                                    <input matInput formControlName="telefone1Obs">
+                                                    <mat-error>
+                                                        <app-message [control]="formCliente.get('telefone1Obs')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                    <mat-label>Telefone 2</mat-label>
+                                                    <input matInput formControlName="telefone2">
+                                                    <mat-error>
+                                                        <app-message [control]="formCliente.get('telefone2')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                    <mat-label>Contato 2</mat-label>
+                                                    <input matInput formControlName="telefone2Obs">
+                                                    <mat-error>
+                                                        <app-message [control]="formCliente.get('telefone2Obs')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
                                             </div>
 
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
-                                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
-                                                    <mat-label>{{formCliente.get('tipoPessoa').value === 'FISICA' ? 'Nome' : 'Razão Social' }}</mat-label>
-                                                    <input matInput formControlName="nomeRazao">
+                                                <mat-form-field appearance="outline" fxFlex="10" class="pr-4">
+                                                    <mat-label>Estado</mat-label>
+                                                    <input matInput formControlName="estado">
                                                     <mat-error>
-                                                        <app-message [control]="formCliente.get('nomeRazao')"></app-message>
+                                                        <app-message [control]="formCliente.get('estado')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                    <mat-label>Cidade</mat-label>
+                                                    <input matInput formControlName="cidade">
+                                                    <mat-error>
+                                                        <app-message [control]="formCliente.get('cidade')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
-                                                    <mat-label>{{formCliente.get('tipoPessoa').value === 'FISICA' ? 'Apelido' : 'Nome Fantasia' }}</mat-label>
-                                                    <input matInput formControlName="apelidoFantasia">
+                                                    <mat-label>Endereço</mat-label>
+                                                    <input matInput formControlName="endereco">
                                                     <mat-error>
-                                                        <app-message [control]="formCliente.get('apelidoFantasia')"></app-message>
+                                                        <app-message [control]="formCliente.get('endereco')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
+                                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                    <mat-label>Bairro</mat-label>
+                                                    <input matInput formControlName="bairro">
+                                                    <mat-error>
+                                                        <app-message [control]="formCliente.get('bairro')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
 
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="100">
+                                                    <mat-label>Observações</mat-label>
+                                                    <textarea matInput formControlName="obs" rows="3"></textarea>
+                                                    <mat-error>
+                                                        <app-message [control]="formCliente.get('obs')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
                                             </div>
 
                                             <div fxLayout="row" fxLayoutAlign="center center">
@@ -110,36 +256,36 @@
                                     </mat-step>
 
 
-                                    <!--                                    <mat-step [stepControl]="horizontalStepperStep2">-->
+                                    <mat-step [stepControl]="horizontalStepperStep2">
 
-                                    <!--                                        <form fxLayout="column" [formGroup]="horizontalStepperStep2">-->
+                                        <form fxLayout="column" [formGroup]="horizontalStepperStep2">
 
-                                    <!--                                            <ng-template matStepLabel>Fill out your address</ng-template>-->
+                                            <ng-template matStepLabel>Dados da Viagem</ng-template>
 
-                                    <!--                                            <div fxFlex="1 0 auto" fxLayout="row">-->
+                                            <!--                                            <div fxFlex="1 0 auto" fxLayout="row">-->
 
-                                    <!--                                                <mat-form-field appearance="outline" fxFlex="100">-->
-                                    <!--                                                    <mat-label>Address</mat-label>-->
-                                    <!--                                                    <textarea matInput formControlName="address" required>-->
-                                    <!--                                    1600 Amphitheatre Pkwy-->
-                                    <!--                                </textarea>-->
-                                    <!--                                                    <mat-error>Address is required!</mat-error>-->
-                                    <!--                                                </mat-form-field>-->
+                                            <!--                                                <mat-form-field appearance="outline" fxFlex="100">-->
+                                            <!--                                                    <mat-label>Address</mat-label>-->
+                                            <!--                                                    <textarea matInput formControlName="address" required>-->
+                                            <!--                                    1600 Amphitheatre Pkwy-->
+                                            <!--                                </textarea>-->
+                                            <!--                                                    <mat-error>Address is required!</mat-error>-->
+                                            <!--                                                </mat-form-field>-->
 
-                                    <!--                                            </div>-->
+                                            <!--                                            </div>-->
 
-                                    <!--                                            <div fxLayout="row" fxLayoutAlign="center center">-->
-                                    <!--                                                <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">-->
-                                    <!--                                                    Previous-->
-                                    <!--                                                </button>-->
-                                    <!--                                                <button mat-raised-button matStepperNext type="button" color="accent">-->
-                                    <!--                                                    Next-->
-                                    <!--                                                </button>-->
-                                    <!--                                            </div>-->
+                                            <!--                                            <div fxLayout="row" fxLayoutAlign="center center">-->
+                                            <!--                                                <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">-->
+                                            <!--                                                    Previous-->
+                                            <!--                                                </button>-->
+                                            <!--                                                <button mat-raised-button matStepperNext type="button" color="accent">-->
+                                            <!--                                                    Next-->
+                                            <!--                                                </button>-->
+                                            <!--                                            </div>-->
 
-                                    <!--                                        </form>-->
+                                        </form>
 
-                                    <!--                                    </mat-step>-->
+                                    </mat-step>
 
 
                                     <!--                                    <mat-step [stepControl]="horizontalStepperStep3">-->

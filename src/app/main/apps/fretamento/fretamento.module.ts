@@ -5,7 +5,7 @@ import {
     MatButtonModule,
     MatChipsModule,
     MatExpansionModule,
-    MatFormFieldModule,
+    MatFormFieldModule, MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatPaginatorModule, MatRadioModule,
@@ -72,6 +72,7 @@ const routes = [
         MatTabsModule,
         MatStepperModule,
         MatRadioModule,
+        MatGridListModule,
 
         NgxChartsModule,
 

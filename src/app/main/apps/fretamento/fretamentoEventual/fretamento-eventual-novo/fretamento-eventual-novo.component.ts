@@ -79,18 +79,20 @@ export class FretamentoEventualNovoComponent implements OnInit {
             cpf: ['', Validators.required],
             rg: [''],
             cnpj: ['', Validators.required],
-            inscricaoEstadual: [''],
+            inscricaoEstadual: ['',[Validators.required]],
             nomeRazao: ['', [Validators.required, Validators.minLength(10)]],
             apelidoFantasia: [''],
             estado: [null],
             cidade: [null],
             endereco: [''],
+            bairro: [''],
             fotoLogo: [''],
             email: ['', Validators.email],
-            telefone1: [''],
-            obsTelefone1: [''],
+            telefone1: ['', [Validators.required]],
+            telefone1Obs: [''],
             telefone2: [''],
-            obsTelefone2: ['']
+            telefone2Obs: [''],
+            obs: ['', [Validators.maxLength(500)]]
         });
 
         this.formCliente.get('tipoPessoa').valueChanges.subscribe(valor => {
