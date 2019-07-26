@@ -3,6 +3,9 @@ import {MatSnackBar} from '@angular/material';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '@fuse/animations';
 import {ActivatedRoute, Router} from '@angular/router';
+import {FretamentoService} from '../../fretamento.service';
+import {ErroManipuladorService} from '../../../../../core/erro-manipulador.service';
+import {AuthService} from '../../../../../seguranca/auth.service';
 
 @Component({
     selector: 'app-fretamento-eventual-novo',
@@ -14,23 +17,17 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class FretamentoEventualNovoComponent implements OnInit {
 
     form: FormGroup;
-
-
     tipoPagina: string;
-
 
     constructor(
         private _matSnackBar: MatSnackBar,
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        // private translateService: TranslateService,
-        // private titulo: Title,
-        // private bankService: BancoService,
-        // private toasty: MessageService,
-        // public auth: AuthService,
-        // private errorHandler: ErroManipuladorService,
-        private formBuild: FormBuilder) {
-
+        private formBuild: FormBuilder,
+        private fretamentoService: FretamentoService,
+        public auth: AuthService,
+        private errorHandler: ErroManipuladorService
+    ) {
     }
 
     ngOnInit(): void {
@@ -39,17 +36,14 @@ export class FretamentoEventualNovoComponent implements OnInit {
         const editando = this.activatedRoute.snapshot.params['key'];
         if (editando) {
             this.tipoPagina = 'EDICAO';
-            // this.titulo.setTitle(this.traduzir['banco']['acoes']['editar']);
-
-            // this.bankService.findOne(editando).then(response => {
-            //     // this.bank = response;
-            //     this.form.patchValue(response);
-            //     this.mostrarModalCarregando(false);
-            // }).catch(error => {
-            //     this.errorHandler.handle(error);
-            //     this.titulo.setTitle(this.traduzir['banco']['acoes']['adicionar']);
-            //     this.mostrarModalCarregando(false);
-            // });
+            this.fretamentoService.buscarPorKey(editando).then(response => {
+                // this.bank = response;
+                this.form.patchValue(response);
+                // this.mostrarModalCarregando(false);
+            }).catch(error => {
+                this.errorHandler.handle(error);
+                // this.mostrarModalCarregando(false);
+            });
         } else {
             this.tipoPagina = 'NOVO';
             // this.titulo.setTitle(this.traduzir['banco']['acoes']['adicionar']);

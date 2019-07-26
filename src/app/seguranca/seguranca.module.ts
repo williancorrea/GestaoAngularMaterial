@@ -5,7 +5,7 @@ import {LogoutService} from './logout.service';
 import {JwtModule} from '@auth0/angular-jwt';
 import {environment} from '../../environments/environment';
 
-export function tokenGetter(): any {
+export function tokenGetter() {
     return localStorage.getItem('token');
 }
 
@@ -16,7 +16,7 @@ export function tokenGetter(): any {
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
-                whitelistedDomains: environment.tokebWhitelistedDomains,
+                whitelistedDomains: environment.tokenWhitelistedDomains,
                 blacklistedRoutes: environment.tokenBlacklistedRoutes
             }
         })

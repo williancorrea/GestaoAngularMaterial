@@ -22,15 +22,23 @@ import {AppStoreModule} from 'app/store/store.module';
 import {LayoutModule} from 'app/layout/layout.module';
 import {SegurancaModule} from './seguranca/seguranca.module';
 import {CoreModule} from './core/core.module';
+import {AuthGuard} from './seguranca/auth.guard';
 
 const appRoutes: Routes = [
     {
         path: 'apps',
-        loadChildren: './main/apps/apps.module#AppsModule'
+        loadChildren: './main/apps/apps.module#AppsModule',
+
     },
     {
         path: 'pages',
-        loadChildren: './main/pages/pages.module#PagesModule'
+        loadChildren: './main/pages/pages.module#PagesModule',
+        canActivate: [AuthGuard],
+        data: {
+            roles: [
+                'ROLE_CMB-PADRAO'
+            ]
+        }
     },
     {
         path: 'ui',
