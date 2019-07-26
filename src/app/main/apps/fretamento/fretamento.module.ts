@@ -8,11 +8,11 @@ import {
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatPaginatorModule,
+    MatPaginatorModule, MatRadioModule,
     MatRippleModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatSortModule,
+    MatSortModule, MatStepperModule,
     MatTableModule,
     MatTabsModule
 } from '@angular/material';
@@ -70,6 +70,8 @@ const routes = [
         MatSnackBarModule,
         MatTableModule,
         MatTabsModule,
+        MatStepperModule,
+        MatRadioModule,
 
         NgxChartsModule,
 
@@ -83,6 +85,7 @@ const routes = [
         FretamentoEventualPesquisaComponent
     ],
     exports: []
+        ,
 })
 export class FretamentoModule {
 }

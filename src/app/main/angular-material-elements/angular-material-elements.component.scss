@@ -7,3 +7,14 @@
         }
     }
 }
+
+.centralizar-radio-button {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 10px !important;
+}
+
+.centralizar-radio-button mat-radio-button {
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+}
