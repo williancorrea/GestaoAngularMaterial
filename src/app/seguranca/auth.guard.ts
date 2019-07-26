@@ -24,13 +24,14 @@ export class AuthGuard implements CanActivate {
             return this.auth.obterNovoAccessToken()
                 .then(() => {
                     if (this.auth.isAccessTokenInvalido()) {
-                        this.router.navigate(['/login']);
+                        this.router.navigate(['/autenticacao/login']);
                         return false;
                     }
 
                     return true;
                 });
         } else if (next.data.roles && !this.auth.temQualquerPermissao(next.data.roles)) {
+            //TODO: COLOCAR O COMPONENTE DE PAGINA NAO AUTORIZADA
             this.router.navigate(['/nao-autorizado']);
             return false;
         }

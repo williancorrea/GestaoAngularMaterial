@@ -4,14 +4,16 @@ import {AuthGuard} from './auth.guard';
 import {LogoutService} from './logout.service';
 import {JwtModule} from '@auth0/angular-jwt';
 import {environment} from '../../environments/environment';
+import {Login2Module} from './autenticacao/login/login-2.module';
 
-export function tokenGetter() {
+export function tokenGetter(): any {
     return localStorage.getItem('token');
 }
 
 @NgModule({
     imports: [
         CommonModule,
+        Login2Module,
 
         JwtModule.forRoot({
             config: {

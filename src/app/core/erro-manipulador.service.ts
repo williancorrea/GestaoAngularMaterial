@@ -18,7 +18,7 @@ export class ErroManipuladorService {
             mensagemErro = errorResponse;
         } else if (errorResponse instanceof NotAuthenticatedError) {
             mensagemErro = 'Sua sessão expirou';
-            this.router.navigate(['/login']);
+            this.router.navigate(['/autenticacao/login']);
         } else if (errorResponse instanceof HttpErrorResponse && errorResponse.status >= 400 && errorResponse.status <= 499) {
             mensagemErro = 'Ocorreu um erro ao processar a sua solicitação, tente novamente.';
 
@@ -29,6 +29,7 @@ export class ErroManipuladorService {
 
                 if (errorResponse.status === 403) {
                     mensagemErro = 'Você não tem permissão para executar esta ação.';
+                    //TODO: COLOCAR O COMPONENTE DE ACESSO NEGADO
                     this.router.navigate(['/acesso-negado']);
                 }
 
@@ -41,6 +42,7 @@ export class ErroManipuladorService {
             console.error('Ocorreu um erro no back-end', errorResponse);
 
             // Erro no back-end
+            // TODO: COLOCAR O COMPONENTE DE PAGINA DE ERRO
             this.router.navigate(['/erro']);
         }
         return mensagemErro;

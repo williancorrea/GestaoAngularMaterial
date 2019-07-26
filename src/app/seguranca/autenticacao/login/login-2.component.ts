@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {FuseConfigService} from '@fuse/services/config.service';
 import {fuseAnimations} from '@fuse/animations';
-import {AuthService} from '../../../../seguranca/auth.service';
-import {ErroManipuladorService} from '../../../../core/erro-manipulador.service';
+import {AuthService} from '../../auth.service';
+import {ErroManipuladorService} from '../../../core/erro-manipulador.service';
 import {Router} from '@angular/router';
 
 @Component({

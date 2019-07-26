@@ -52,6 +52,13 @@ const appRoutes: Routes = [
         path: 'angular-material-elements',
         loadChildren: './main/angular-material-elements/angular-material-elements.module#AngularMaterialElementsModule'
     },
+
+
+    {
+        path: 'autenticacao',
+        loadChildren: './seguranca/autenticacao/login/login-2.module#Login2Module'
+    },
+
     {
         path: '**',
         redirectTo: 'apps/dashboards/analytics'

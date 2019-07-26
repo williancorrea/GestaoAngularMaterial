@@ -8,12 +8,12 @@ import {MatInputModule} from '@angular/material/input';
 
 import {FuseSharedModule} from '@fuse/shared.module';
 
-import {Login2Component} from 'app/main/pages/authentication/login-2/login-2.component';
-import {CoreModule} from '../../../../core/core.module';
+import {Login2Component} from 'app/seguranca/autenticacao/login/login-2.component';
+import {CoreModule} from '../../../core/core.module';
 
 const routes = [
     {
-        path: 'auth/login-2',
+        path: 'login',
         component: Login2Component
     }
 ];
