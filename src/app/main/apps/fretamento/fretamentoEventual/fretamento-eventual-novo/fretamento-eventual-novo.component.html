@@ -65,18 +65,15 @@
 
                                 <!-- HORIZONTAL STEPPER EXAMPLE -->
                                 <mat-horizontal-stepper class="mat-elevation-z4" [linear]="true">
-
                                     <mat-step [stepControl]="formCliente">
 
-
                                         <form fxLayout="column" [formGroup]="formCliente">
-
                                             <ng-template matStepLabel>Cliente</ng-template>
-
 
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
                                                 <div fxFlex="50" class="text-right">
-                                                    <mat-radio-group formControlName="tipoPessoa" class="centralizar-radio-button" style="width: 100%; text-align: center;">
+                                                    <mat-radio-group *ngIf="form.get('key').value == null ? true : false" formControlName="tipoPessoa" class="centralizar-radio-button"
+                                                                     style="width: 100%; text-align: center;">
                                                         <mat-radio-button style="margin: 10px" class="radio-button-espacamento" value="FISICA">Pessoa Física</mat-radio-button>
                                                         <mat-radio-button style="margin: 10px" class="radio-button-espacamento" value="JURIDICA">Pessoa Jurídica</mat-radio-button>
                                                     </mat-radio-group>
@@ -91,6 +88,8 @@
                                                     </mat-form-field>
                                                 </div>
                                             </div>
+
+                                            <mat-divider style="margin: 10px; border: 0.5px solid grey;"></mat-divider>
 
                                             <mat-grid-list cols="5" rowHeight="87px">
                                                 <mat-grid-tile colspan="1" rowspan="2">
@@ -256,9 +255,8 @@
                                     </mat-step>
 
 
-                                    <mat-step [stepControl]="horizontalStepperStep2">
-
-                                        <form fxLayout="column" [formGroup]="horizontalStepperStep2">
+                                    <mat-step [stepControl]="formDadosViagen">
+                                        <form fxLayout="column" [formGroup]="formDadosViagen">
 
                                             <ng-template matStepLabel>Dados da Viagem</ng-template>
 
@@ -274,14 +272,24 @@
 
                                             <!--                                            </div>-->
 
-                                            <!--                                            <div fxLayout="row" fxLayoutAlign="center center">-->
-                                            <!--                                                <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">-->
-                                            <!--                                                    Previous-->
-                                            <!--                                                </button>-->
-                                            <!--                                                <button mat-raised-button matStepperNext type="button" color="accent">-->
-                                            <!--                                                    Next-->
-                                            <!--                                                </button>-->
-                                            <!--                                            </div>-->
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="100">
+                                                    <mat-label>Observações</mat-label>
+                                                    <textarea matInput formControlName="obs" rows="3"></textarea>
+                                                    <mat-error>
+                                                        <app-message [control]="formDadosViagen.get('obs')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+                                                <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
+                                                    Voltar
+                                                </button>
+                                                <button mat-raised-button matStepperNext type="button" color="accent">
+                                                    Próximo
+                                                </button>
+                                            </div>
 
                                         </form>
 

@@ -3,7 +3,7 @@ import {RouterModule} from '@angular/router';
 
 import {
     MatButtonModule,
-    MatChipsModule,
+    MatChipsModule, MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule, MatGridListModule,
     MatIconModule,
@@ -73,6 +73,7 @@ const routes = [
         MatStepperModule,
         MatRadioModule,
         MatGridListModule,
+        MatDividerModule,
 
         NgxChartsModule,
 

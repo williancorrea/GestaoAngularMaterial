@@ -21,7 +21,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
     tipoPagina: string;
 
     formCliente: FormGroup;
-    horizontalStepperStep2: FormGroup;
+    formDadosViagen: FormGroup;
     horizontalStepperStep3: FormGroup;
 
     constructor(
@@ -107,8 +107,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
         });
 
 
-        this.horizontalStepperStep2 = this.formBuild.group({
-            address: ['', Validators.required]
+        this.formDadosViagen = this.formBuild.group({
+            obs: ['', [Validators.maxLength(500)]]
         });
 
         this.horizontalStepperStep3 = this.formBuild.group({
