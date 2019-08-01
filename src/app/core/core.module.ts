@@ -3,22 +3,17 @@ import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 
-
-import {JwtHelperService} from '@auth0/angular-jwt';
-
 import {ErroManipuladorService} from './erro-manipulador.service';
-import {AuthService} from '../seguranca/auth.service';
 import {MessageComponent} from './message/message.component';
 import {FretamentoService} from '../main/apps/fretamento/fretamento.service';
-
-import {TransportHttp} from '../seguranca/transport-http';
+import {GestaoService} from '../seguranca/autenticacao/gestao.service';
 
 
 @NgModule({
     imports: [
         CommonModule,
         HttpClientModule,
-        RouterModule,
+        RouterModule
     ],
     declarations: [
         MessageComponent
@@ -27,11 +22,11 @@ import {TransportHttp} from '../seguranca/transport-http';
         MessageComponent
     ],
     providers: [
-        ErroManipuladorService,
-        AuthService,
-        TransportHttp,
+        // AuthService,
+        // JwtHelperService,
 
-        JwtHelperService,
+        GestaoService,
+        ErroManipuladorService,
 
         FretamentoService,
         // VeiculoService,

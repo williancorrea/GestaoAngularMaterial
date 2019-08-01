@@ -1,58 +1,29 @@
 import {Injectable} from '@angular/core';
-import {TransportHttp} from '../../../seguranca/transport-http';
 import {environment} from '../../../../environments/environment';
+import {HttpHeaders} from '@angular/common/http';
+import {GestaoService} from '../../../seguranca/autenticacao/gestao.service';
 
 @Injectable()
 export class FretamentoService {
 
     apiUrl: string;
 
-    constructor(private http: TransportHttp) {
+    constructor(private http: GestaoService) {
         this.apiUrl = `${environment.apiUrl}/fretamentos`;
     }
 
-    // listarTodas(grid: any, controleKmFiltro: any): any {
-    //     const config = {
-    //         params: {
-    //             size: grid.rows,
-    //             page: grid.first / grid.rows,
-    //             ordemClassificacao: 'DESC',
-    //             campoOrdenacao: 'dataHoraSaida'
-    //         }
-    //     };
-    //     if (grid.globalFilter && grid.globalFilter.length > 0) {
-    //         config.params['filtroGlobal'] = grid.globalFilter;
-    //     }
-    //
-    //     return this.http.get(`${this.apiUrl}`, config)
-    //         .toPromise();
-    // }
-
     buscarPorKey(key): any {
-        return this.http.get(`${this.apiUrl}/${key}`)
-            .toPromise().then(() => null);
+
+        const headers = new HttpHeaders();
+
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.get(`${this.apiUrl}/${key}`, {headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
     }
 
-    // excluir(key: string): any {
-    //     return this.http.delete(`${this.apiUrl}/${key}`)
-    //         .toPromise()
-    //         .then(() => null);
-    // }
-
-    // salvar(obj): any {
-    //     const clone = JSON.parse(JSON.stringify(obj));
-    //     return this.http.post(this.apiUrl,
-    //         JSON.stringify(clone))
-    //         .toPromise();
-    // }
-
-    // atualizar(obj): any {
-    //     const key = obj.key;
-    //
-    //     const clone = JSON.parse(JSON.stringify(obj));
-    //
-    //     return this.http.put(`${this.apiUrl}/${key}`,
-    //         JSON.stringify(clone))
-    //         .toPromise();
-    // }
 }

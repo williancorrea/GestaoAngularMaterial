@@ -8,7 +8,6 @@ import {FuseConfigService} from '@fuse/services/config.service';
 import {FuseSidebarService} from '@fuse/components/sidebar/sidebar.service';
 
 import {navigation} from 'app/navigation/navigation';
-import {AuthService} from '../../../seguranca/auth.service';
 import {LogoutService} from '../../../seguranca/logout.service';
 import {ErroManipuladorService} from '../../../core/erro-manipulador.service';
 import {Router} from '@angular/router';
@@ -42,7 +41,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     constructor(private _fuseConfigService: FuseConfigService,
                 private _fuseSidebarService: FuseSidebarService,
                 private _translateService: TranslateService,
-                private auth: AuthService,
                 private logoutService: LogoutService,
                 private manipuladorErro: ErroManipuladorService,
                 private router: Router) {
@@ -99,14 +97,14 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
     }
 
-    logout() {
-        this.logoutService.logout()
-            .then(() => {
-                this.router.navigate(['/autenticacao/login']);
-            })
-            .catch(error => {
-                this.manipuladorErro.handle(error);
-            });
+    logout(): void {
+        // this.logoutService.logout()
+        //     .then(() => {
+        //         this.router.navigate(['/autenticacao/login']);
+        //     })
+        //     .catch(error => {
+        //         this.manipuladorErro.handle(error);
+        //     });
     }
 
     // -----------------------------------------------------------------------------------------------------

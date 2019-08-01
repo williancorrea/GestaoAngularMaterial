@@ -3,16 +3,20 @@ import {RouterModule} from '@angular/router';
 
 import {
     MatButtonModule,
-    MatChipsModule, MatDividerModule,
+    MatChipsModule,
+    MatDividerModule,
     MatExpansionModule,
-    MatFormFieldModule, MatGridListModule,
+    MatFormFieldModule,
+    MatGridListModule,
     MatIconModule,
     MatInputModule,
-    MatPaginatorModule, MatRadioModule,
+    MatPaginatorModule,
+    MatRadioModule,
     MatRippleModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatSortModule, MatStepperModule,
+    MatSortModule,
+    MatStepperModule,
     MatTableModule,
     MatTabsModule
 } from '@angular/material';
@@ -24,27 +28,26 @@ import {FretamentoEventualNovoComponent} from './fretamentoEventual/fretamento-e
 import {FretamentoEventualPesquisaComponent} from './fretamentoEventual/fretamento-eventual-pesquisa/fretamento-eventual-pesquisa.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CoreModule} from '../../../core/core.module';
-import {AuthGuard} from '../../../seguranca/auth.guard';
 
 
 const routes = [
     {
         path: 'eventual',
         component: FretamentoEventualPesquisaComponent,
-        canActivate: [AuthGuard],
-        data: {roles: ['ROLE_CMB-PADRAO']}
+        // canActivate: [AuthGuard],
+        // data: {roles: ['ROLE_CMB-PADRAO']}
     },
     {
         path: 'eventual/novo',
         component: FretamentoEventualNovoComponent,
-        canActivate: [AuthGuard],
-        data: {roles: ['ROLE_CMB-PADRAO']}
+        // canActivate: [AuthGuard],
+        // data: {roles: ['ROLE_CMB-PADRAO']}
     },
     {
         path: 'eventual/:key',
         component: FretamentoEventualNovoComponent,
-        canActivate: [AuthGuard],
-        data: {roles: ['ROLE_CMB-PADRAO']}
+        // canActivate: [AuthGuard],
+        // data: {roles: ['ROLE_CMB-PADRAO']}
     },
     {
         path: '**',
@@ -87,7 +90,6 @@ const routes = [
         FretamentoEventualPesquisaComponent
     ],
     exports: []
-        ,
 })
 export class FretamentoModule {
 }

@@ -1,7 +1,7 @@
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
-import {NotAuthenticatedError} from '../seguranca/transport-http';
+import {NotAuthenticatedError} from '../seguranca/autenticacao/gestao.service';
 
 @Injectable()
 export class ErroManipuladorService {
@@ -29,7 +29,7 @@ export class ErroManipuladorService {
 
                 if (errorResponse.status === 403) {
                     mensagemErro = 'Você não tem permissão para executar esta ação.';
-                    //TODO: COLOCAR O COMPONENTE DE ACESSO NEGADO
+                    // TODO: COLOCAR O COMPONENTE DE ACESSO NEGADO
                     this.router.navigate(['/acesso-negado']);
                 }
 

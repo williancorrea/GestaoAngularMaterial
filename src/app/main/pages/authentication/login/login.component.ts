@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {FuseConfigService} from '@fuse/services/config.service';
 import {fuseAnimations} from '@fuse/animations';
-import {AuthService} from '../../../../seguranca/auth.service';
 import {ErroManipuladorService} from '../../../../core/erro-manipulador.service';
 import {Router} from '@angular/router';
 
@@ -25,7 +24,6 @@ export class LoginComponent implements OnInit {
      */
     constructor(private _fuseConfigService: FuseConfigService,
                 private _formBuilder: FormBuilder,
-                private auth: AuthService,
                 private errorHandler: ErroManipuladorService,
                 private router: Router) {
 
@@ -59,22 +57,5 @@ export class LoginComponent implements OnInit {
     }
 
     login(): void {
-        // console.log('email', this.loginForm.get('email').value);
-
-
-
-        // this.loading = true;
-        this.auth.login(this.loginForm.get('email').value, this.loginForm.get('password').value)
-            .then(() => {
-
-                this.router.navigate(['/']); // Vai redirecionar para a pagina principal da aplicação (Dashboard)
-                // this.loading = false;
-            })
-            .catch(erro => {
-                // this.loading = false;
-                this.errorHandler.handle(erro);
-                // this.password = '';
-                this.loginForm.setValue({password: ''});
-            });
     }
 }

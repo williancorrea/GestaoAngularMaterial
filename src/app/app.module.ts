@@ -22,7 +22,6 @@ import {AppStoreModule} from 'app/store/store.module';
 import {LayoutModule} from 'app/layout/layout.module';
 import {SegurancaModule} from './seguranca/seguranca.module';
 import {CoreModule} from './core/core.module';
-import {AuthGuard} from './seguranca/auth.guard';
 
 const appRoutes: Routes = [
     {
@@ -33,12 +32,6 @@ const appRoutes: Routes = [
     {
         path: 'pages',
         loadChildren: './main/pages/pages.module#PagesModule',
-        canActivate: [AuthGuard],
-        data: {
-            roles: [
-                'ROLE_CMB-PADRAO'
-            ]
-        }
     },
     {
         path: 'ui',
@@ -99,6 +92,7 @@ const appRoutes: Routes = [
         LayoutModule,
         AppStoreModule,
 
+        // WCorrea
         SegurancaModule,
         CoreModule
     ],

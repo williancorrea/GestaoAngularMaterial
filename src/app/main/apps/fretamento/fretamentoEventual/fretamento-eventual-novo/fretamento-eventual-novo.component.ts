@@ -5,7 +5,6 @@ import {fuseAnimations} from '@fuse/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FretamentoService} from '../../fretamento.service';
 import {ErroManipuladorService} from '../../../../../core/erro-manipulador.service';
-import {AuthService} from '../../../../../seguranca/auth.service';
 import {PessoaTipo} from '../../../../../core/modelos/PessoaTipo';
 
 @Component({
@@ -30,7 +29,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private formBuild: FormBuilder,
         private fretamentoService: FretamentoService,
-        public auth: AuthService,
         private errorHandler: ErroManipuladorService
     ) {
     }
@@ -42,8 +40,11 @@ export class FretamentoEventualNovoComponent implements OnInit {
         if (editando) {
             this.tipoPagina = 'EDICAO';
             this.fretamentoService.buscarPorKey(editando).then(response => {
+
+                console.log(response);
+
                 // this.bank = response;
-                this.form.patchValue(response);
+                // this.form.patchValue(response);
                 // this.mostrarModalCarregando(false);
             }).catch(error => {
                 this.errorHandler.handle(error);
@@ -51,7 +52,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
             });
         } else {
             this.tipoPagina = 'NOVO';
-            // this.titulo.setTitle(this.traduzir['banco']['acoes']['adicionar']);
             // this.mostrarModalCarregando(false);
         }
     }
@@ -79,7 +79,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
             cpf: ['', Validators.required],
             rg: [''],
             cnpj: ['', Validators.required],
-            inscricaoEstadual: ['',[Validators.required]],
+            inscricaoEstadual: ['', [Validators.required]],
             nomeRazao: ['', [Validators.required, Validators.minLength(10)]],
             apelidoFantasia: [''],
             estado: [null],
