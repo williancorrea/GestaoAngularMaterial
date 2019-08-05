@@ -12,7 +12,7 @@ export const navigation: FuseNavigation[] = [
                 title: 'Fretamento Eventual',
                 type : 'item',
                 icon : 'directions_bus',
-                url  : '/apps/fretamento/'
+                url  : '/apps/fretamento/eventual/1'
             }
             // ,
             // {
