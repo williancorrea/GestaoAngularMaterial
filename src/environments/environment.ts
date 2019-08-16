@@ -7,11 +7,12 @@ export const environment = {
     hmr: false,
 
 
-    // apiUrl: 'https://gestao-api-wcorrea.herokuapp.com',
-    // apiUrl: 'http://192.168.0.100:8080',
-    apiUrl: 'http://localhost:8080',
+    // apiUrl: 'http://192.168.5.9:8080',
+    // tokenWhitelistedDomains: [ new RegExp('192.168.5.9:8080') ],
 
+    apiUrl: 'http://localhost:8080',
     tokenWhitelistedDomains: [ new RegExp('localhost:8080') ],
+
     tokenBlacklistedRoutes: [ new RegExp('\/oauth\/token') ],
 
     // ng serve --proxy-config proxy.config.json
@@ -38,3 +39,7 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+
+// disableHostCheck é igual a  Access-Control-Allow-Origin: *
+// ng serve --port 4200 --host 192.168.5.10 --disableHostCheck

@@ -23,6 +23,8 @@ import {LayoutModule} from 'app/layout/layout.module';
 import {SegurancaModule} from './seguranca/seguranca.module';
 import {CoreModule} from './core/core.module';
 
+
+
 const appRoutes: Routes = [
     {
         path: 'apps',
@@ -91,6 +93,9 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
         AppStoreModule,
+
+
+
 
         // WCorrea
         SegurancaModule,

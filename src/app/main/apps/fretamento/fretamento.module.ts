@@ -28,7 +28,7 @@ import {FretamentoEventualNovoComponent} from './fretamentoEventual/fretamento-e
 import {FretamentoEventualPesquisaComponent} from './fretamentoEventual/fretamento-eventual-pesquisa/fretamento-eventual-pesquisa.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CoreModule} from '../../../core/core.module';
-
+import {NgxMaskModule} from 'ngx-mask';
 
 const routes = [
     {
@@ -83,7 +83,8 @@ const routes = [
         FuseSharedModule,
         FuseWidgetModule,
 
-        CoreModule
+        CoreModule,
+        NgxMaskModule
     ],
     declarations: [
         FretamentoEventualNovoComponent,

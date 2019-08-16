@@ -1,4 +1,4 @@
-export enum PessoaTipo {
+export enum PESSOA_TIPO {
    FISICA = 'FISICA',
    JURIDICA = 'JURIDICA'
 }

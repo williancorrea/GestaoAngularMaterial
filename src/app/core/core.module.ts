@@ -7,13 +7,19 @@ import {ErroManipuladorService} from './erro-manipulador.service';
 import {MessageComponent} from './message/message.component';
 import {FretamentoService} from '../main/apps/fretamento/fretamento.service';
 import {GestaoService} from '../seguranca/autenticacao/gestao.service';
+import {IConfig, NgxMaskModule} from 'ngx-mask';
 
+export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
 @NgModule({
     imports: [
         CommonModule,
         HttpClientModule,
-        RouterModule
+        RouterModule,
+
+        // Mascaras dos Campos
+        NgxMaskModule.forRoot(options),
+
     ],
     declarations: [
         MessageComponent
