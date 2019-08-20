@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 
 import {
+    MatAutocompleteModule,
     MatButtonModule,
     MatChipsModule,
     MatDividerModule,
@@ -84,7 +85,8 @@ const routes = [
         FuseWidgetModule,
 
         CoreModule,
-        NgxMaskModule
+        NgxMaskModule,
+        MatAutocompleteModule
     ],
     declarations: [
         FretamentoEventualNovoComponent,

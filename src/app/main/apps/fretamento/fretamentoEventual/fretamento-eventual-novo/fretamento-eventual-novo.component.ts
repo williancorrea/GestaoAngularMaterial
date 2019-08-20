@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '@fuse/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FretamentoService} from '../../fretamento.service';
@@ -8,6 +8,8 @@ import {ErroManipuladorService} from '../../../../../core/erro-manipulador.servi
 import {PESSOA_TIPO} from '../../../../../core/modelos/PessoaTipo';
 import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../../../core/modelos/FretamentoEventualSituacao';
 import {ValidacaoGenericaWCorrea} from '../../../../../core/utils/ValidacaoGenericaWCorrea';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
     selector: 'app-fretamento-eventual-novo',
@@ -33,6 +35,12 @@ export class FretamentoEventualNovoComponent implements OnInit {
     formOrcamento: FormGroup;
     formDadosViagen: FormGroup;
     horizontalStepperStep3: FormGroup;
+
+
+
+    myControl = new FormControl();
+    options: string[] = ['One', 'Two', 'Three'];
+    filteredOptions: Observable<string[]>;
 
     constructor(
         private _matSnackBar: MatSnackBar,
@@ -65,6 +73,17 @@ export class FretamentoEventualNovoComponent implements OnInit {
             this.tipoPagina = 'NOVO';
             // this.mostrarModalCarregando(false);
         }
+
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filter(value))
+        );
+    }
+
+    private _filter(value: string): string[] {
+        const filterValue = value.toLowerCase();
+
+        return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
     }
 
     configurarForm(): void {
