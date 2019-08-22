@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
-import {HttpHeaders} from '@angular/common/http';
+import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {GestaoService} from '../../../seguranca/autenticacao/gestao.service';
 
 @Injectable()
@@ -26,4 +26,16 @@ export class FretamentoService {
             });
     }
 
+    pesquisarClienteCmb(pesquisa: string): Promise<any> {
+        const params = new HttpParams()
+            .set('size', String(environment.comboBox.linhas))
+            .set('page', String(0))
+            .set('ordemClassificacao', 'ASC')
+            .set('campoOrdenacao', 'nome')
+            .set('nome', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+
+        return this.http.get(`${this.apiUrl}/cmbCliente`, {params: params}).toPromise().then(response => {
+            return response;
+        });
+    }
 }

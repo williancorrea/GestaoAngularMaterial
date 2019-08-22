@@ -11,7 +11,7 @@ import {
     MatGridListModule,
     MatIconModule,
     MatInputModule,
-    MatPaginatorModule,
+    MatPaginatorModule, MatProgressBarModule,
     MatRadioModule,
     MatRippleModule,
     MatSelectModule,
@@ -86,7 +86,8 @@ const routes = [
 
         CoreModule,
         NgxMaskModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatProgressBarModule
     ],
     declarations: [
         FretamentoEventualNovoComponent,

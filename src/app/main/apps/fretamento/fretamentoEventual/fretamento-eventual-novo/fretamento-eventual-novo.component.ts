@@ -8,8 +8,8 @@ import {ErroManipuladorService} from '../../../../../core/erro-manipulador.servi
 import {PESSOA_TIPO} from '../../../../../core/modelos/PessoaTipo';
 import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../../../core/modelos/FretamentoEventualSituacao';
 import {ValidacaoGenericaWCorrea} from '../../../../../core/utils/ValidacaoGenericaWCorrea';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {debounceTime, tap} from 'rxjs/operators';
+import {environment} from '../../../../../../environments/environment';
 
 @Component({
     selector: 'app-fretamento-eventual-novo',
@@ -36,11 +36,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
     formDadosViagen: FormGroup;
     horizontalStepperStep3: FormGroup;
 
-
-
-    myControl = new FormControl();
-    options: string[] = ['One', 'Two', 'Three'];
-    filteredOptions: Observable<string[]>;
+    cmbClienteForm = new FormControl();
+    cmbClienteCarregando = false;
+    cmbClienteLista: any;
 
     constructor(
         private _matSnackBar: MatSnackBar,
@@ -74,16 +72,37 @@ export class FretamentoEventualNovoComponent implements OnInit {
             // this.mostrarModalCarregando(false);
         }
 
-        this.filteredOptions = this.myControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this._filter(value))
-        );
+        this.cmbClienteForm.setValidators([ValidacaoGenericaWCorrea.SelecionarItemCmb]);
+        this.cmbClienteForm.updateValueAndValidity();
+        this.cmbClienteForm.valueChanges
+            .pipe(
+                debounceTime(environment.comboBox.filtroDelay),
+                tap(() => {
+                    this.cmbClienteCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbClienteLista = [];
+
+                console.log('OBJETO', this.cmbClienteForm)
+
+                if (typeof pesquisa !== 'string' || pesquisa.length === 0) {
+                    this.cmbClienteCarregando = false;
+                    return;
+                }
+                this.fretamentoService.pesquisarClienteCmb(pesquisa).then(resposta => {
+                    this.cmbClienteLista = resposta;
+                }).catch(erro => {
+                    this.errorHandler.handle(erro);
+                }).finally(() => {
+                    this.cmbClienteCarregando = false;
+                });
+            });
+
     }
 
-    private _filter(value: string): string[] {
-        const filterValue = value.toLowerCase();
-
-        return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    displayFn(obj?: any): string | undefined {
+        return obj ? obj.nome : undefined;
     }
 
     configurarForm(): void {
@@ -182,9 +201,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO);
     }
 
-    /**
-     * Save product
-     */
     saveProduct(): void {
         // const data = this.productForm.getRawValue();
         // data.handle = FuseUtils.handleize(data.name);
@@ -203,39 +219,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
         //     });
     }
 
-    /**
-     * Create product form
-     *
-     * @returns {FormGroup}
-     */
-    // createProductForm(): FormGroup {
-    //     return this._formBuilder.group({
-    //         id: [this.product.id],
-    //         name: [this.product.name],
-    //         handle: [this.product.handle],
-    //         description: [this.product.description],
-    //         categories: [this.product.categories],
-    //         tags: [this.product.tags],
-    //         images: [this.product.images],
-    //         priceTaxExcl: [this.product.priceTaxExcl],
-    //         priceTaxIncl: [this.product.priceTaxIncl],
-    //         taxRate: [this.product.taxRate],
-    //         comparedPrice: [this.product.comparedPrice],
-    //         quantity: [this.product.quantity],
-    //         sku: [this.product.sku],
-    //         width: [this.product.width],
-    //         height: [this.product.height],
-    //         depth: [this.product.depth],
-    //         weight: [this.product.weight],
-    //         extraShippingFee: [this.product.extraShippingFee],
-    //         active: [this.product.active]
-    //         // });
-    //     }
-    // }
-
-    /**
-     * Add product
-     */
     addProduct(): void {
         // const data = this.productForm.getRawValue();
         // data.handle = FuseUtils.handleize(data.name);

@@ -27,7 +27,7 @@ export const environment = {
     comboBox: {
         minCaracterParaPesquisa: 1,
         filtroDelay: 500,
-        linhas: 100
+        linhas: 50
     }
 };
 

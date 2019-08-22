@@ -14,6 +14,7 @@ import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef,
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'Mask error')">Preenchimento incorreto</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'CPF_Invalido')">CPF Inválido</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'CNPJ_Invalido')">CNPJ Inválido</span>
+        <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'Selecionar_Item')">Selecione um item</span>
     `,
     styles: [`
 
@@ -26,13 +27,11 @@ export class MessageComponent implements AfterViewChecked, AfterContentChecked, 
     // @Input() form: any;
     @Input() label: string;
 
-
     erroCodigo: any;
     erroMensagem: any;
 
     constructor(private cdr: ChangeDetectorRef) {
     }
-
 
     temErro(): boolean {
         if (this.control == null) {

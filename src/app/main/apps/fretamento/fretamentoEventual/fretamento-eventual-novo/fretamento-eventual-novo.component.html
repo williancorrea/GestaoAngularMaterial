@@ -91,15 +91,20 @@
                                                 <div fxFlex="25" fxLayoutAlign="rigth center">
                                                     <mat-form-field appearance="fill" fxFlex="100" class="pr-4">
                                                         <mat-label>Pesquisar</mat-label>
-                                                        <input matInput type="text" placeholder="Selecione ..." [formControl]="myControl" [matAutocomplete]="auto">
-
-<!--                                                                <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">-->
-                                                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                                                    {{option}}
+                                                        <input matInput type="text" placeholder="Selecione ..." [formControl]="cmbClienteForm" [matAutocomplete]="autoCompleteCliente">
+                                                        <mat-autocomplete autoActiveFirstOption #autoCompleteCliente="matAutocomplete" [displayWith]="displayFn">
+                                                            <mat-option *ngIf="cmbClienteCarregando" class="is-loading">
+                                                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                                            </mat-option>
+                                                            <ng-container *ngIf="!cmbClienteCarregando">
+                                                                <mat-option *ngFor="let cliente of cmbClienteLista" [value]="cliente">
+                                                                    <span><b>{{cliente['nome']}}</b></span>
                                                                 </mat-option>
-                                                            </mat-autocomplete>
-
+                                                            </ng-container>
+                                                        </mat-autocomplete>
+                                                        <mat-error>
+                                                            <app-message [control]="cmbClienteForm"></app-message>
+                                                        </mat-error>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
