@@ -17,4 +17,11 @@ export class ValidacaoGenericaWCorrea {
         }
         return null;
     }
+
+    public static SelecionarItemObrigatorioCmb(input: FormControl): any {
+        if (typeof input.value === 'string') {
+            return {Selecionar_Item: true};
+        }
+        return null;
+    }
 }

@@ -8,7 +8,7 @@ import {ErroManipuladorService} from '../../../../../core/erro-manipulador.servi
 import {PESSOA_TIPO} from '../../../../../core/modelos/PessoaTipo';
 import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../../../core/modelos/FretamentoEventualSituacao';
 import {ValidacaoGenericaWCorrea} from '../../../../../core/utils/ValidacaoGenericaWCorrea';
-import {debounceTime, tap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
 
 @Component({
@@ -77,22 +77,34 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.cmbClienteForm.valueChanges
             .pipe(
                 debounceTime(environment.comboBox.filtroDelay),
-                tap(() => {
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
                     this.cmbClienteCarregando = true;
                 })
             )
             .subscribe(pesquisa => {
                 this.cmbClienteLista = [];
-
-                console.log('OBJETO', this.cmbClienteForm)
-
-                if (typeof pesquisa !== 'string' || pesquisa.length === 0) {
+                if (typeof pesquisa !== 'string') {
                     this.cmbClienteCarregando = false;
                     return;
                 }
+
+                if (pesquisa.trim().length === 0) {
+                    this.cmbClienteCarregando = false;
+                    this.cmbClienteForm.reset();
+                    this.cmbClienteForm.updateValueAndValidity();
+                    return;
+                }
+
                 this.fretamentoService.pesquisarClienteCmb(pesquisa).then(resposta => {
                     this.cmbClienteLista = resposta;
                 }).catch(erro => {
+                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
                     this.errorHandler.handle(erro);
                 }).finally(() => {
                     this.cmbClienteCarregando = false;
@@ -106,74 +118,94 @@ export class FretamentoEventualNovoComponent implements OnInit {
     }
 
     configurarForm(): void {
-        this.form = this.formBuild.group({
-            key: [null],
-            cliente: this.formBuild.group({
-                key: [null],
-                nome: [
-                    null, [
-                        Validators.required,
-                        Validators.minLength(5),
-                        Validators.maxLength(150)
-                    ]
-                ]
-            })
-        });
+        // this.form = this.formBuild.group({
+        //     key: [null],
+        //     cliente: this.formBuild.group({
+        //         key: [null],
+        //         nome: [
+        //             null, [
+        //                 Validators.required,
+        //                 Validators.minLength(5),
+        //                 Validators.maxLength(150)
+        //             ]
+        //         ]
+        //     })
+        // });
 
         this.formFretamentoEventual = this.formBuild.group({
             key: [null],
-            situacao: [FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO, Validators.required]
-        });
-
-        this.formOrcamento = this.formBuild.group({
-            key: [null],
-            nome: ['', [
-                Validators.required,
-                Validators.minLength(10),
-                Validators.maxLength(200)]
-            ],
-            telefone1: ['', [Validators.required]],
-            telefone2: [''],
-            obs: ['']
+            situacao: [FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO, [Validators.required]],
+            orcamento: this.formBuild.group({
+                nome: ['', [
+                    Validators.required,
+                    Validators.minLength(10),
+                    Validators.maxLength(200)]
+                ],
+                telefone1: ['', [Validators.required]],
+                telefone2: [''],
+                obs: ['', [Validators.maxLength(500)]]
+            }),
+            cliente: this.formBuild.group({
+                key: [null],
+                tipoPessoa: [PESSOA_TIPO.FISICA, Validators.required],
+                cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],
+                rg: [''],
+                cnpj: [''],
+                inscricaoEstadual: [''],
+                nomeRazao: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+                apelidoFantasia: [''],
+                estado: [null],
+                cidade: [null],
+                endereco: [''],
+                bairro: [''],
+                fotoLogo: [''],
+                email: ['', Validators.email],
+                telefone1: ['', [Validators.required]],
+                telefone1Obs: [''],
+                telefone2: [''],
+                telefone2Obs: [''],
+                obs: ['', [Validators.maxLength(500)]]
+            })
         });
 
         // TODO: AJUSTAR A QUANTIDADE MAXIMA DE CADA CAMPO
-        this.formCliente = this.formBuild.group({
-            key: [null],
-            tipoPessoa: [PESSOA_TIPO.FISICA, Validators.required],
-            cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],
-            rg: [''],
-            cnpj: [''],
-            inscricaoEstadual: [''],
-            nomeRazao: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
-            apelidoFantasia: [''],
-            estado: [null],
-            cidade: [null],
-            endereco: [''],
-            bairro: [''],
-            fotoLogo: [''],
-            email: ['', Validators.email],
-            telefone1: ['', [Validators.required]],
-            telefone1Obs: [''],
-            telefone2: [''],
-            telefone2Obs: [''],
-            obs: ['', [Validators.maxLength(500)]]
-        });
+        // this.formCliente = this.formBuild.group({
+        //     key: [null],
+        //     tipoPessoa: [PESSOA_TIPO.FISICA, Validators.required],
+        //     cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],
+        //     rg: [''],
+        //     cnpj: [''],
+        //     inscricaoEstadual: [''],
+        //     nomeRazao: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+        //     apelidoFantasia: [''],
+        //     estado: [null],
+        //     cidade: [null],
+        //     endereco: [''],
+        //     bairro: [''],
+        //     fotoLogo: [''],
+        //     email: ['', Validators.email],
+        //     telefone1: ['', [Validators.required]],
+        //     telefone1Obs: [''],
+        //     telefone2: [''],
+        //     telefone2Obs: [''],
+        //     obs: ['', [Validators.maxLength(500)]]
+        // });
 
-        this.formCliente.get('tipoPessoa').valueChanges.subscribe(valor => {
+        this.formFretamentoEventual.get('cliente').get('tipoPessoa').valueChanges.subscribe(valor => {
             if (valor === PESSOA_TIPO.JURIDICA.toString()) {
-                this.formCliente.controls['cpf'].clearValidators();
-                this.formCliente.controls['cnpj'].setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCNPJ]);
-                this.formCliente.controls['inscricaoEstadual'].setValidators([Validators.maxLength(15)]);
+                this.formFretamentoEventual.get('cliente').get('cpf').clearValidators();
+                this.formFretamentoEventual.get('cliente').get('cnpj').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCNPJ]);
+                this.formFretamentoEventual.get('cliente').get('inscricaoEstadual').setValidators([Validators.maxLength(15)]);
             } else {
-                this.formCliente.controls['cpf'].setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCPF]);
-                this.formCliente.controls['cnpj'].clearValidators();
-                this.formCliente.controls['inscricaoEstadual'].clearValidators();
+                this.formFretamentoEventual.get('cliente').get('cpf').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCPF]);
+                this.formFretamentoEventual.get('cliente').get('cnpj').clearValidators();
+                this.formFretamentoEventual.get('cliente').get('inscricaoEstadual').clearValidators();
             }
-
-            this.formCliente.updateValueAndValidity(); // Forca a atualizacao do objeto
+            this.formFretamentoEventual.get('cliente').updateValueAndValidity(); // Forca a atualizacao do objeto
         });
 
+
+        // TODO: Apagar
         this.formDadosViagen = this.formBuild.group({
             obs: ['', [Validators.maxLength(500)]]
         });
@@ -195,31 +227,28 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     btnOrcamento(): void {
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO);
+
+        this.formFretamentoEventual.get('orcamento').get('nome').setValue('');
+        this.formFretamentoEventual.get('orcamento').get('telefone1').setValue('');
+        this.formFretamentoEventual.get('orcamento').get('telefone2').setValue('');
+        this.formFretamentoEventual.get('orcamento').get('obs').setValue('');
+
+        this.formFretamentoEventual.get('orcamento').reset(this.formFretamentoEventual.get('cliente').value);
+        this.formFretamentoEventual.get('orcamento').updateValueAndValidity();
     }
 
     btnNovoCliente(): void {
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO);
+        // this.formFretamentoEventual.get('cliente').reset(this.formFretamentoEventual.get('cliente').value);
+        // this.formFretamentoEventual.get('cliente').updateValueAndValidity();
     }
 
-    saveProduct(): void {
-        // const data = this.productForm.getRawValue();
-        // data.handle = FuseUtils.handleize(data.name);
-        //
-        // this._ecommerceProductService.saveProduct(data)
-        //     .then(() => {
-        //
-        //         // Trigger the subscription with new data
-        //         this._ecommerceProductService.onProductChanged.next(data);
-        //
-        //         // Show the success message
-        //         this._matSnackBar.open('Product saved', 'OK', {
-        //             verticalPosition: 'top',
-        //             duration: 2000
-        //         });
-        //     });
-    }
+    gravarFretamento(): void {
 
-    addProduct(): void {
+        console.log('CONTROLE', this.formFretamentoEventual);
+        console.log('DADOS', this.formFretamentoEventual.value);
+
+
         // const data = this.productForm.getRawValue();
         // data.handle = FuseUtils.handleize(data.name);
         //
