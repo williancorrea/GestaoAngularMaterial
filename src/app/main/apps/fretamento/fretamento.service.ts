@@ -13,9 +13,8 @@ export class FretamentoService {
     }
 
     buscarPorKey(key): any {
-
+        // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
-
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
         headers.append('Content-Type', 'application/json');
 
@@ -37,5 +36,27 @@ export class FretamentoService {
         return this.http.get(`${this.apiUrl}/cmbCliente`, {params: params}).toPromise().then(response => {
             return response;
         });
+    }
+
+    salvar(obj: any): Promise<any> {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+
+        const clone = JSON.parse(JSON.stringify(obj));
+        delete clone['key'];
+        delete clone['controle'];
+
+        delete clone['orcamento'];
+        delete clone['cliente'];
+
+
+        return this.http.post(this.apiUrl, JSON.stringify(clone), {headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
     }
 }

@@ -56,22 +56,30 @@ export class FretamentoEventualNovoComponent implements OnInit {
         const editando = this.activatedRoute.snapshot.params['key'];
         if (editando) {
             this.tipoPagina = 'EDICAO';
-            // this.fretamentoService.buscarPorKey(editando).then(response => {
-            //
-            //     console.log(response);
-            //
-            //     // this.bank = response;
-            //     // this.form.patchValue(response);
-            //     // this.mostrarModalCarregando(false);
-            // }).catch(error => {
-            //     this.errorHandler.handle(error);
-            //     // this.mostrarModalCarregando(false);
-            // });
+            this.fretamentoService.buscarPorKey(editando).then(response => {
+
+                console.log(response);
+
+                // this.bank = response;
+                // this.form.patchValue(response);
+                // this.mostrarModalCarregando(false);
+            }).catch(error => {
+                this.errorHandler.handle(error);
+                // this.mostrarModalCarregando(false);
+            });
         } else {
             this.tipoPagina = 'NOVO';
             // this.mostrarModalCarregando(false);
         }
 
+
+    }
+
+    mostrarNomeCliente(obj?: any): string | undefined {
+        return obj ? obj.nome : undefined;
+    }
+
+    configurarForm(): void {
         this.cmbClienteForm.setValidators([ValidacaoGenericaWCorrea.SelecionarItemCmb]);
         this.cmbClienteForm.updateValueAndValidity();
         this.cmbClienteForm.valueChanges
@@ -111,31 +119,11 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 });
             });
 
-    }
-
-    displayFn(obj?: any): string | undefined {
-        return obj ? obj.nome : undefined;
-    }
-
-    configurarForm(): void {
-        // this.form = this.formBuild.group({
-        //     key: [null],
-        //     cliente: this.formBuild.group({
-        //         key: [null],
-        //         nome: [
-        //             null, [
-        //                 Validators.required,
-        //                 Validators.minLength(5),
-        //                 Validators.maxLength(150)
-        //             ]
-        //         ]
-        //     })
-        // });
 
         this.formFretamentoEventual = this.formBuild.group({
             key: [null],
             situacao: [FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO, [Validators.required]],
-            orcamento: this.formBuild.group({
+            contato: this.formBuild.group({
                 nome: ['', [
                     Validators.required,
                     Validators.minLength(10),
@@ -147,61 +135,46 @@ export class FretamentoEventualNovoComponent implements OnInit {
             }),
             cliente: this.formBuild.group({
                 key: [null],
-                tipoPessoa: [PESSOA_TIPO.FISICA, Validators.required],
-                cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],
-                rg: [''],
-                cnpj: [''],
-                inscricaoEstadual: [''],
-                nomeRazao: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
-                apelidoFantasia: [''],
-                estado: [null],
+                tipo: [PESSOA_TIPO.FISICA, Validators.required],
+                email: ['', Validators.email],
+                obs: ['', [Validators.maxLength(500)]],
+                nome: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+                fantasia: ['', [Validators.maxLength(250)]],
+                imagem: [''],
                 cidade: [null],
+                cep: ['', [Validators.maxLength(9)]],
                 endereco: [''],
                 bairro: [''],
-                fotoLogo: [''],
-                email: ['', Validators.email],
                 telefone1: ['', [Validators.required]],
                 telefone1Obs: [''],
                 telefone2: [''],
                 telefone2Obs: [''],
-                obs: ['', [Validators.maxLength(500)]]
+                pessoaFisica: this.formBuild.group({
+                    key: [null],
+                    cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],
+                    rg: [''],
+                }),
+                pessoaJuridica: this.formBuild.group({
+                    key: [null],
+                    cnpj: [''],
+                    inscricaoEstadual: [''],
+                }),
             })
         });
 
-        // TODO: AJUSTAR A QUANTIDADE MAXIMA DE CADA CAMPO
-        // this.formCliente = this.formBuild.group({
-        //     key: [null],
-        //     tipoPessoa: [PESSOA_TIPO.FISICA, Validators.required],
-        //     cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],
-        //     rg: [''],
-        //     cnpj: [''],
-        //     inscricaoEstadual: [''],
-        //     nomeRazao: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
-        //     apelidoFantasia: [''],
-        //     estado: [null],
-        //     cidade: [null],
-        //     endereco: [''],
-        //     bairro: [''],
-        //     fotoLogo: [''],
-        //     email: ['', Validators.email],
-        //     telefone1: ['', [Validators.required]],
-        //     telefone1Obs: [''],
-        //     telefone2: [''],
-        //     telefone2Obs: [''],
-        //     obs: ['', [Validators.maxLength(500)]]
-        // });
-
-        this.formFretamentoEventual.get('cliente').get('tipoPessoa').valueChanges.subscribe(valor => {
+        this.formFretamentoEventual.get('cliente').get('tipo').valueChanges.subscribe(valor => {
             if (valor === PESSOA_TIPO.JURIDICA.toString()) {
-                this.formFretamentoEventual.get('cliente').get('cpf').clearValidators();
-                this.formFretamentoEventual.get('cliente').get('cnpj').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCNPJ]);
-                this.formFretamentoEventual.get('cliente').get('inscricaoEstadual').setValidators([Validators.maxLength(15)]);
+                this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').clearValidators();
+                this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCNPJ]);
+                this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('inscricaoEstadual').setValidators([Validators.maxLength(15)]);
             } else {
-                this.formFretamentoEventual.get('cliente').get('cpf').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCPF]);
-                this.formFretamentoEventual.get('cliente').get('cnpj').clearValidators();
-                this.formFretamentoEventual.get('cliente').get('inscricaoEstadual').clearValidators();
+                this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCPF]);
+                this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').clearValidators();
+                this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('inscricaoEstadual').clearValidators();
             }
             this.formFretamentoEventual.get('cliente').updateValueAndValidity(); // Forca a atualizacao do objeto
+            this.formFretamentoEventual.get('cliente').get('pessoaFisica').updateValueAndValidity(); // Forca a atualizacao do objeto
+            this.formFretamentoEventual.get('cliente').get('pessoaJuridica').updateValueAndValidity(); // Forca a atualizacao do objeto
         });
 
 
@@ -228,17 +201,18 @@ export class FretamentoEventualNovoComponent implements OnInit {
     btnOrcamento(): void {
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO);
 
-        this.formFretamentoEventual.get('orcamento').get('nome').setValue('');
-        this.formFretamentoEventual.get('orcamento').get('telefone1').setValue('');
-        this.formFretamentoEventual.get('orcamento').get('telefone2').setValue('');
-        this.formFretamentoEventual.get('orcamento').get('obs').setValue('');
+        this.formFretamentoEventual.get('contato').get('nome').setValue('');
+        this.formFretamentoEventual.get('contato').get('telefone1').setValue('');
+        this.formFretamentoEventual.get('contato').get('telefone2').setValue('');
+        this.formFretamentoEventual.get('contato').get('obs').setValue('');
 
-        this.formFretamentoEventual.get('orcamento').reset(this.formFretamentoEventual.get('cliente').value);
-        this.formFretamentoEventual.get('orcamento').updateValueAndValidity();
+        this.formFretamentoEventual.get('contato').reset(this.formFretamentoEventual.get('cliente').value);
+        this.formFretamentoEventual.get('contato').updateValueAndValidity();
     }
 
     btnNovoCliente(): void {
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO);
+
         // this.formFretamentoEventual.get('cliente').reset(this.formFretamentoEventual.get('cliente').value);
         // this.formFretamentoEventual.get('cliente').updateValueAndValidity();
     }
@@ -247,6 +221,20 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         console.log('CONTROLE', this.formFretamentoEventual);
         console.log('DADOS', this.formFretamentoEventual.value);
+
+
+        this.fretamentoService.salvar(this.formFretamentoEventual.value).then(response => {
+
+            console.log('ITEM GRAVADO', response);
+
+            this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {
+                verticalPosition: 'top',
+                duration: 2000
+            });
+        }).catch(error => {
+            // TODO: Colocar mensagem de erro para o usuario
+            this.errorHandler.handle(error);
+        });
 
 
         // const data = this.productForm.getRawValue();

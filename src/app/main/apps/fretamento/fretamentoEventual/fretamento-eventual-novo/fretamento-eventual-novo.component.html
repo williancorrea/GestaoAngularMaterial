@@ -62,9 +62,9 @@
                                     <!--   ########################### -->
                                     <!--   #    ORCAMENTO              -->
                                     <!--   ########################### -->
-                                    <mat-step [stepControl]="formFretamentoEventual.get('orcamento')" *ngIf="formFretamentoEventual.get('situacao').value == 'ORCAMENTO'">
+                                    <mat-step [stepControl]="formFretamentoEventual.get('contato')" *ngIf="formFretamentoEventual.get('situacao').value == 'ORCAMENTO'">
 
-                                        <form fxLayout="column" [formGroup]="formFretamentoEventual.get('orcamento')">
+                                        <form fxLayout="column" [formGroup]="formFretamentoEventual.get('contato')">
                                             <ng-template matStepLabel>Orçamento</ng-template>
 
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
@@ -86,7 +86,7 @@
                                                         <mat-label>Pesquisar</mat-label>
                                                         <mat-icon matSuffix class="secondary-text">search</mat-icon>
                                                         <input matInput type="text" placeholder="Selecione ..." [formControl]="cmbClienteForm" [matAutocomplete]="autoCompleteCliente">
-                                                        <mat-autocomplete autoActiveFirstOption #autoCompleteCliente="matAutocomplete" [displayWith]="displayFn">
+                                                        <mat-autocomplete autoActiveFirstOption #autoCompleteCliente="matAutocomplete" [displayWith]="mostrarNomeCliente">
                                                             <mat-option *ngIf="cmbClienteCarregando" class="is-loading">
                                                                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                                                             </mat-option>
@@ -110,27 +110,27 @@
                                                     <input matInput formControlName="nome">
                                                     <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                                                     <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('orcamento').get('nome')"></app-message>
+                                                        <app-message [control]="formFretamentoEventual.get('contato').get('nome')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 1</mat-label>
                                                     <input matInput formControlName="telefone1"
-                                                           [mask]="formFretamentoEventual.get('orcamento').get('telefone1').value.toString().length <=10 ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="formFretamentoEventual.get('contato').get('telefone1').value.toString().length <=10 ? '(00) 0000-00009' : '(00) 00000-0000'">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('orcamento').get('telefone1')"></app-message>
+                                                        <app-message [control]="formFretamentoEventual.get('contato').get('telefone1')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 2</mat-label>
                                                     <input matInput formControlName="telefone2"
-                                                           [mask]="formFretamentoEventual.get('orcamento').get('telefone2').value.toString().length <=10 ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="formFretamentoEventual.get('contato').get('telefone2').value.toString().length <=10 ? '(00) 0000-00009' : '(00) 00000-0000'">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('orcamento').get('telefone2')"></app-message>
+                                                        <app-message [control]="formFretamentoEventual.get('contato').get('telefone2')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
                                             </div>
@@ -138,10 +138,10 @@
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
                                                 <mat-form-field appearance="outline" fxFlex="100">
                                                     <mat-label>Observações</mat-label>
-                                                    <textarea #orcamentoObs matInput rows="3" maxlength="500" formControlName="obs"></textarea>
-                                                    <mat-hint align="end">{{orcamentoObs.value.length}} / 500</mat-hint>
+                                                    <textarea #contatoObs matInput rows="3" maxlength="500" formControlName="obs"></textarea>
+                                                    <mat-hint align="end">{{contatoObs.value.length}} / 500</mat-hint>
                                                     <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('orcamento').get('obs')"></app-message>
+                                                        <app-message [control]="formFretamentoEventual.get('contato').get('obs')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
                                             </div>
@@ -166,7 +166,7 @@
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
 
                                                 <div fxFlex="50" class="text-right" fxLayoutAlign="center center">
-                                                    <mat-radio-group *ngIf="formFretamentoEventual.get('cliente').get('key').value == null ? true : false" formControlName="tipoPessoa" class="centralizar-radio-button"
+                                                    <mat-radio-group *ngIf="formFretamentoEventual.get('cliente').get('key').value == null ? true : false" formControlName="tipo" class="centralizar-radio-button"
                                                                      style="width: 100%; text-align: center;">
                                                         <mat-radio-button style="margin: 10px" class="radio-button-espacamento" value="FISICA">Pessoa Física</mat-radio-button>
                                                         <mat-radio-button style="margin: 10px" class="radio-button-espacamento" value="JURIDICA">Pessoa Jurídica</mat-radio-button>
@@ -203,38 +203,43 @@
                                                 </mat-grid-tile>
                                                 <mat-grid-tile colspan="4" rowspan="1">
                                                     <div fxFlex="1 0 auto" fxLayoutAlign="start center">
-                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" *ngIf="formFretamentoEventual.get('cliente').get('tipoPessoa').value === 'FISICA' ? true : false">
+                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
+                                                                        [formGroup]="formFretamentoEventual.get('cliente').get('pessoaFisica')"
+                                                                        *ngIf="formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? true : false">
                                                             <mat-label>CPF</mat-label>
                                                             <input matInput formControlName="cpf" mask="000.000.000-00" [disabled]="formFretamentoEventual.get('cliente').get('key').value == null ? false : true">
                                                             <mat-icon matSuffix class="secondary-text">contact_mail</mat-icon>
                                                             <mat-error>
-                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('cpf')"></app-message>
+                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf')"></app-message>
                                                             </mat-error>
                                                         </mat-form-field>
 
-                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" *ngIf="formFretamentoEventual.get('cliente').get('tipoPessoa').value === 'FISICA' ? false : true">
+                                                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
+                                                                        [formGroup]="formFretamentoEventual.get('cliente').get('pessoaJuridica')"
+                                                                        *ngIf="formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? false : true">
                                                             <mat-label>CNPJ</mat-label>
-                                                            <input matInput formControlName="cnpj" mask="00.000.000/0000-00" [disabled]="formFretamentoEventual.get('cliente').get('key').value == null ? false : true">
+                                                            <input matInput formControlName="cnpj" mask="00.000.000/0000-00"
+                                                                   [disabled]="formFretamentoEventual.get('cliente').get('key').value == null ? false : true">
                                                             <mat-icon matSuffix class="secondary-text">business</mat-icon>
                                                             <mat-error>
-                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('cnpj')"></app-message>
+                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj')"></app-message>
                                                             </mat-error>
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
-                                                            <mat-label>{{formFretamentoEventual.get('cliente').get('tipoPessoa').value === 'FISICA' ? 'Nome' : 'Razão Social' }}</mat-label>
-                                                            <input matInput formControlName="nomeRazao">
+                                                            <mat-label>{{formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? 'Nome' : 'Razão Social' }}</mat-label>
+                                                            <input matInput formControlName="nome">
                                                             <mat-error>
-                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('nomeRazao')"></app-message>
+                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('nome')"></app-message>
                                                             </mat-error>
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
-                                                            <mat-label>{{formFretamentoEventual.get('cliente').get('tipoPessoa').value === 'FISICA' ? 'Apelido' : 'Nome Fantasia' }}</mat-label>
-                                                            <input matInput formControlName="apelidoFantasia">
+                                                            <mat-label>{{formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? 'Apelido' : 'Nome Fantasia' }}</mat-label>
+                                                            <input matInput formControlName="fantasia">
                                                             <mat-icon matSuffix class="secondary-text">gesture</mat-icon>
                                                             <mat-error>
-                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('apelidoFantasia')"></app-message>
+                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('fantasia')"></app-message>
                                                             </mat-error>
                                                         </mat-form-field>
 
@@ -243,22 +248,24 @@
                                                 <mat-grid-tile colspan="4" rowspan="1">
                                                     <div fxFlex="1 0 auto" fxLayoutAlign="start center">
                                                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
-                                                                        *ngIf="formFretamentoEventual.get('cliente').get('tipoPessoa').value === 'FISICA' ? true : false">
+                                                                        [formGroup]="formFretamentoEventual.get('cliente').get('pessoaFisica')"
+                                                                        *ngIf="formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? true : false">
                                                             <mat-label>RG</mat-label>
                                                             <input matInput formControlName="rg">
                                                             <mat-icon matSuffix class="secondary-text">contact_mail</mat-icon>
                                                             <mat-error>
-                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('rg')"></app-message>
+                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('pessoaFisica').get('rg')"></app-message>
                                                             </mat-error>
                                                         </mat-form-field>
 
                                                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
-                                                                        *ngIf="formFretamentoEventual.get('cliente').get('tipoPessoa').value === 'FISICA' ? false : true">
+                                                                        [formGroup]="formFretamentoEventual.get('cliente').get('pessoaJuridica')"
+                                                                        *ngIf="formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? false : true">
                                                             <mat-label>Inscrição Estadual</mat-label>
                                                             <input matInput formControlName="inscricaoEstadual" maxlength="15">
                                                             <mat-icon matSuffix class="secondary-text">business</mat-icon>
                                                             <mat-error>
-                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('inscricaoEstadual')"></app-message>
+                                                                <app-message [control]="formFretamentoEventual.get('cliente').get('pessoaJuridica').get('inscricaoEstadual')"></app-message>
                                                             </mat-error>
                                                         </mat-form-field>
 
@@ -314,16 +321,7 @@
                                             </div>
 
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
-                                                <mat-form-field appearance="outline" fxFlex="10" class="pr-4">
-                                                    <mat-label>Estado</mat-label>
-                                                    <input matInput formControlName="estado">
-                                                    <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
-                                                    <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('cliente').get('estado')"></app-message>
-                                                    </mat-error>
-                                                </mat-form-field>
-
-                                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
                                                     <mat-label>Cidade</mat-label>
                                                     <input matInput formControlName="cidade">
                                                     <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
@@ -332,18 +330,31 @@
                                                     </mat-error>
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
-                                                    <mat-label>Endereço</mat-label>
-                                                    <input matInput formControlName="endereco">
-                                                    <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('cliente').get('endereco')"></app-message>
-                                                    </mat-error>
-                                                </mat-form-field>
-                                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                                                <mat-form-field appearance="outline" fxFlex="30" class="pr-4">
                                                     <mat-label>Bairro</mat-label>
                                                     <input matInput formControlName="bairro">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('cliente').get('bairro')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                    <mat-label>CEP</mat-label>
+                                                    <input matInput formControlName="cep" mask="00000-000">
+                                                    <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('cliente').get('cep')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                            </div>
+
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                                    <mat-label>Endereço</mat-label>
+                                                    <input matInput formControlName="endereco">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('cliente').get('endereco')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
                                             </div>
