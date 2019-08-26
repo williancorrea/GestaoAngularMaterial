@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {GestaoService} from '../../../seguranca/autenticacao/gestao.service';
+import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../core/modelos/FretamentoEventualSituacao';
 
 @Injectable()
 export class FretamentoService {
@@ -26,6 +27,11 @@ export class FretamentoService {
     }
 
     pesquisarClienteCmb(pesquisa: string): Promise<any> {
+
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
         const params = new HttpParams()
             .set('size', String(environment.comboBox.linhas))
             .set('page', String(0))
@@ -33,7 +39,7 @@ export class FretamentoService {
             .set('campoOrdenacao', 'nome')
             .set('nome', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
-        return this.http.get(`${this.apiUrl}/cmbCliente`, {params: params}).toPromise().then(response => {
+        return this.http.get(`${this.apiUrl}/cmbCliente`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
         });
     }
@@ -49,11 +55,11 @@ export class FretamentoService {
         delete clone['key'];
         delete clone['controle'];
 
-        delete clone['orcamento'];
-        delete clone['cliente'];
+        if (clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
+            delete clone['cliente'];
+        }
 
-
-        return this.http.post(this.apiUrl, JSON.stringify(clone), {headers})
+        return this.http.post(this.apiUrl, clone, {headers : headers})
             .toPromise()
             .then(response => {
                 return response;

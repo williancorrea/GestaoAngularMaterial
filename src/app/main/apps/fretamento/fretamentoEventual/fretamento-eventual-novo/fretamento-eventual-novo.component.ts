@@ -56,17 +56,17 @@ export class FretamentoEventualNovoComponent implements OnInit {
         const editando = this.activatedRoute.snapshot.params['key'];
         if (editando) {
             this.tipoPagina = 'EDICAO';
-            this.fretamentoService.buscarPorKey(editando).then(response => {
-
-                console.log(response);
-
-                // this.bank = response;
-                // this.form.patchValue(response);
-                // this.mostrarModalCarregando(false);
-            }).catch(error => {
-                this.errorHandler.handle(error);
-                // this.mostrarModalCarregando(false);
-            });
+            // this.fretamentoService.buscarPorKey(editando).then(response => {
+            //
+            //     console.log(response);
+            //
+            //     // this.bank = response;
+            //     // this.form.patchValue(response);
+            //     // this.mostrarModalCarregando(false);
+            // }).catch(error => {
+            //     this.errorHandler.handle(error);
+            //     // this.mostrarModalCarregando(false);
+            // });
         } else {
             this.tipoPagina = 'NOVO';
             // this.mostrarModalCarregando(false);
@@ -213,15 +213,25 @@ export class FretamentoEventualNovoComponent implements OnInit {
     btnNovoCliente(): void {
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO);
 
+        // this.formFretamentoEventual.get('contato').get('nome').setValue('');
+        // this.formFretamentoEventual.get('contato').get('telefone1').setValue('');
+        // this.formFretamentoEventual.get('contato').get('telefone2').setValue('');
+        // this.formFretamentoEventual.get('contato').get('obs').setValue('');
+
         // this.formFretamentoEventual.get('cliente').reset(this.formFretamentoEventual.get('cliente').value);
         // this.formFretamentoEventual.get('cliente').updateValueAndValidity();
     }
 
     gravarFretamento(): void {
+        // console.log('CONTROLE', this.formFretamentoEventual);
+        // console.log('DADOS', this.formFretamentoEventual.value);
 
-        console.log('CONTROLE', this.formFretamentoEventual);
-        console.log('DADOS', this.formFretamentoEventual.value);
-
+        if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
+            // this.formFretamentoEventual.get('contato').get('nome').setValue('');
+            // this.formFretamentoEventual.get('contato').get('telefone1').setValue('');
+            // this.formFretamentoEventual.get('contato').get('telefone2').setValue('');
+            // this.formFretamentoEventual.get('contato').get('obs').setValue('');
+        }
 
         this.fretamentoService.salvar(this.formFretamentoEventual.value).then(response => {
 
@@ -233,7 +243,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
             });
         }).catch(error => {
             // TODO: Colocar mensagem de erro para o usuario
-            this.errorHandler.handle(error);
+            console.log('ERRO AO SALVAR: ', error);
+            // this.errorHandler.handle(error);
         });
 
 
