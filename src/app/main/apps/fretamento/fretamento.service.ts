@@ -26,6 +26,32 @@ export class FretamentoService {
             });
     }
 
+    buscarPorCPF(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.get(`${this.apiUrl}/cmbClientes/cpf/${key}`, {headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+
+    buscarPorCNPJ(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.get(`${this.apiUrl}/cmbClientes/cnpj/${key}`, {headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+
     pesquisarClienteCmb(pesquisa: string): Promise<any> {
 
         const headers = new HttpHeaders();
@@ -39,7 +65,24 @@ export class FretamentoService {
             .set('campoOrdenacao', 'nome')
             .set('nome', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
-        return this.http.get(`${this.apiUrl}/cmbCliente`, {headers: headers, params: params}).toPromise().then(response => {
+        return this.http.get(`${this.apiUrl}/cmbClientes`, {headers: headers, params: params}).toPromise().then(response => {
+            return response;
+        });
+    }
+
+    pesquisarCidadeCmb(pesquisa: string): Promise<any> {
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        const params = new HttpParams()
+            .set('size', String(environment.comboBox.linhas))
+            .set('page', String(0))
+            .set('ordemClassificacao', 'ASC')
+            .set('campoOrdenacao', 'nome')
+            .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+
+        return this.http.get(`${this.apiUrl}/cmbCidades`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
         });
     }
@@ -59,7 +102,7 @@ export class FretamentoService {
             delete clone['cliente'];
         }
 
-        return this.http.post(this.apiUrl, clone, {headers : headers})
+        return this.http.post(this.apiUrl, clone, {headers: headers})
             .toPromise()
             .then(response => {
                 return response;

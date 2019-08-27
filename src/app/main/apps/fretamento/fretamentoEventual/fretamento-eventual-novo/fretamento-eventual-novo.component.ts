@@ -41,6 +41,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
     cmbClienteCarregando = false;
     cmbClienteLista: any;
 
+    cmbCidadeCarregando = false;
+    cmbCidadeLista: any;
+
     constructor(
         private _matSnackBar: MatSnackBar,
         private router: Router,
@@ -76,6 +79,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     mostrarNomeCliente(obj?: any): string | undefined {
         return obj ? obj.nome : undefined;
+    }
+
+    mostrarNomeCidade(obj?: any): string | undefined {
+        return obj ? obj.nome + ' / ' + obj.estado.nome : undefined;
     }
 
     configurarForm(): void {
@@ -140,7 +147,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 nome: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
                 fantasia: ['', [Validators.maxLength(250)]],
                 imagem: [''],
-                cidade: [null],
+                cidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 cep: ['', [Validators.maxLength(9)]],
                 endereco: [''],
                 bairro: [''],
@@ -182,12 +189,40 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').enable();
                 }
             });
-
             this.formFretamentoEventual.get('cliente').updateValueAndValidity(); // Forca a atualizacao do objeto
             this.formFretamentoEventual.get('cliente').get('pessoaFisica').updateValueAndValidity(); // Forca a atualizacao do objeto
             this.formFretamentoEventual.get('cliente').get('pessoaJuridica').updateValueAndValidity(); // Forca a atualizacao do objeto
         });
 
+        this.formFretamentoEventual.get('cliente').get('cidade').valueChanges
+            .pipe(
+                debounceTime(environment.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCidadeCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbCidadeLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCidadeCarregando = false;
+                    return;
+                }
+
+                this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
+                    this.cmbCidadeLista = resposta;
+                }).catch(erro => {
+                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
+                    this.errorHandler.handle(erro);
+                }).finally(() => {
+                    this.cmbCidadeCarregando = false;
+                });
+            });
 
         // TODO: Apagar
         this.formDadosViagen = this.formBuild.group({
@@ -256,13 +291,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
             this.formFretamentoEventual.get('cliente').reset();
         }
 
-        this.fretamentoService.salvar(this.formFretamentoEventual.value).then(response => {
-
-            console.log('ITEM GRAVADO', response);
-
+        this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
             this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {
                 verticalPosition: 'bottom',
-                duration: 3000
+                duration: 5000
             });
         }).catch(error => {
             // TODO: Colocar mensagem de erro para o usuario
@@ -291,4 +323,28 @@ export class FretamentoEventualNovoComponent implements OnInit {
         //     });
     }
 
+
+    buscarCpfDigitado(): void {
+        if (this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').valid) {
+            this.fretamentoService.buscarPorCPF(this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').value)
+                .then(response => {
+                    this.formFretamentoEventual.get('cliente').patchValue(response);
+                })
+                .catch(error => {
+                    console.log('CPF não encontrado, vida que segue!');
+                });
+        }
+    }
+
+    buscarCnpjDigitado(): void {
+        if (this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').valid) {
+            this.fretamentoService.buscarPorCNPJ(this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').value)
+                .then(response => {
+                    this.formFretamentoEventual.get('cliente').patchValue(response);
+                })
+                .catch(error => {
+                    console.log('CNPJ não encontrado, vida que segue!');
+                });
+        }
+    }
 }
