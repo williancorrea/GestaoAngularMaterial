@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatSnackBar} from '@angular/material';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '@fuse/animations';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -10,6 +10,7 @@ import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../../../core/modelos/Fre
 import {ValidacaoGenericaWCorrea} from '../../../../../core/utils/ValidacaoGenericaWCorrea';
 import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
+import {Utils} from '../../../../../core/utils/Utils';
 
 @Component({
     selector: 'app-fretamento-eventual-novo',
@@ -56,17 +57,15 @@ export class FretamentoEventualNovoComponent implements OnInit {
         const editando = this.activatedRoute.snapshot.params['key'];
         if (editando) {
             this.tipoPagina = 'EDICAO';
-            // this.fretamentoService.buscarPorKey(editando).then(response => {
-            //
-            //     console.log(response);
-            //
-            //     // this.bank = response;
-            //     // this.form.patchValue(response);
-            //     // this.mostrarModalCarregando(false);
-            // }).catch(error => {
-            //     this.errorHandler.handle(error);
-            //     // this.mostrarModalCarregando(false);
-            // });
+            this.fretamentoService.buscarPorKey(editando).then(response => {
+
+                console.log(response);
+                this.formFretamentoEventual.patchValue(response);
+                // this.mostrarModalCarregando(false);
+            }).catch(error => {
+                // this.errorHandler.handle(error);
+                // this.mostrarModalCarregando(false);
+            });
         } else {
             this.tipoPagina = 'NOVO';
             // this.mostrarModalCarregando(false);
@@ -172,6 +171,18 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').clearValidators();
                 this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('inscricaoEstadual').clearValidators();
             }
+
+            // DESABILITAR A EDICAO DO CPF E CNPJ
+            setTimeout(() => {
+                if (this.formFretamentoEventual.get('cliente').get('key').value) {
+                    this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').disable();
+                    this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').disable();
+                } else {
+                    this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').enable();
+                    this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').enable();
+                }
+            });
+
             this.formFretamentoEventual.get('cliente').updateValueAndValidity(); // Forca a atualizacao do objeto
             this.formFretamentoEventual.get('cliente').get('pessoaFisica').updateValueAndValidity(); // Forca a atualizacao do objeto
             this.formFretamentoEventual.get('cliente').get('pessoaJuridica').updateValueAndValidity(); // Forca a atualizacao do objeto
@@ -190,12 +201,23 @@ export class FretamentoEventualNovoComponent implements OnInit {
         });
     }
 
-    numberOnly(event): boolean {
-        const charCode = (event.which) ? event.which : event.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
+    selecionandoUmCliente(event: MatAutocompleteSelectedEvent): void {
+        if (event && event.option && event.option.value) {
+            const clone = Utils.clonarObjeto(event.option.value);
+
+            this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO);
+            this.formFretamentoEventual.get('cliente').get('tipo').setValue(clone['tipo']);
+
+            if (clone['tipo'] === PESSOA_TIPO.FISICA) {
+                delete clone['pessoaJuridica'];
+            } else {
+                delete clone['pessoaFisica'];
+            }
+            this.formFretamentoEventual.get('cliente').patchValue(clone);
+
+            this.cmbClienteForm.reset();
+            this.cmbClienteForm.updateValueAndValidity();
         }
-        return true;
     }
 
     btnOrcamento(): void {
@@ -208,18 +230,20 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual.get('contato').reset(this.formFretamentoEventual.get('cliente').value);
         this.formFretamentoEventual.get('contato').updateValueAndValidity();
+
+        this.cmbClienteForm.reset();
+        this.cmbClienteForm.updateValueAndValidity();
     }
 
     btnNovoCliente(): void {
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO);
 
-        // this.formFretamentoEventual.get('contato').get('nome').setValue('');
-        // this.formFretamentoEventual.get('contato').get('telefone1').setValue('');
-        // this.formFretamentoEventual.get('contato').get('telefone2').setValue('');
-        // this.formFretamentoEventual.get('contato').get('obs').setValue('');
+        this.cmbClienteForm.reset();
+        this.cmbClienteForm.updateValueAndValidity();
 
-        // this.formFretamentoEventual.get('cliente').reset(this.formFretamentoEventual.get('cliente').value);
-        // this.formFretamentoEventual.get('cliente').updateValueAndValidity();
+        this.formFretamentoEventual.get('cliente').reset(this.formFretamentoEventual.get('contato').value);
+        this.formFretamentoEventual.get('cliente').get('tipo').setValue(PESSOA_TIPO.FISICA);
+        this.formFretamentoEventual.get('cliente').updateValueAndValidity();
     }
 
     gravarFretamento(): void {
@@ -227,10 +251,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
         // console.log('DADOS', this.formFretamentoEventual.value);
 
         if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
-            // this.formFretamentoEventual.get('contato').get('nome').setValue('');
-            // this.formFretamentoEventual.get('contato').get('telefone1').setValue('');
-            // this.formFretamentoEventual.get('contato').get('telefone2').setValue('');
-            // this.formFretamentoEventual.get('contato').get('obs').setValue('');
+            this.formFretamentoEventual.get('contato').reset();
+        } else {
+            this.formFretamentoEventual.get('cliente').reset();
         }
 
         this.fretamentoService.salvar(this.formFretamentoEventual.value).then(response => {
@@ -238,8 +261,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
             console.log('ITEM GRAVADO', response);
 
             this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {
-                verticalPosition: 'top',
-                duration: 2000
+                verticalPosition: 'bottom',
+                duration: 3000
             });
         }).catch(error => {
             // TODO: Colocar mensagem de erro para o usuario

@@ -85,8 +85,11 @@
                                                     <mat-form-field appearance="fill" fxFlex="100" class="pr-4">
                                                         <mat-label>Pesquisar</mat-label>
                                                         <mat-icon matSuffix class="secondary-text">search</mat-icon>
-                                                        <input matInput type="text" placeholder="Selecione ..." [formControl]="cmbClienteForm" [matAutocomplete]="autoCompleteCliente">
-                                                        <mat-autocomplete autoActiveFirstOption #autoCompleteCliente="matAutocomplete" [displayWith]="mostrarNomeCliente">
+                                                        <input matInput type="text" placeholder="Selecione ..."
+                                                               [formControl]="cmbClienteForm" [matAutocomplete]="autoCompleteCliente">
+                                                        <mat-autocomplete autoActiveFirstOption #autoCompleteCliente="matAutocomplete"
+                                                                          [displayWith]="mostrarNomeCliente"
+                                                                          (optionSelected)="selecionandoUmCliente($event)">
                                                             <mat-option *ngIf="cmbClienteCarregando" class="is-loading">
                                                                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                                                             </mat-option>
@@ -207,7 +210,7 @@
                                                                         [formGroup]="formFretamentoEventual.get('cliente').get('pessoaFisica')"
                                                                         *ngIf="formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? true : false">
                                                             <mat-label>CPF</mat-label>
-                                                            <input matInput formControlName="cpf" mask="000.000.000-00" [disabled]="formFretamentoEventual.get('cliente').get('key').value == null ? false : true">
+                                                            <input matInput formControlName="cpf" mask="000.000.000-00">
                                                             <mat-icon matSuffix class="secondary-text">contact_mail</mat-icon>
                                                             <mat-error>
                                                                 <app-message [control]="formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf')"></app-message>
@@ -218,8 +221,7 @@
                                                                         [formGroup]="formFretamentoEventual.get('cliente').get('pessoaJuridica')"
                                                                         *ngIf="formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? false : true">
                                                             <mat-label>CNPJ</mat-label>
-                                                            <input matInput formControlName="cnpj" mask="00.000.000/0000-00"
-                                                                   [disabled]="formFretamentoEventual.get('cliente').get('key').value == null ? false : true">
+                                                            <input matInput formControlName="cnpj" mask="00.000.000/0000-00">
                                                             <mat-icon matSuffix class="secondary-text">business</mat-icon>
                                                             <mat-error>
                                                                 <app-message [control]="formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj')"></app-message>
