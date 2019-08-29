@@ -106,8 +106,11 @@ export class Utils {
         return true;
     }
 
+    /**
+     * VALIDAÇÃO COMPLETA DE DATAS
+     * Conteplando anos bi-sextos e meses com 30 e 31 dias
+     */
     public static validarData(date): boolean {
-
         const ExpReg = new RegExp('(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/[12][0-9]{3}');
         const ardt = date.split('/');
         let erro = false;
