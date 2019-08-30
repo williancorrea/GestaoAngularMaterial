@@ -25,16 +25,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
     form: FormGroup;
     tipoPagina: string;
 
-    customPattern = {
-        0: {pattern: new RegExp('\[0-9\]')},
-        D: {pattern: new RegExp('\[0-9\]'), optional: true}
-    };
-
     formFretamentoEventual: FormGroup;
 
-    formCliente: FormGroup;
-    formOrcamento: FormGroup;
-    formDadosViagen: FormGroup;
     horizontalStepperStep3: FormGroup;
 
     cmbClienteForm = new FormControl();
@@ -83,6 +75,30 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     mostrarNomeCidade(obj?: any): string | undefined {
         return obj ? obj.nome + ' / ' + obj.estado.nome : undefined;
+    }
+
+    mostrarValordeData(): void {
+        console.log('DATA', this.formFretamentoEventual.get('itinerario').get('partidaData').value);
+
+        console.log('DATA', this.formFretamentoEventual.get('itinerario').get('partidaData').value.format('L'));
+        console.log('DATA', this.formFretamentoEventual.get('itinerario').get('partidaData').value.format('YYYY-MM-DD'));
+
+        // Datepicker takes `Moment` objects instead of `Date` objects.
+        // date = new FormControl(moment([2017, 0, 1]));
+
+        // moment(new Date(dataretornadadobanco)).format('padrao')
+        // // Lista de padrões:
+        // moment.locale('pt-br');         // :|
+        // moment().format('LT');   // 11:39 AM
+        // moment().format('LTS');  // 11:39:41 AM
+        // moment().format('L');    // 07/13/2016
+        // moment().format('l');    // 7/13/2016
+        // moment().format('LL');   // July 13, 2016
+        // moment().format('ll');   // Jul 13, 2016
+        // moment().format('LLL');  // July 13, 2016 11:39 AM
+        // moment().format('lll');  // Jul 13, 2016 11:39 AM
+        // moment().format('LLLL'); // Wednesday, July 13, 2016 11:39 AM
+        // moment().format('llll');  // Wed, Jul 13, 2016 11:40 AM
     }
 
     configurarForm(): void {
@@ -165,6 +181,16 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     cnpj: [''],
                     inscricaoEstadual: [''],
                 }),
+            }),
+            itinerario: this.formBuild.group({
+                partidaCidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+                partidaData: ['', [Validators.required]],
+                partidaHora: ['', [Validators.required, Validators.pattern('^([01]\\d|2[0-3]):?([0-5]\\d)$')]],
+                partidaObs: ['', [Validators.maxLength(500)]],
+                retornoCidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+                retornoData: ['', [Validators.required]],
+                retornoHora: ['', [Validators.required, Validators.pattern('^([01]\\d|2[0-3]):?([0-5]\\d)$')]],
+                retornoObs: ['', [Validators.maxLength(500)]],
             })
         });
 
@@ -224,10 +250,66 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 });
             });
 
-        // TODO: Apagar
-        this.formDadosViagen = this.formBuild.group({
-            obs: ['', [Validators.maxLength(500)]]
-        });
+        this.formFretamentoEventual.get('itinerario').get('partidaCidade').valueChanges
+            .pipe(
+                debounceTime(environment.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCidadeCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbCidadeLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCidadeCarregando = false;
+                    return;
+                }
+
+                this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
+                    this.cmbCidadeLista = resposta;
+                }).catch(erro => {
+                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
+                    this.errorHandler.handle(erro);
+                }).finally(() => {
+                    this.cmbCidadeCarregando = false;
+                });
+            });
+
+        this.formFretamentoEventual.get('itinerario').get('retornoCidade').valueChanges
+            .pipe(
+                debounceTime(environment.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCidadeCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbCidadeLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCidadeCarregando = false;
+                    return;
+                }
+
+                this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
+                    this.cmbCidadeLista = resposta;
+                }).catch(erro => {
+                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
+                    this.errorHandler.handle(erro);
+                }).finally(() => {
+                    this.cmbCidadeCarregando = false;
+                });
+            });
+
 
         this.horizontalStepperStep3 = this.formBuild.group({
             city: ['', Validators.required],
@@ -283,7 +365,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     gravarFretamento(): void {
         // console.log('CONTROLE', this.formFretamentoEventual);
-        // console.log('DADOS', this.formFretamentoEventual.value);
+        console.log('DADOS', this.formFretamentoEventual.getRawValue());
 
         if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
             this.formFretamentoEventual.get('contato').reset();
@@ -291,16 +373,16 @@ export class FretamentoEventualNovoComponent implements OnInit {
             this.formFretamentoEventual.get('cliente').reset();
         }
 
-        this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
-            this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {
-                verticalPosition: 'bottom',
-                duration: 5000
-            });
-        }).catch(error => {
-            // TODO: Colocar mensagem de erro para o usuario
-            console.log('ERRO AO SALVAR: ', error);
-            // this.errorHandler.handle(error);
-        });
+        // this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
+        //     this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {
+        //         verticalPosition: 'bottom',
+        //         duration: 5000
+        //     });
+        // }).catch(error => {
+        //     // TODO: Colocar mensagem de erro para o usuario
+        //     console.log('ERRO AO SALVAR: ', error);
+        //     // this.errorHandler.handle(error);
+        // });
 
 
         // const data = this.productForm.getRawValue();
@@ -322,6 +404,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         //         this._location.go('apps/e-commerce/products/' + this.product.id + '/' + this.product.handle);
         //     });
     }
+
 
 
     buscarCpfDigitado(): void {

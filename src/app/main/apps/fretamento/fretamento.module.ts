@@ -4,7 +4,7 @@ import {RouterModule} from '@angular/router';
 import {
     MatAutocompleteModule,
     MatButtonModule,
-    MatChipsModule,
+    MatChipsModule, MatDatepickerModule,
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
@@ -87,7 +87,8 @@ const routes = [
         CoreModule,
         NgxMaskModule,
         MatAutocompleteModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatDatepickerModule
     ],
     declarations: [
         FretamentoEventualNovoComponent,
