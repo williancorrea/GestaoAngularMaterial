@@ -77,30 +77,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
         return obj ? obj.nome + ' / ' + obj.estado.nome : undefined;
     }
 
-    mostrarValordeData(): void {
-        console.log('DATA', this.formFretamentoEventual.get('itinerario').get('partidaData').value);
-
-        console.log('DATA', this.formFretamentoEventual.get('itinerario').get('partidaData').value.format('L'));
-        console.log('DATA', this.formFretamentoEventual.get('itinerario').get('partidaData').value.format('YYYY-MM-DD'));
-
-        // Datepicker takes `Moment` objects instead of `Date` objects.
-        // date = new FormControl(moment([2017, 0, 1]));
-
-        // moment(new Date(dataretornadadobanco)).format('padrao')
-        // // Lista de padrões:
-        // moment.locale('pt-br');         // :|
-        // moment().format('LT');   // 11:39 AM
-        // moment().format('LTS');  // 11:39:41 AM
-        // moment().format('L');    // 07/13/2016
-        // moment().format('l');    // 7/13/2016
-        // moment().format('LL');   // July 13, 2016
-        // moment().format('ll');   // Jul 13, 2016
-        // moment().format('LLL');  // July 13, 2016 11:39 AM
-        // moment().format('lll');  // Jul 13, 2016 11:39 AM
-        // moment().format('LLLL'); // Wednesday, July 13, 2016 11:39 AM
-        // moment().format('llll');  // Wed, Jul 13, 2016 11:40 AM
-    }
-
     configurarForm(): void {
         this.cmbClienteForm.setValidators([ValidacaoGenericaWCorrea.SelecionarItemCmb]);
         this.cmbClienteForm.updateValueAndValidity();

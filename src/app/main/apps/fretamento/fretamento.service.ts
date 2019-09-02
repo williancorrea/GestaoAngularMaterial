@@ -3,6 +3,8 @@ import {environment} from '../../../../environments/environment';
 import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {GestaoService} from '../../../seguranca/autenticacao/gestao.service';
 import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../core/modelos/FretamentoEventualSituacao';
+import * as moment from 'moment';
+
 
 @Injectable()
 export class FretamentoService {
@@ -10,7 +12,8 @@ export class FretamentoService {
     apiUrl: string;
 
     constructor(private http: GestaoService) {
-        this.apiUrl = `${environment.apiUrl}/fretamentos`;
+        this.apiUrl = `${environment.apiUrl}/fretamentosEventuais`;
+        moment.locale('pt-BR');
     }
 
     buscarPorKey(key): any {
@@ -101,6 +104,9 @@ export class FretamentoService {
         if (clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
             delete clone['cliente'];
         }
+
+        clone['itinerario']['partidaData'] = clone['itinerario']['partidaData'].format('YYYY-MM-DD');
+        clone['itinerario']['retornoCidade'] = clone['itinerario']['retornoCidade'].format('YYYY-MM-DD');
 
         return this.http.post(this.apiUrl, clone, {headers: headers})
             .toPromise()

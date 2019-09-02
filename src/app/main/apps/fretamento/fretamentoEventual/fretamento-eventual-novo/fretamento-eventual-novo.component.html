@@ -90,7 +90,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
                                                     <mat-label>Data de Partida</mat-label>
-                                                    <input matInput formControlName="partidaData" [matDatepicker]="dpPartidaData" (blur)="mostrarValordeData()">
+                                                    <input matInput formControlName="partidaData" [matDatepicker]="dpPartidaData">
                                                     <mat-datepicker-toggle matSuffix [for]="dpPartidaData"></mat-datepicker-toggle>
                                                     <mat-datepicker #dpPartidaData></mat-datepicker>
                                                     <mat-error>
