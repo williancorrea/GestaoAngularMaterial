@@ -162,11 +162,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 partidaCidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 partidaData: ['', [Validators.required]],
                 partidaHora: ['', [Validators.required, Validators.pattern('^([01]\\d|2[0-3]):?([0-5]\\d)$')]],
-                partidaObs: ['', [Validators.maxLength(500)]],
                 retornoCidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 retornoData: ['', [Validators.required]],
                 retornoHora: ['', [Validators.required, Validators.pattern('^([01]\\d|2[0-3]):?([0-5]\\d)$')]],
-                retornoObs: ['', [Validators.maxLength(500)]],
+                obsItineratio: ['', [Validators.maxLength(500)]],
             })
         });
 

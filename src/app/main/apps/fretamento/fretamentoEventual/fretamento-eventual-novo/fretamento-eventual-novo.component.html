@@ -108,18 +108,6 @@
                                                 </mat-form-field>
                                             </div>
 
-                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
-                                                <mat-form-field appearance="outline" fxFlex="100">
-                                                    <mat-label>Observações da partida</mat-label>
-                                                    <textarea #itinerarioPartidaObs matInput formControlName="partidaObs" rows="3" maxlength="500"></textarea>
-                                                    <mat-hint align="end">{{itinerarioPartidaObs.value.length}} / 500</mat-hint>
-                                                    <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('itinerario').get('partidaObs')"></app-message>
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-
                                             <div fxFlex="1 0 auto" fxLayoutAlign="row">
                                                 <mat-form-field appearance="outline" fxFlex="60" class="pr-4">
                                                     <mat-label>Cidade de retorno</mat-label>
@@ -163,11 +151,11 @@
 
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
                                                 <mat-form-field appearance="outline" fxFlex="100">
-                                                    <mat-label>Observações da partida</mat-label>
-                                                    <textarea #itinerarioRetornoObs matInput formControlName="retornoObs" rows="3" maxlength="500"></textarea>
-                                                    <mat-hint align="end">{{itinerarioRetornoObs.value.length}} / 500</mat-hint>
+                                                    <mat-label>Observações</mat-label>
+                                                    <textarea #itinerarioObs matInput formControlName="obsItineratio" rows="3" maxlength="500"></textarea>
+                                                    <mat-hint align="end">{{itinerarioObs.value.length}} / 500</mat-hint>
                                                     <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('itinerario').get('retornoObs')"></app-message>
+                                                        <app-message [control]="formFretamentoEventual.get('itinerario').get('obsItineratio')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
                                             </div>
