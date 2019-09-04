@@ -102,11 +102,24 @@ export class FretamentoService {
         delete clone['controle'];
 
         if (clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
-            delete clone['cliente'];
+            delete clone.cliente;
         }
 
-        clone['itinerario']['partidaData'] = clone['itinerario']['partidaData'].format('YYYY-MM-DD');
-        clone['itinerario']['retornoCidade'] = clone['itinerario']['retornoCidade'].format('YYYY-MM-DD');
+        delete clone.itinerario.partidaData;
+        delete clone.itinerario.partidaHora;
+        delete clone.itinerario.retornoData;
+        delete clone.itinerario.retornoHora;
+
+        clone.itinerario['partida'] = obj.itinerario.partidaData.format('YYYY-MM-DD') + ' ' + obj.itinerario.partidaHora;
+        clone.itinerario['retorno'] = obj.itinerario.retornoData.format('YYYY-MM-DD') + ' ' + obj.itinerario.retornoHora;
+
+        clone.itinerario.partidaCidade = {};
+        clone.itinerario.retornoCidade = {};
+        clone.itinerario['partidaCidade']['key'] = obj.itinerario.partidaCidade.key;
+        clone.itinerario['retornoCidade']['key'] = obj.itinerario.retornoCidade.key;
+
+
+
 
         return this.http.post(this.apiUrl, clone, {headers: headers})
             .toPromise()

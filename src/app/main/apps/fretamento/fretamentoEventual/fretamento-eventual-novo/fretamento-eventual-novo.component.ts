@@ -348,16 +348,16 @@ export class FretamentoEventualNovoComponent implements OnInit {
             this.formFretamentoEventual.get('cliente').reset();
         }
 
-        // this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
-        //     this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {
-        //         verticalPosition: 'bottom',
-        //         duration: 5000
-        //     });
-        // }).catch(error => {
-        //     // TODO: Colocar mensagem de erro para o usuario
-        //     console.log('ERRO AO SALVAR: ', error);
-        //     // this.errorHandler.handle(error);
-        // });
+        this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
+            this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {
+                verticalPosition: 'bottom',
+                duration: 5000
+            });
+        }).catch(error => {
+            // TODO: Colocar mensagem de erro para o usuario
+            console.log('ERRO AO SALVAR: ', error);
+            // this.errorHandler.handle(error);
+        });
 
 
         // const data = this.productForm.getRawValue();
