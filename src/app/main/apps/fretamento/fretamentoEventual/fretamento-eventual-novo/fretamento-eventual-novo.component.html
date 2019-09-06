@@ -235,7 +235,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 1</mat-label>
                                                     <input matInput formControlName="telefone1"
-                                                           [mask]="formFretamentoEventual.get('contato').get('telefone1').value.toString().length <=10 ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="(formFretamentoEventual.get('contato').get('telefone1').value && formFretamentoEventual.get('contato').get('telefone1').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('contato').get('telefone1')"></app-message>
@@ -245,7 +245,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 2</mat-label>
                                                     <input matInput formControlName="telefone2"
-                                                           [mask]="formFretamentoEventual.get('contato').get('telefone2').value.toString().length <=10 ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="(formFretamentoEventual.get('contato').get('telefone2').value && formFretamentoEventual.get('contato').get('telefone2').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('contato').get('telefone2')"></app-message>
@@ -423,7 +423,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 1</mat-label>
                                                     <input matInput formControlName="telefone1"
-                                                           [mask]="formFretamentoEventual.get('cliente').get('telefone1').value.toString().length <=10 ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="(formFretamentoEventual.get('cliente').get('telefone1').value && formFretamentoEventual.get('cliente').get('telefone1').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('cliente').get('telefone1')"></app-message>
@@ -441,7 +441,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 2</mat-label>
                                                     <input matInput formControlName="telefone2"
-                                                           [mask]="formFretamentoEventual.get('cliente').get('telefone2').value.toString().length <=10 ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="(formFretamentoEventual.get('cliente').get('telefone2').value && formFretamentoEventual.get('cliente').get('telefone2').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('cliente').get('telefone2')"></app-message>
