@@ -315,10 +315,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
     btnOrcamento(): void {
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO);
 
-        this.formFretamentoEventual.get('contato').get('nome').setValue('');
-        this.formFretamentoEventual.get('contato').get('telefone1').setValue('');
-        this.formFretamentoEventual.get('contato').get('telefone2').setValue('');
-        this.formFretamentoEventual.get('contato').get('obs').setValue('');
+        // this.formFretamentoEventual.get('contato').get('nome').setValue('');
+        // this.formFretamentoEventual.get('contato').get('telefone1').setValue('');
+        // this.formFretamentoEventual.get('contato').get('telefone2').setValue('');
+        // this.formFretamentoEventual.get('contato').get('obs').setValue('');
 
         this.formFretamentoEventual.get('contato').reset(this.formFretamentoEventual.get('cliente').value);
         this.formFretamentoEventual.get('contato').updateValueAndValidity();
