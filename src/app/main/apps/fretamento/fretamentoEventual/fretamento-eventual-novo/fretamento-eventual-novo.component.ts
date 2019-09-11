@@ -27,13 +27,12 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     formFretamentoEventual: FormGroup;
 
-    horizontalStepperStep3: FormGroup;
-
     cmbClienteForm = new FormControl();
-    cmbClienteCarregando = false;
-    cmbClienteLista: any;
 
-    cmbCidadeCarregando = false;
+    cmbCarregando = false;
+
+    cmbClienteLista: any;
+    cmbMotoristaLista: any;
     cmbCidadeLista: any;
 
     constructor(
@@ -69,7 +68,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     }
 
-    mostrarNomeCliente(obj?: any): string | undefined {
+    mostrarNomePessoa(obj?: any): string | undefined {
         return obj ? obj.nome : undefined;
     }
 
@@ -90,18 +89,18 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 }),
                 distinctUntilChanged(),
                 tap(pesquisa => {
-                    this.cmbClienteCarregando = true;
+                    this.cmbCarregando = true;
                 })
             )
             .subscribe(pesquisa => {
                 this.cmbClienteLista = [];
                 if (typeof pesquisa !== 'string') {
-                    this.cmbClienteCarregando = false;
+                    this.cmbCarregando = false;
                     return;
                 }
 
                 if (pesquisa.trim().length === 0) {
-                    this.cmbClienteCarregando = false;
+                    this.cmbCarregando = false;
                     this.cmbClienteForm.reset();
                     this.cmbClienteForm.updateValueAndValidity();
                     return;
@@ -113,7 +112,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
                     this.errorHandler.handle(erro);
                 }).finally(() => {
-                    this.cmbClienteCarregando = false;
+                    this.cmbCarregando = false;
                 });
             });
 
@@ -166,6 +165,12 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 retornoData: ['', [Validators.required]],
                 retornoHora: ['', [Validators.required, Validators.pattern('^([01]\\d|2[0-3]):?([0-5]\\d)$')]],
                 obsItineratio: ['', [Validators.maxLength(500)]],
+            }),
+            custo: this.formBuild.group({
+                motorista1: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+                motorista2: [null, [ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+                motorista1Diaria: [0.00, [Validators.required, Validators.min(0)]],
+                motorista2Diaria: [0.00, [Validators.min(0)]]
             })
         });
 
@@ -205,13 +210,13 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 }),
                 distinctUntilChanged(),
                 tap(pesquisa => {
-                    this.cmbCidadeCarregando = true;
+                    this.cmbCarregando = true;
                 })
             )
             .subscribe(pesquisa => {
                 this.cmbCidadeLista = [];
                 if (typeof pesquisa !== 'string') {
-                    this.cmbCidadeCarregando = false;
+                    this.cmbCarregando = false;
                     return;
                 }
 
@@ -221,7 +226,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
                     this.errorHandler.handle(erro);
                 }).finally(() => {
-                    this.cmbCidadeCarregando = false;
+                    this.cmbCarregando = false;
                 });
             });
 
@@ -235,13 +240,13 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 }),
                 distinctUntilChanged(),
                 tap(pesquisa => {
-                    this.cmbCidadeCarregando = true;
+                    this.cmbCarregando = true;
                 })
             )
             .subscribe(pesquisa => {
                 this.cmbCidadeLista = [];
                 if (typeof pesquisa !== 'string') {
-                    this.cmbCidadeCarregando = false;
+                    this.cmbCarregando = false;
                     return;
                 }
 
@@ -251,7 +256,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
                     this.errorHandler.handle(erro);
                 }).finally(() => {
-                    this.cmbCidadeCarregando = false;
+                    this.cmbCarregando = false;
                 });
             });
 
@@ -265,13 +270,13 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 }),
                 distinctUntilChanged(),
                 tap(pesquisa => {
-                    this.cmbCidadeCarregando = true;
+                    this.cmbCarregando = true;
                 })
             )
             .subscribe(pesquisa => {
                 this.cmbCidadeLista = [];
                 if (typeof pesquisa !== 'string') {
-                    this.cmbCidadeCarregando = false;
+                    this.cmbCarregando = false;
                     return;
                 }
 
@@ -281,16 +286,69 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
                     this.errorHandler.handle(erro);
                 }).finally(() => {
-                    this.cmbCidadeCarregando = false;
+                    this.cmbCarregando = false;
                 });
             });
 
 
-        this.horizontalStepperStep3 = this.formBuild.group({
-            city: ['', Validators.required],
-            state: ['', Validators.required],
-            postalCode: ['', [Validators.required, Validators.maxLength(5)]]
-        });
+        this.formFretamentoEventual.get('custo').get('motorista1').valueChanges
+            .pipe(
+                debounceTime(environment.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbMotoristaLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCarregando = false;
+                    return;
+                }
+
+                this.fretamentoService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
+                    this.cmbMotoristaLista = resposta;
+                }).catch(erro => {
+                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
+                    this.errorHandler.handle(erro);
+                }).finally(() => {
+                    this.cmbCarregando = false;
+                });
+            });
+        this.formFretamentoEventual.get('custo').get('motorista2').valueChanges
+            .pipe(
+                debounceTime(environment.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbMotoristaLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCarregando = false;
+                    return;
+                }
+
+                this.fretamentoService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
+                    this.cmbMotoristaLista = resposta;
+                }).catch(erro => {
+                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
+                    this.errorHandler.handle(erro);
+                }).finally(() => {
+                    this.cmbCarregando = false;
+                });
+            });
     }
 
     selecionandoUmCliente(event: MatAutocompleteSelectedEvent): void {
@@ -379,7 +437,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
         //         this._location.go('apps/e-commerce/products/' + this.product.id + '/' + this.product.handle);
         //     });
     }
-
 
 
     buscarCpfDigitado(): void {

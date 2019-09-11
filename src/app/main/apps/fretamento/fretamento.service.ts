@@ -73,6 +73,24 @@ export class FretamentoService {
         });
     }
 
+    pesquisarMotoristaCmb(pesquisa: string): Promise<any> {
+
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        const params = new HttpParams()
+            .set('size', String(environment.comboBox.linhas))
+            .set('page', String(0))
+            .set('ordemClassificacao', 'ASC')
+            .set('campoOrdenacao', 'nome')
+            .set('nome', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+
+        return this.http.get(`${this.apiUrl}/cmbMotoristas`, {headers: headers, params: params}).toPromise().then(response => {
+            return response;
+        });
+    }
+
     pesquisarCidadeCmb(pesquisa: string): Promise<any> {
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
