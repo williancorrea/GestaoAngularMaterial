@@ -11,6 +11,9 @@ import {IConfig, NgxMaskModule} from 'ngx-mask';
 
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
+import {CurrencyMaskModule} from 'ng2-currency-mask';
+import {CURRENCY_MASK_CONFIG, CurrencyMaskConfig} from 'ng2-currency-mask/src/currency-mask.config';
+
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -24,6 +27,15 @@ export const APP_DATE_FORMATS = {
     }
 };
 
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+    align: 'right',
+    allowNegative: false,
+    decimal: ',',
+    precision: 2,
+    prefix: 'R$ ',
+    suffix: '',
+    thousands: '.'
+};
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
@@ -33,9 +45,11 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
         HttpClientModule,
         RouterModule,
 
+        // Mascara de Dinheiro
+        CurrencyMaskModule,
+
         // Mascaras dos Campos
         NgxMaskModule.forRoot(options),
-
     ],
     declarations: [
         MessageComponent
@@ -47,10 +61,13 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
         // AuthService,
         // JwtHelperService,
 
+        // Dinheiro
+        {provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig},
+
+        // Formatacao das Datas
         {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'},
         {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
         {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS},
-
 
         GestaoService,
         ErroManipuladorService,
