@@ -35,8 +35,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
     cmbMotoristaLista: any;
     cmbCidadeLista: any;
 
-    teste: any;
-
     constructor(
         private _matSnackBar: MatSnackBar,
         private router: Router,

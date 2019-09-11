@@ -30,6 +30,7 @@ import {FretamentoEventualPesquisaComponent} from './fretamentoEventual/fretamen
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CoreModule} from '../../../core/core.module';
 import {NgxMaskModule} from 'ngx-mask';
+import {CurrencyMaskModule} from 'ng2-currency-mask';
 
 const routes = [
     {
@@ -85,7 +86,10 @@ const routes = [
         FuseWidgetModule,
 
         CoreModule,
+
         NgxMaskModule,
+        CurrencyMaskModule,
+
         MatAutocompleteModule,
         MatProgressBarModule,
         MatDatepickerModule

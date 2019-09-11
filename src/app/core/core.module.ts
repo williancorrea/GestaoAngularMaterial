@@ -34,7 +34,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     precision: 2,
     prefix: 'R$ ',
     suffix: '',
-    thousands: '.'
+    thousands: '.',
 };
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
