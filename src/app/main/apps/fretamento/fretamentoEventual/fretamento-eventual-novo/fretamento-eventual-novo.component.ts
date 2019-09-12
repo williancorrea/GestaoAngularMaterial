@@ -11,6 +11,7 @@ import {ValidacaoGenericaWCorrea} from '../../../../../core/utils/ValidacaoGener
 import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
 import {Utils} from '../../../../../core/utils/Utils';
+import {VeiculoService} from '../../veiculo.service';
 
 @Component({
     selector: 'app-fretamento-eventual-novo',
@@ -34,6 +35,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
     cmbClienteLista: any;
     cmbMotoristaLista: any;
     cmbCidadeLista: any;
+    cmbVeiculoLista: any;
 
     constructor(
         private _matSnackBar: MatSnackBar,
@@ -41,6 +43,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private formBuild: FormBuilder,
         private fretamentoService: FretamentoService,
+        private veiculoService: VeiculoService,
         private errorHandler: ErroManipuladorService
     ) {
     }
@@ -74,6 +77,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     mostrarNomeCidade(obj?: any): string | undefined {
         return obj ? obj.nome + ' / ' + obj.estado.nome : undefined;
+    }
+
+    mostrarNomeVeiculo(obj?: any): string | undefined {
+        return obj ? obj.frota + ' - ' + obj.placa : undefined;
     }
 
     configurarForm(): void {
@@ -169,8 +176,21 @@ export class FretamentoEventualNovoComponent implements OnInit {
             custo: this.formBuild.group({
                 motorista1: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 motorista2: [null, [ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
-                motorista1Diaria: [0.00, [Validators.required, Validators.min(0)]],
-                motorista2Diaria: [0.00, [Validators.min(0)]]
+                motorista1Diaria: [null, [Validators.required]],
+                motorista2Diaria: [null, []],
+                veiculo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+                notaFiscalTipo: [null, [Validators.required]],
+                valorEstacionamento: [null],
+                valorAguaGelo: [null],
+                valorDespesasAdicionais: [null],
+                valorDinheiroReserva: [null],
+                valorPedagio: [null],
+                valorKm: [null, [Validators.required, ValidacaoGenericaWCorrea.MoedaValorMinimo(1.00)]],
+                valorCombustivel: [null, [Validators.required, Validators.min(0)]],
+                valorHospedagem: [null],
+                cobrancaAutomatica: [false, [Validators.required]],
+                kmPercorridoQuantidade: [null, [Validators.required, Validators.min(5)]],
+                obsCusto: ['', [Validators.maxLength(500)]],
             })
         });
 
@@ -342,6 +362,35 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.fretamentoService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
                     this.cmbMotoristaLista = resposta;
+                }).catch(erro => {
+                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
+                    this.errorHandler.handle(erro);
+                }).finally(() => {
+                    this.cmbCarregando = false;
+                });
+            });
+
+        this.formFretamentoEventual.get('custo').get('veiculo').valueChanges
+            .pipe(
+                debounceTime(environment.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbVeiculoLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCarregando = false;
+                    return;
+                }
+                this.veiculoService.pesquisarVeiculoCmb(pesquisa).then(resposta => {
+                    this.cmbVeiculoLista = resposta;
                 }).catch(erro => {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
                     this.errorHandler.handle(erro);

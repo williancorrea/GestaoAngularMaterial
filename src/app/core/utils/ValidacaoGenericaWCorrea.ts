@@ -1,4 +1,4 @@
-import {FormControl} from '@angular/forms';
+import {AbstractControl, FormControl} from '@angular/forms';
 import {Utils} from './Utils';
 
 export class ValidacaoGenericaWCorrea {
@@ -23,5 +23,14 @@ export class ValidacaoGenericaWCorrea {
             return {Selecionar_Item: true};
         }
         return null;
+    }
+
+    public static MoedaValorMinimo(min: number): any {
+        return (input: AbstractControl): any => {
+            if (input.value && input.value !== undefined && input.value < min) {
+                return {Moeda_Valor_Minimo: new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(min)};
+            }
+            return null;
+        };
     }
 }

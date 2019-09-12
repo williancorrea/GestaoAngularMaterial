@@ -13,6 +13,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material'
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {CURRENCY_MASK_CONFIG, CurrencyMaskConfig} from 'ng2-currency-mask/src/currency-mask.config';
+import {VeiculoService} from '../main/apps/fretamento/veiculo.service';
 
 
 export const APP_DATE_FORMATS = {
@@ -73,7 +74,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
         ErroManipuladorService,
 
         FretamentoService,
-        // VeiculoService,
+        VeiculoService,
         // ControleKmService,
         // CombustivelService,
         // TanqueCombustivelService

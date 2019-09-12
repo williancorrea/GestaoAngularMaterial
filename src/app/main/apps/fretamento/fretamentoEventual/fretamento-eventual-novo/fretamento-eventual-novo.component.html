@@ -69,6 +69,20 @@
 
                                             <div fxFlex="1 0 auto" fxLayoutAlign="row">
                                                 <mat-form-field appearance="outline" fxFlex="35" class="pr-4">
+                                                    <mat-label>Nota Fiscal</mat-label>
+                                                    <mat-select formControlName="notaFiscalTipo">
+                                                        <mat-option value="SEM_NOTA">Sem Nota</mat-option>
+                                                        <mat-option value="NOTA_SERVICO">NFe - Nota Fiscal eletrônica</mat-option>
+                                                        <mat-option value="CTE_OS">CTeOS - Conhecimento de Transporte Eletrônico</mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('notaFiscalTipo')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="row">
+                                                <mat-form-field appearance="outline" fxFlex="35" class="pr-4">
                                                     <mat-label>Motorista 1</mat-label>
                                                     <mat-icon matSuffix class="secondary-text">search</mat-icon>
                                                     <input matInput type="text" placeholder="Pesquisar motorista ..."
@@ -89,9 +103,9 @@
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
-<!--                                                    <mat-icon matPrefix class="secondary-text">monetization_on</mat-icon>-->
+                                                    <!--                                                    <mat-icon matPrefix class="secondary-text">monetization_on</mat-icon>-->
                                                     <mat-label>Total das diária</mat-label>
-                                                    <input currencyMask matInput formControlName="motorista1Diaria" >
+                                                    <input currencyMask matInput formControlName="motorista1Diaria">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('motorista1Diaria')"></app-message>
                                                     </mat-error>
@@ -118,18 +132,130 @@
                                                 </mat-form-field>
 
                                                 <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
-<!--                                                    <mat-icon matPrefix class="secondary-text">monetization_on</mat-icon>-->
                                                     <mat-label>Total das diária</mat-label>
-                                                    <input currencyMask matInput formControlName="motorista2Diaria" >
+                                                    <input currencyMask matInput formControlName="motorista2Diaria">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('motorista2Diaria')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
-
                                             </div>
 
 
+                                            <div fxFlex="1 0 auto" fxLayout="row wrap">
+                                                <mat-form-field appearance="outline" fxFlex="35" class="pr-4">
+                                                    <mat-label>Veículo</mat-label>
+                                                    <mat-icon matSuffix class="secondary-text">search</mat-icon>
+                                                    <input matInput type="text" placeholder="Pesquisar veículo ..."
+                                                           formControlName="veiculo" [matAutocomplete]="autoCompleteVeiculo">
+                                                    <mat-autocomplete autoActiveFirstOption #autoCompleteVeiculo="matAutocomplete" [displayWith]="mostrarNomeVeiculo">
+                                                        <mat-option *ngIf="cmbCarregando" class="is-loading">
+                                                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                                        </mat-option>
+                                                        <ng-container *ngIf="!cmbCarregando">
+                                                            <mat-option *ngFor="let veiculo of cmbVeiculoLista" [value]="veiculo">
+                                                                <span><b>{{veiculo['frota'] | uppercase}} - {{veiculo['placa'] | uppercase}}</b></span>
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-autocomplete>
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('veiculo')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
 
+                                                <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
+                                                    <mat-label>Km percorrido</mat-label>
+                                                    <span matSuffix class="secondary-text">Km</span>
+                                                    <input matInput type="number" style="text-align: right" formControlName="kmPercorridoQuantidade">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('kmPercorridoQuantidade')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
+                                                    <mat-label>Valor Km</mat-label>
+                                                    <input currencyMask matInput formControlName="valorKm">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('valorKm')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
+                                                    <mat-label>Pedágio</mat-label>
+                                                    <input currencyMask matInput formControlName="valorPedagio">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('valorPedagio')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field id="txtCobrancaAutomatica" appearance="outline" fxFlex="20" class="pr-4">
+                                                    <input matInput style="display: none">
+                                                    <mat-slide-toggle formControlName="cobrancaAutomatica">Tem sem parar</mat-slide-toggle>
+                                                </mat-form-field>
+
+                                            </div>
+
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                    <mat-label>Estacionamento</mat-label>
+                                                    <input currencyMask matInput formControlName="valorEstacionamento">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('valorEstacionamento')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                    <mat-label>Agua e Gelo</mat-label>
+                                                    <input currencyMask matInput formControlName="valorAguaGelo">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('valorAguaGelo')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                    <mat-label>Hospedagem</mat-label>
+                                                    <input currencyMask matInput formControlName="valorHospedagem">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('valorHospedagem')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                    <mat-label>Despesas Adicionais</mat-label>
+                                                    <input currencyMask matInput formControlName="valorDespesasAdicionais">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('valorDespesasAdicionais')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                    <mat-label>Valor Combustível</mat-label>
+                                                    <input currencyMask matInput formControlName="valorCombustivel">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('valorCombustivel')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                    <mat-label>Dinheiro Reserva</mat-label>
+                                                    <input currencyMask matInput formControlName="valorDinheiroReserva">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('valorDinheiroReserva')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="100">
+                                                    <mat-label>Observações do custo</mat-label>
+                                                    <textarea #custoObs matInput rows="3" maxlength="500" formControlName="obsCusto"></textarea>
+                                                    <mat-hint align="end">{{custoObs.value.length}} / 500</mat-hint>
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('custo').get('obsCusto')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
 
                                             <div fxLayout="row" fxLayoutAlign="center center">
                                                 <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">

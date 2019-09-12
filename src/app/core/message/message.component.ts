@@ -11,15 +11,17 @@ import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef,
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'min')">Valor mínimo de {{control.errors['min']['min']}}</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'max')">Valor máximo de {{control.errors['max']['max']}}</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'email')">E-mail inválido</span>
+       
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'Mask error')">Preenchimento incorreto</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'CPF_Invalido')">CPF Inválido</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'CNPJ_Invalido')">CNPJ Inválido</span>
+        <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'Selecionar_Item')">Selecione um item</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'Selecionar_Item')">Selecione um item</span>
 
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'matDatepickerMin')">matDatepickerMin</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'matDatepickerMax')">matDatepickerMax</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'matDatepickerFilter')">matDatepickerFilter</span>
-        <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'matDatepickerParse')">Não é uma data válida</span>
+        <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'Moeda_Valor_Minimo')">Valor mínimo de {{control.errors['Moeda_Valor_Minimo']}}</span>
         
 
     `,
@@ -50,6 +52,7 @@ export class MessageComponent implements AfterViewChecked, AfterContentChecked, 
          */
         if (this.control.errors != null) {
             this.erroCodigo = Object.keys(this.control.errors)[0].toString();
+            // this.erroMensagem = Object.keys(this.control.errors);
         }
 
         // if ((this.control.invalid && this.control.enabled && (this.control.dirty || this.control.touched)) || this.form.submitted) {

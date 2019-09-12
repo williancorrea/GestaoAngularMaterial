@@ -4,17 +4,20 @@ import {RouterModule} from '@angular/router';
 import {
     MatAutocompleteModule,
     MatButtonModule,
-    MatChipsModule, MatDatepickerModule,
+    MatCardModule, MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
-    MatPaginatorModule, MatProgressBarModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
     MatRadioModule,
     MatRippleModule,
-    MatSelectModule,
+    MatSelectModule, MatSlideToggleModule,
     MatSnackBarModule,
     MatSortModule,
     MatStepperModule,
@@ -79,6 +82,12 @@ const routes = [
         MatRadioModule,
         MatGridListModule,
         MatDividerModule,
+        MatAutocompleteModule,
+        MatProgressBarModule,
+        MatDatepickerModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatSlideToggleModule,
 
         NgxChartsModule,
 
@@ -88,11 +97,7 @@ const routes = [
         CoreModule,
 
         NgxMaskModule,
-        CurrencyMaskModule,
-
-        MatAutocompleteModule,
-        MatProgressBarModule,
-        MatDatepickerModule
+        CurrencyMaskModule
     ],
     declarations: [
         FretamentoEventualNovoComponent,
