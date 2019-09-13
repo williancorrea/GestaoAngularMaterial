@@ -37,6 +37,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
     cmbCidadeLista: any;
     cmbVeiculoLista: any;
 
+    viagemPrecoFinalPorcentagem: number;
+    ganhoReal: number;
+
     constructor(
         private _matSnackBar: MatSnackBar,
         private router: Router,
@@ -180,8 +183,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 motorista2Diaria: [null, []],
                 veiculo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 notaFiscalTipo: [null, [Validators.required]],
+                notaFiscalImposto: [null, [Validators.required]],
                 valorEstacionamento: [null],
-                valorAguaGelo: [null],
+                valorGelo: [null],
+                valorAgua: [null],
                 valorDespesasAdicionais: [null],
                 valorDinheiroReserva: [null],
                 valorPedagio: [null],
@@ -189,7 +194,12 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 valorCombustivel: [null, [Validators.required, Validators.min(0)]],
                 valorHospedagem: [null],
                 cobrancaAutomatica: [false, [Validators.required]],
-                kmPercorridoQuantidade: [null, [Validators.required, Validators.min(5)]],
+                kmPercorridoQuantidade: [5, [Validators.required, Validators.min(5)]],
+
+                valorTotalDespesas: [0.00, [Validators.required]],
+                viagemPrecoSugerido: [0.00, [Validators.required]],
+                viagemPrecoFinal: [0.00, [Validators.required]],
+
                 obsCusto: ['', [Validators.maxLength(500)]],
             })
         });
@@ -485,6 +495,53 @@ export class FretamentoEventualNovoComponent implements OnInit {
         //         // Change the location with new one
         //         this._location.go('apps/e-commerce/products/' + this.product.id + '/' + this.product.handle);
         //     });
+    }
+
+    calcularDespesas(): void {
+        let total = 0;
+        total += this.formFretamentoEventual.get('custo').get('motorista1Diaria').value ? this.formFretamentoEventual.get('custo').get('motorista1Diaria').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('motorista2Diaria').value ? this.formFretamentoEventual.get('custo').get('motorista2Diaria').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('valorEstacionamento').value ? this.formFretamentoEventual.get('custo').get('valorEstacionamento').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('valorGelo').value ? this.formFretamentoEventual.get('custo').get('valorGelo').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('valorAgua').value ? this.formFretamentoEventual.get('custo').get('valorAgua').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('valorDespesasAdicionais').value ? this.formFretamentoEventual.get('custo').get('valorDespesasAdicionais').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('valorPedagio').value ? this.formFretamentoEventual.get('custo').get('valorPedagio').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('valorHospedagem').value ? this.formFretamentoEventual.get('custo').get('valorHospedagem').value : 0.0;
+        total += (this.formFretamentoEventual.get('custo').get('kmPercorridoQuantidade').value && this.formFretamentoEventual.get('custo').get('valorKm').value)
+            ? this.formFretamentoEventual.get('custo').get('kmPercorridoQuantidade').value * this.formFretamentoEventual.get('custo').get('valorKm').value
+            : 0.0;
+
+        this.formFretamentoEventual.get('custo').get('valorTotalDespesas').setValue(total);
+
+        this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').setValue(
+            this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value ? this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value : 0.0
+        );
+
+        // FAZ O CALCULO DO TIPO DE NOTA FISCAL
+        switch (this.formFretamentoEventual.get('custo').get('notaFiscalTipo').value) {
+            case 'SEM_NOTA':
+                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((0 / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
+                break;
+            case 'NOTA_SERVICO':
+                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((20 / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
+                break;
+            case 'CTE_OS':
+                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((30 / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
+                break;
+        }
+        this.ganhoReal = this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value - this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value - this.formFretamentoEventual.get('custo').get('notaFiscalImposto').value;
+        this.viagemPrecoFinalPorcentagem = (this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value / this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value) * 100;
+
+        this.formFretamentoEventual.get('custo').updateValueAndValidity();
+    }
+
+    calcularViagemPrecoFinalPorcentagem(): void {
+        // setTimeout(function() {
+            this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').setValue(
+                ((this.viagemPrecoFinalPorcentagem / 100) * this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value) + this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value
+            );
+            this.calcularDespesas();
+        // }, 300);
     }
 
 
