@@ -61,6 +61,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 console.log(response);
                 this.formFretamentoEventual.patchValue(response);
+                this.calcularDespesas();
+
                 // this.mostrarModalCarregando(false);
             }).catch(error => {
                 // this.errorHandler.handle(error);
@@ -530,18 +532,16 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 break;
         }
         this.ganhoReal = this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value - this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value - this.formFretamentoEventual.get('custo').get('notaFiscalImposto').value;
-        this.viagemPrecoFinalPorcentagem = (this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value / this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value) * 100;
+        this.viagemPrecoFinalPorcentagem = ((this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value / this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value) * 100) - 100;
 
         this.formFretamentoEventual.get('custo').updateValueAndValidity();
     }
 
     calcularViagemPrecoFinalPorcentagem(): void {
-        // setTimeout(function() {
-            this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').setValue(
-                ((this.viagemPrecoFinalPorcentagem / 100) * this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value) + this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value
-            );
-            this.calcularDespesas();
-        // }, 300);
+        this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').setValue(
+            ((this.viagemPrecoFinalPorcentagem / 100) * this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value) + this.formFretamentoEventual.get('custo').get('valorTotalDespesas').value
+        );
+        this.calcularDespesas();
     }
 
 

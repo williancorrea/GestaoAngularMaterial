@@ -70,7 +70,7 @@
                                             <div fxFlex="1 0 auto" fxLayoutAlign="row">
                                                 <mat-form-field appearance="outline" fxFlex="35" class="pr-4">
                                                     <mat-label>Nota Fiscal</mat-label>
-                                                    <mat-select formControlName="notaFiscalTipo">
+                                                    <mat-select formControlName="notaFiscalTipo" (selectionChange)="calcularDespesas()">
                                                         <mat-option value="SEM_NOTA">Sem Nota</mat-option>
                                                         <mat-option value="NOTA_SERVICO">NFe - Nota Fiscal eletrônica</mat-option>
                                                         <mat-option value="CTE_OS">CTeOS - Conhecimento de Transporte Eletrônico</mat-option>
@@ -105,7 +105,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
                                                     <!--                                                    <mat-icon matPrefix class="secondary-text">monetization_on</mat-icon>-->
                                                     <mat-label>Total das diária</mat-label>
-                                                    <input currencyMask matInput formControlName="motorista1Diaria" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="motorista1Diaria" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('motorista1Diaria')"></app-message>
                                                     </mat-error>
@@ -133,7 +133,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
                                                     <mat-label>Total das diária</mat-label>
-                                                    <input currencyMask matInput formControlName="motorista2Diaria" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="motorista2Diaria" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('motorista2Diaria')"></app-message>
                                                     </mat-error>
@@ -165,7 +165,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
                                                     <mat-label>Km percorrido</mat-label>
                                                     <span matSuffix class="secondary-text">Km</span>
-                                                    <input matInput type="number" style="text-align: right" formControlName="kmPercorridoQuantidade" (blur)="calcularDespesas()">
+                                                    <input matInput type="number" style="text-align: right" formControlName="kmPercorridoQuantidade" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('kmPercorridoQuantidade')"></app-message>
                                                     </mat-error>
@@ -173,7 +173,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
                                                     <mat-label>Valor Km</mat-label>
-                                                    <input currencyMask matInput formControlName="valorKm" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="valorKm" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('valorKm')"></app-message>
                                                     </mat-error>
@@ -181,7 +181,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
                                                     <mat-label>Pedágio</mat-label>
-                                                    <input currencyMask matInput formControlName="valorPedagio" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="valorPedagio" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('valorPedagio')"></app-message>
                                                     </mat-error>
@@ -197,7 +197,7 @@
                                             <div fxFlex="1 0 auto" fxLayoutAlign="start center">
                                                 <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
                                                     <mat-label>Estacionamento</mat-label>
-                                                    <input currencyMask matInput formControlName="valorEstacionamento" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="valorEstacionamento" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('valorEstacionamento')"></app-message>
                                                     </mat-error>
@@ -205,7 +205,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
                                                     <mat-label>Agua</mat-label>
-                                                    <input currencyMask matInput formControlName="valorAgua" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="valorAgua" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('valorAgua')"></app-message>
                                                     </mat-error>
@@ -213,7 +213,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
                                                     <mat-label>Gelo</mat-label>
-                                                    <input currencyMask matInput formControlName="valorGelo" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="valorGelo" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('valorGelo')"></app-message>
                                                     </mat-error>
@@ -221,7 +221,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
                                                     <mat-label>Hospedagem</mat-label>
-                                                    <input currencyMask matInput formControlName="valorHospedagem" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="valorHospedagem" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('valorHospedagem')"></app-message>
                                                     </mat-error>
@@ -229,7 +229,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
                                                     <mat-label>Despesas Adicionais</mat-label>
-                                                    <input currencyMask matInput formControlName="valorDespesasAdicionais" (blur)="calcularDespesas()">
+                                                    <input currencyMask matInput formControlName="valorDespesasAdicionais" (ngModelChange)="calcularDespesas()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('custo').get('valorDespesasAdicionais')"></app-message>
                                                     </mat-error>
@@ -264,7 +264,7 @@
                                                      style="background-color: #ccc; padding-top: 30px; border-radius: 10px; padding-left: 10px; padding-right: 5px; margin-bottom: 10px;">
                                                     <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
                                                         <mat-label>Total despesas</mat-label>
-                                                        <input currencyMask matInput formControlName="valorTotalDespesas" readonly>
+                                                        <input currencyMask matInput formControlName="valorTotalDespesas" readonly style="font-weight: bold;">
                                                         <mat-error>
                                                             <app-message [control]="formFretamentoEventual.get('custo').get('valorTotalDespesas')"></app-message>
                                                         </mat-error>
@@ -272,24 +272,25 @@
 
                                                     <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
                                                         <mat-label>Viagem Preço Sugerido</mat-label>
-                                                        <input currencyMask matInput formControlName="viagemPrecoSugerido" readonly>
+                                                        <input currencyMask matInput formControlName="viagemPrecoSugerido" readonly style="font-weight: bold;">
                                                         <mat-error>
                                                             <app-message [control]="formFretamentoEventual.get('custo').get('viagemPrecoSugerido')"></app-message>
                                                         </mat-error>
                                                     </mat-form-field>
 
                                                 </div>
-                                                <div fxFlex="60" fxLayoutAlign="start center" class="pr-4" style="padding-top: 30px; margin-bottom: 10px;">
-                                                    <mat-form-field appearance="outline" fxFlex="33" class="pr-4 pl-4">
+                                                <div fxFlex="60" fxLayoutAlign="start center" class="pr-4"
+                                                     style="background-color: #81cc89; padding-top: 30px; border-radius: 10px; padding-left: 5px; margin-left: 5px; padding-right: 5px !important; margin-bottom: 10px;">
+                                                    <mat-form-field appearance="outline" fxFlex="33" class="pr-4 pl-4" style="font-weight: bold;">
                                                         <mat-label>Preço Viagem %</mat-label>
-                                                        <input currencyMask matInput [ngModel]="viagemPrecoFinalPorcentagem" [ngModelOptions]="{standalone: true}"
-                                                               (blur)="calcularViagemPrecoFinalPorcentagem()"
+                                                        <input currencyMask matInput [(ngModel)]="viagemPrecoFinalPorcentagem" [ngModelOptions]="{standalone: true}"
+                                                               (keyup)="calcularViagemPrecoFinalPorcentagem()"
                                                                [options]="{ prefix: '', suffix: '%', thousands: '', decimal: ',', precision: 1, allowNegative: true}">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
                                                         <mat-label>Viagem Preço Final</mat-label>
-                                                        <input currencyMask matInput formControlName="viagemPrecoFinal" (blur)="calcularDespesas()">
+                                                        <input currencyMask matInput formControlName="viagemPrecoFinal" (keyup)="calcularDespesas()" style="font-weight: bold;">
                                                         <mat-error>
                                                             <app-message [control]="formFretamentoEventual.get('custo').get('viagemPrecoFinal')"></app-message>
                                                         </mat-error>
@@ -297,7 +298,7 @@
 
                                                     <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
                                                         <mat-label>Ganho Real</mat-label>
-                                                        <input currencyMask matInput [ngModel]="ganhoReal" [ngModelOptions]="{standalone: true}" [options]="{allowNegative: true }" readonly>
+                                                        <input currencyMask matInput [ngModel]="ganhoReal" [ngModelOptions]="{standalone: true}" [options]="{allowNegative: true }" readonly style="font-weight: bold;">
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -494,7 +495,7 @@
                                                             <mat-label>CPF</mat-label>
                                                             <input matInput formControlName="cpf"
                                                                    [dropSpecialCharacters]="false"
-                                                                   mask="000.000.000-00" (blur)="buscarCpfDigitado()">
+                                                                   mask="000.000.000-00" (ngModelChange)="buscarCpfDigitado()">
                                                             <mat-icon matSuffix class="secondary-text">contact_mail</mat-icon>
                                                             <mat-error>
                                                                 <app-message [control]="formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf')"></app-message>
@@ -507,7 +508,7 @@
                                                             <mat-label>CNPJ</mat-label>
                                                             <input matInput formControlName="cnpj"
                                                                    [dropSpecialCharacters]="false"
-                                                                   mask="00.000.000/0000-00" (blur)="buscarCnpjDigitado()">
+                                                                   mask="00.000.000/0000-00" (ngModelChange)="buscarCnpjDigitado()">
                                                             <mat-icon matSuffix class="secondary-text">business</mat-icon>
                                                             <mat-error>
                                                                 <app-message [control]="formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj')"></app-message>
