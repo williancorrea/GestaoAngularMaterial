@@ -4,6 +4,13 @@ export class Utils {
         return JSON.parse(JSON.stringify(obj));
     }
 
+
+    public static converterDoubleEmHora(numero: number): any {
+        const remainder = numero % 1;
+        const remainderTime = new Date(remainder * 3600 * 1000);
+        return Math.floor(numero) + ':' + ( '0' + remainderTime.getMinutes()).slice(-2);
+    }
+
     public static validarCPF(cpf): boolean {
         if (cpf === null) {
             return false;
