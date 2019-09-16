@@ -136,6 +136,9 @@ export class FretamentoService {
         clone.itinerario['partidaCidade']['key'] = obj.itinerario.partidaCidade.key;
         clone.itinerario['retornoCidade']['key'] = obj.itinerario.retornoCidade.key;
 
+        // clone.custo.motorista1 = {key: clone.custo.motorista1.key};
+        // clone.custo.motorista2 = {key: clone.custo.motorista1.key};
+
 
 
 

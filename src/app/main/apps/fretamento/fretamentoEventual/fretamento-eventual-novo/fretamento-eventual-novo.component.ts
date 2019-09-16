@@ -181,8 +181,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
             custo: this.formBuild.group({
                 motorista1: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 motorista2: [null, [ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
-                motorista1Diaria: [null, [Validators.required]],
-                motorista2Diaria: [null, []],
+                valorMotorista1Diaria: [null, [Validators.required]],
+                valorMotorista2Diaria: [null],
                 veiculo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 notaFiscalTipo: [null, [Validators.required]],
                 notaFiscalImposto: [null, [Validators.required]],
@@ -501,8 +501,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     calcularDespesas(): void {
         let total = 0;
-        total += this.formFretamentoEventual.get('custo').get('motorista1Diaria').value ? this.formFretamentoEventual.get('custo').get('motorista1Diaria').value : 0.0;
-        total += this.formFretamentoEventual.get('custo').get('motorista2Diaria').value ? this.formFretamentoEventual.get('custo').get('motorista2Diaria').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('valorMotorista1Diaria').value ? this.formFretamentoEventual.get('custo').get('valorMotorista1Diaria').value : 0.0;
+        total += this.formFretamentoEventual.get('custo').get('valorMotorista2Diaria').value ? this.formFretamentoEventual.get('custo').get('valorMotorista2Diaria').value : 0.0;
         total += this.formFretamentoEventual.get('custo').get('valorEstacionamento').value ? this.formFretamentoEventual.get('custo').get('valorEstacionamento').value : 0.0;
         total += this.formFretamentoEventual.get('custo').get('valorGelo').value ? this.formFretamentoEventual.get('custo').get('valorGelo').value : 0.0;
         total += this.formFretamentoEventual.get('custo').get('valorAgua').value ? this.formFretamentoEventual.get('custo').get('valorAgua').value : 0.0;
