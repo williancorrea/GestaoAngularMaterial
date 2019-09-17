@@ -69,7 +69,7 @@
                                             <ng-template matStepLabel>Itinerário</ng-template>
 
                                             <div fxFlex="1 0 auto" fxLayoutAlign="row">
-                                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                                <mat-form-field appearance="outline" fxFlex="46" class="pr-4">
                                                     <mat-label>Cidade de partida</mat-label>
                                                     <mat-icon matSuffix class="secondary-text">search</mat-icon>
                                                     <input matInput type="text" placeholder="Pesquisar cidade ..."
@@ -91,7 +91,7 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="16" class="pr-4">
                                                     <mat-label>Data de Partida</mat-label>
-                                                    <input matInput formControlName="partidaData" [matDatepicker]="dpPartidaData">
+                                                    <input matInput formControlName="partidaData" [matDatepicker]="dpPartidaData" (ngModelChange)="calcularPrevisaoChegada()">
                                                     <mat-datepicker-toggle matSuffix [for]="dpPartidaData"></mat-datepicker-toggle>
                                                     <mat-datepicker #dpPartidaData></mat-datepicker>
                                                     <mat-error>
@@ -101,22 +101,22 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="16" class="pr-4">
                                                     <mat-label>Hora de Partida</mat-label>
-                                                    <input matInput formControlName="partidaHora" mask="00:00" [dropSpecialCharacters]="false">
+                                                    <input matInput formControlName="partidaHora" mask="00:00" [dropSpecialCharacters]="false" (ngModelChange)="calcularPrevisaoChegada()">
                                                     <mat-icon matSuffix class="secondary-text">access_time</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('itinerario').get('partidaHora')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex="17" class="pr-4">
+                                                <mat-form-field appearance="outline" fxFlex="21" class="pr-4">
                                                     <mat-label>Previsão de Chegada</mat-label>
-                                                    <input matInput [ngModel]="previsaoDeChegada" [ngModelOptions]="{standalone: true}">
-                                                    <mat-icon matSuffix class="secondary-text">access_time</mat-icon>
+                                                    <input matInput formControlName="previsaoChegadaPartida" readonly style="color: blue">
+                                                    <mat-icon matSuffix class="secondary-text">timer</mat-icon>
                                                 </mat-form-field>
                                             </div>
 
                                             <div fxFlex="1 0 auto" fxLayoutAlign="row">
-                                                <mat-form-field appearance="outline" fxFlex="60" class="pr-4">
+                                                <mat-form-field appearance="outline" fxFlex="46" class="pr-4">
                                                     <mat-label>Cidade de retorno</mat-label>
                                                     <mat-icon matSuffix class="secondary-text">search</mat-icon>
                                                     <input matInput type="text" placeholder="Pesquisar cidade ..."
@@ -136,9 +136,9 @@
                                                     </mat-error>
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                <mat-form-field appearance="outline" fxFlex="16" class="pr-4">
                                                     <mat-label>Data de retorno</mat-label>
-                                                    <input matInput formControlName="retornoData" [matDatepicker]="dpRetornoData">
+                                                    <input matInput formControlName="retornoData" [matDatepicker]="dpRetornoData" (ngModelChange)="calcularPrevisaoChegada()">
                                                     <mat-datepicker-toggle matSuffix [for]="dpRetornoData"></mat-datepicker-toggle>
                                                     <mat-datepicker #dpRetornoData></mat-datepicker>
                                                     <mat-error>
@@ -146,23 +146,29 @@
                                                     </mat-error>
                                                 </mat-form-field>
 
-                                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                                <mat-form-field appearance="outline" fxFlex="16" class="pr-4">
                                                     <mat-label>Hora de retorno</mat-label>
-                                                    <input matInput formControlName="retornoHora" mask="00:00" [dropSpecialCharacters]="false">
+                                                    <input matInput formControlName="retornoHora" mask="00:00" [dropSpecialCharacters]="false" (ngModelChange)="calcularPrevisaoChegada()">
                                                     <mat-icon matSuffix class="secondary-text">access_time</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('itinerario').get('retornoHora')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="21" class="pr-4">
+                                                    <mat-label>Previsão de Chegada</mat-label>
+                                                    <input matInput formControlName="previsaoChegadaRetorno" readonly style="color: blue">
+                                                    <mat-icon matSuffix class="secondary-text">timer</mat-icon>
+                                                </mat-form-field>
                                             </div>
 
                                             <div fxFlex="1 0 auto" fxLayout="row wrap">
-                                                <mat-form-field appearance="outline" fxFlex="35" class="pr-4">
+                                                <mat-form-field appearance="outline" fxFlex="31" class="pr-4">
                                                     <mat-label>Veículo</mat-label>
                                                     <mat-icon matSuffix class="secondary-text">search</mat-icon>
                                                     <input matInput type="text" placeholder="Pesquisar veículo ..."
                                                            formControlName="veiculo" [matAutocomplete]="autoCompleteVeiculo">
-                                                    <mat-autocomplete autoActiveFirstOption #autoCompleteVeiculo="matAutocomplete" [displayWith]="mostrarNomeVeiculo">
+                                                    <mat-autocomplete autoActiveFirstOption #autoCompleteVeiculo="matAutocomplete" [displayWith]="mostrarNomeVeiculo" (optionSelected)="calcularPrevisaoChegada()">
                                                         <mat-option *ngIf="cmbCarregando" class="is-loading">
                                                             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                                                         </mat-option>
@@ -180,7 +186,7 @@
                                                 <mat-form-field appearance="outline" fxFlex="15" class="pr-4">
                                                     <mat-label>Km percorrido</mat-label>
                                                     <span matSuffix class="secondary-text">Km</span>
-                                                    <input matInput type="number" style="text-align: right" formControlName="kmPercorridoQuantidade" (ngModelChange)="calcularDespesas()">
+                                                    <input matInput type="number" style="text-align: right" formControlName="kmPercorridoQuantidade" (ngModelChange)="calcularPrevisaoChegada()">
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('itinerario').get('kmPercorridoQuantidade')"></app-message>
                                                     </mat-error>

@@ -5,10 +5,15 @@ export class Utils {
     }
 
 
-    public static converterDoubleEmHora(numero: number): any {
+    public static converterDoubleEmHora_1(numero: number): any {
         const remainder = numero % 1;
         const remainderTime = new Date(remainder * 3600 * 1000);
-        return Math.floor(numero) + ':' + ( '0' + remainderTime.getMinutes()).slice(-2);
+        return Math.floor(numero) + ':' + ('0' + remainderTime.getMinutes()).slice(-2);
+    }
+
+    public static converterDoubleEmHora_2(numero: number): any {
+        const date = new Date(numero * 3600 * 1000);
+        return ('0' + date.getUTCHours()).slice(-2) + ':' + ('0' + date.getUTCMinutes()).slice(-2);
     }
 
     public static validarCPF(cpf): boolean {

@@ -131,6 +131,9 @@ export class FretamentoService {
         clone.itinerario['partida'] = obj.itinerario.partidaData.format('YYYY-MM-DD') + ' ' + obj.itinerario.partidaHora;
         clone.itinerario['retorno'] = obj.itinerario.retornoData.format('YYYY-MM-DD') + ' ' + obj.itinerario.retornoHora;
 
+        clone.itinerario.previsaoChegadaPartida = moment('DD/MM/YYYY HH:mm', obj.itinerario.previsaoChegadaPartida).format('DD/MM/YYYY HH:mm');
+        clone.itinerario.previsaoChegadaRetorno = moment('DD/MM/YYYY HH:mm', obj.itinerario.previsaoChegadaRetorno).format('YYYY-MM-DD HH:mm');
+
         clone.itinerario.partidaCidade = {};
         clone.itinerario.retornoCidade = {};
         clone.itinerario['partidaCidade']['key'] = obj.itinerario.partidaCidade.key;

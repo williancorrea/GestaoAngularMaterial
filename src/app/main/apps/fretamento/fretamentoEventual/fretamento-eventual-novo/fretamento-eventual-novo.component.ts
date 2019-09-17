@@ -12,6 +12,8 @@ import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
 import {Utils} from '../../../../../core/utils/Utils';
 import {VeiculoService} from '../../veiculo.service';
+import * as moment from 'moment';
+
 
 @Component({
     selector: 'app-fretamento-eventual-novo',
@@ -40,8 +42,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
     viagemPrecoFinalPorcentagem: number;
     ganhoReal: number;
 
-    previsaoDeChegada: string;
-
     constructor(
         private _matSnackBar: MatSnackBar,
         private router: Router,
@@ -56,8 +56,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
     ngOnInit(): void {
         this.configurarForm();
 
-        console.log(Utils.converterDoubleEmHora(30 / 75));
-        this.previsaoDeChegada = Utils.converterDoubleEmHora(30 / 75);
+        // TODO: Remover
+        this.calcularPrevisaoChegada();
+
 
 
         const editando = this.activatedRoute.snapshot.params['key'];
@@ -67,6 +68,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 console.log(response);
                 this.formFretamentoEventual.patchValue(response);
+                this.calcularPrevisaoChegada();
                 this.calcularDespesas();
 
                 // this.mostrarModalCarregando(false);
@@ -78,8 +80,28 @@ export class FretamentoEventualNovoComponent implements OnInit {
             this.tipoPagina = 'NOVO';
             // this.mostrarModalCarregando(false);
         }
+    }
 
+    calcularPrevisaoChegada(): any {
+        if (!this.formFretamentoEventual.get('itinerario').get('kmPercorridoQuantidade').value || this.formFretamentoEventual.get('itinerario').get('kmPercorridoQuantidade').value < 0
 
+                || this.formFretamentoEventual.get('itinerario').get('partidaData').invalid || this.formFretamentoEventual.get('itinerario').get('partidaHora').invalid
+                || this.formFretamentoEventual.get('itinerario').get('retornoData').invalid || this.formFretamentoEventual.get('itinerario').get('retornoHora').invalid
+                || this.formFretamentoEventual.get('itinerario').get('veiculo').invalid) {
+            this.formFretamentoEventual.get('itinerario').get('previsaoChegadaPartida').reset();
+            this.formFretamentoEventual.get('itinerario').get('previsaoChegadaRetorno').reset();
+            this.formFretamentoEventual.get('itinerario').updateValueAndValidity();
+            return;
+        }
+        const dataPartida = this.formFretamentoEventual.get('itinerario').get('partidaData').value.format('DD-MM-YYYY') + ' ' + this.formFretamentoEventual.get('itinerario').get('partidaHora').value;
+        const dataPartidaAdicionarPrevisao = (this.formFretamentoEventual.get('itinerario').get('kmPercorridoQuantidade').value / 2) / this.formFretamentoEventual.get('itinerario').get('veiculo').value['velocidadeMedia'];
+        const dataPartidaPrevista = moment(dataPartida, 'DD/MM/YYYY HH:mm').add(dataPartidaAdicionarPrevisao, 'hours').format('DD/MM/YYYY HH:mm');
+        this.formFretamentoEventual.get('itinerario').get('previsaoChegadaPartida').setValue(dataPartidaPrevista);
+
+        const dataRetorno = this.formFretamentoEventual.get('itinerario').get('retornoData').value.format('DD-MM-YYYY') + ' ' + this.formFretamentoEventual.get('itinerario').get('retornoHora').value;
+        const dataRetornoAdicionarPrevisao = (this.formFretamentoEventual.get('itinerario').get('kmPercorridoQuantidade').value / 2) / this.formFretamentoEventual.get('itinerario').get('veiculo').value['velocidadeMedia'];
+        const dataRetornoPrevista = moment(dataRetorno, 'DD/MM/YYYY HH:mm').add(dataRetornoAdicionarPrevisao, 'hours').format('DD/MM/YYYY HH:mm');
+        this.formFretamentoEventual.get('itinerario').get('previsaoChegadaRetorno').setValue(dataRetornoPrevista);
     }
 
     mostrarNomePessoa(obj?: any): string | undefined {
@@ -184,6 +206,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 retornoHora: ['', [Validators.required, Validators.pattern('^([01]\\d|2[0-3]):?([0-5]\\d)$')]],
                 kmPercorridoQuantidade: [5, [Validators.required, Validators.min(5)]],
                 veiculo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+                previsaoChegadaPartida: [null],
+                previsaoChegadaRetorno: [null],
                 obsItineratio: ['', [Validators.maxLength(500)]],
             }),
             custo: this.formBuild.group({
