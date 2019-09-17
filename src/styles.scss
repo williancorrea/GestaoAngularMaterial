@@ -1,10 +1,14 @@
 // Import Fuse core library
 @import "@fuse/scss/core";
-
 // Import app.theme.scss
 @import "app/app.theme";
 
-.card-error{
+
+input:read-only, textarea:read-only, [contenteditable]:read-only {
+    cursor: not-allowed;
+}
+
+.card-error {
     border-radius: 5px;
     background: #ff000038;
     color: red;
@@ -12,4 +16,8 @@
     font-weight: 500;
     padding: 9px;
     text-align: -webkit-center;
+}
+.wcorrea-input-readyonly > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-outline {
+    background: rgba(0, 0, 0, .05) !important;
+    border-radius: 5px !important;
 }
