@@ -58,19 +58,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.formacaoPreco = false;
         this.configurarForm();
 
-        // TODO: Remover
-        this.calcularPrevisaoChegada();
-        this.formFretamentoEventual.get('itinerario').get('veiculo').setValue({
-            key: '5a567048755344473978666e343864716e6637615a673d3d',
-            placa: 'DTD-7217',
-            frota: '15000',
-            odometroInicial: 0,
-            consumoReal: 3.30,
-            velocidadeMedia: 70
-        });
-        this.formFretamentoEventual.get('itinerario').get('kmPercorridoQuantidade').setValue(1000);
-
-
         const editando = this.activatedRoute.snapshot.params['key'];
         if (editando) {
             this.tipoPagina = 'EDICAO';
@@ -78,8 +65,13 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 console.log(response);
                 this.formFretamentoEventual.patchValue(response);
+                console.log('Executou tudo 1');
+                this.formFretamentoEventual.updateValueAndValidity();
+                console.log('Executou tudo 2');
                 this.calcularPrevisaoChegada();
+                console.log('Executou tudo 3');
                 this.calcularDespesas();
+                console.log('Executou tudo 4');
 
                 // this.mostrarModalCarregando(false);
             }).catch(error => {
@@ -218,7 +210,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 retornoCidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 retornoData: ['', [Validators.required]],
                 retornoHora: ['', [Validators.required, Validators.pattern('^([01]\\d|2[0-3]):?([0-5]\\d)$')]],
-                kmPercorridoQuantidade: [5, [Validators.required, Validators.min(5)]],
+                kmPercorridoQuantidade: ['', [Validators.required, Validators.min(5)]],
                 veiculo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 previsaoChegadaPartida: [null],
                 previsaoChegadaRetorno: [null],
@@ -582,13 +574,13 @@ export class FretamentoEventualNovoComponent implements OnInit {
         // FAZ O CALCULO DO TIPO DE NOTA FISCAL
         switch (this.formFretamentoEventual.get('custo').get('notaFiscalTipo').value) {
             case 'SEM_NOTA':
-                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((0 / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
+                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue(0.0);
                 break;
             case 'NOTA_SERVICO':
-                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((20 / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
+                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((environment.imposto.nfe / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
                 break;
             case 'CTE_OS':
-                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((30 / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
+                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((environment.imposto.cteos / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
                 break;
         }
 

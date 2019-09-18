@@ -25,6 +25,24 @@ export class FretamentoService {
         return this.http.get(`${this.apiUrl}/${key}`, {headers})
             .toPromise()
             .then(response => {
+
+                if (response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
+                    delete response['cliente'];
+                }else{
+                    delete response['contato'];
+                }
+
+                response['itinerario']['partidaData'] = moment(response['itinerario']['partida'], 'YYYY-MM-DD HH:mm');
+                response['itinerario']['partidaHora'] = moment(response['itinerario']['partida'], 'YYYY-MM-DD HH:mm').format('HH:mm').toString();
+                response['itinerario']['retornoData'] = moment(response['itinerario']['retorno'], 'YYYY-MM-DD HH:mm');
+                response['itinerario']['retornoHora'] = moment(response['itinerario']['retorno'], 'YYYY-MM-DD HH:mm').format('HH:mm').toString();
+
+                delete response['itinerario']['partida'];
+                delete response['itinerario']['retorno'];
+
+                response['itinerario']['previsaoChegadaPartida'] = moment(response['itinerario']['previsaoChegadaPartida'], 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm').toString();
+                response['itinerario']['previsaoChegadaRetorno'] = moment(response['itinerario']['previsaoChegadaRetorno'], 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm').toString();
+
                 return response;
             });
     }
@@ -115,12 +133,41 @@ export class FretamentoService {
         headers.append('Content-Type', 'application/json');
 
 
-        const clone = JSON.parse(JSON.stringify(obj));
+        let clone = JSON.parse(JSON.stringify(obj));
+        clone = this.prepararDadosParaSalvar(clone, obj);
+
         delete clone['key'];
         delete clone['controle'];
 
+        return this.http.post(this.apiUrl, clone, {headers: headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+
+    atualizar(obj: any): Promise<any> {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+
+        let clone = JSON.parse(JSON.stringify(obj));
+        clone = this.prepararDadosParaSalvar(clone, obj);
+
+        return this.http.put(this.apiUrl, clone, {headers: headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+
+    private prepararDadosParaSalvar(clone: any, obj: any): any{
         if (clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
             delete clone.cliente;
+        }else{
+            delete clone.contato;
         }
 
         delete clone.itinerario.partidaData;
@@ -128,27 +175,21 @@ export class FretamentoService {
         delete clone.itinerario.retornoData;
         delete clone.itinerario.retornoHora;
 
-        clone.itinerario['partida'] = obj.itinerario.partidaData.format('YYYY-MM-DD') + ' ' + obj.itinerario.partidaHora;
-        clone.itinerario['retorno'] = obj.itinerario.retornoData.format('YYYY-MM-DD') + ' ' + obj.itinerario.retornoHora;
+        clone.itinerario.partida = obj.itinerario.partidaData.format('YYYY-MM-DD').toString() + ' ' + obj.itinerario.partidaHora;
+        clone.itinerario.retorno = obj.itinerario.retornoData.format('YYYY-MM-DD').toString() + ' ' + obj.itinerario.retornoHora;
+        clone.itinerario.previsaoChegadaPartida = moment(clone.itinerario.previsaoChegadaPartida, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm').toString();
+        clone.itinerario.previsaoChegadaRetorno = moment(clone.itinerario.previsaoChegadaRetorno, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm').toString();
+        clone.itinerario.partidaCidade = { key: clone.itinerario.partidaCidade.key};
+        clone.itinerario.retornoCidade = { key: clone.itinerario.retornoCidade.key};
 
-        clone.itinerario.previsaoChegadaPartida = moment('DD/MM/YYYY HH:mm', obj.itinerario.previsaoChegadaPartida).format('DD/MM/YYYY HH:mm');
-        clone.itinerario.previsaoChegadaRetorno = moment('DD/MM/YYYY HH:mm', obj.itinerario.previsaoChegadaRetorno).format('YYYY-MM-DD HH:mm');
+        clone.itinerario.veiculo = { key: clone.itinerario.veiculo.key};
 
-        clone.itinerario.partidaCidade = {};
-        clone.itinerario.retornoCidade = {};
-        clone.itinerario['partidaCidade']['key'] = obj.itinerario.partidaCidade.key;
-        clone.itinerario['retornoCidade']['key'] = obj.itinerario.retornoCidade.key;
+        clone.custo.notaFiscalImposto = clone.custo.notaFiscalImposto.toFixed(2);
+        clone.custo.combustivelLts = clone.custo.combustivelLts.toFixed(2);
+        clone.custo.valorKm = clone.custo.valorKm.toFixed(2);
+        clone.custo.motorista1 = {key: clone.custo.motorista1.key};
+        clone.custo.motorista2 = {key: clone.custo.motorista1.key};
 
-        // clone.custo.motorista1 = {key: clone.custo.motorista1.key};
-        // clone.custo.motorista2 = {key: clone.custo.motorista1.key};
-
-
-
-
-        return this.http.post(this.apiUrl, clone, {headers: headers})
-            .toPromise()
-            .then(response => {
-                return response;
-            });
+        return clone;
     }
 }

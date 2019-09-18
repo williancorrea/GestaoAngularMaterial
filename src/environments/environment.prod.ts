@@ -18,5 +18,9 @@ export const environment = {
         minCaracterParaPesquisa: 1,
         filtroDelay: 500,
         linhas: 100
+    },
+    imposto: {
+        nfe: 9.13,
+        cteos: 16.73
     }
 };
