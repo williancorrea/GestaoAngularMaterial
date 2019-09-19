@@ -18,8 +18,7 @@ import { EcommerceProductService } from 'app/main/apps/e-commerce/product/produc
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations
 })
-export class EcommerceProductComponent implements OnInit, OnDestroy
-{
+export class EcommerceProductComponent implements OnInit, OnDestroy{
     product: Product;
     pageType: string;
     productForm: FormGroup;

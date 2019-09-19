@@ -24,7 +24,6 @@ import {SegurancaModule} from './seguranca/seguranca.module';
 import {CoreModule} from './core/core.module';
 
 
-
 const appRoutes: Routes = [
     {
         path: 'apps',
@@ -52,6 +51,11 @@ const appRoutes: Routes = [
     {
         path: 'autenticacao',
         loadChildren: './seguranca/autenticacao/login/login-2.module#Login2Module'
+    },
+
+    {
+        path: 'fretamento',
+        loadChildren: './main/apps/fretamento/fretamento.module#FretamentoModule'
     },
 
     {
@@ -93,8 +97,6 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
         AppStoreModule,
-
-
 
 
         // WCorrea

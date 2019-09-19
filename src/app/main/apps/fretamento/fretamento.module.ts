@@ -4,7 +4,8 @@ import {RouterModule} from '@angular/router';
 import {
     MatAutocompleteModule,
     MatButtonModule,
-    MatCardModule, MatCheckboxModule,
+    MatCardModule,
+    MatCheckboxModule,
     MatChipsModule,
     MatDatepickerModule,
     MatDividerModule,
@@ -17,7 +18,8 @@ import {
     MatProgressBarModule,
     MatRadioModule,
     MatRippleModule,
-    MatSelectModule, MatSlideToggleModule,
+    MatSelectModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
     MatSortModule,
     MatStepperModule,
@@ -49,16 +51,11 @@ const routes = [
         // data: {roles: ['ROLE_CMB-PADRAO']}
     },
     {
-        path: 'eventual/:key',
-        component: FretamentoEventualNovoComponent,
+        path: 'eventual/:key', component: FretamentoEventualNovoComponent,
         // canActivate: [AuthGuard],
         // data: {roles: ['ROLE_CMB-PADRAO']}
     },
-    {
-        path: '**',
-        // redirectTo: 'eventual/novo'
-        redirectTo: 'eventual/1'
-    }
+    {path: '**', redirectTo: 'eventual'}
 ];
 
 @NgModule({

@@ -5,7 +5,6 @@ import {GestaoService} from '../../../seguranca/autenticacao/gestao.service';
 import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../core/modelos/FretamentoEventualSituacao';
 import * as moment from 'moment';
 
-
 @Injectable()
 export class FretamentoService {
 
@@ -135,9 +134,7 @@ export class FretamentoService {
 
         let clone = JSON.parse(JSON.stringify(obj));
         clone = this.prepararDadosParaSalvar(clone, obj);
-
         delete clone['key'];
-        delete clone['controle'];
 
         return this.http.post(this.apiUrl, clone, {headers: headers})
             .toPromise()
@@ -152,11 +149,12 @@ export class FretamentoService {
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
         headers.append('Content-Type', 'application/json');
 
-
+        const key = obj.key;
         let clone = JSON.parse(JSON.stringify(obj));
         clone = this.prepararDadosParaSalvar(clone, obj);
+        delete clone['key'];
 
-        return this.http.put(this.apiUrl, clone, {headers: headers})
+        return this.http.put(`${this.apiUrl}/${key}`, clone, {headers: headers})
             .toPromise()
             .then(response => {
                 return response;

@@ -20,8 +20,8 @@ export const environment = {
 
     dataTable: {
         filterDelay: 500,
-        rows: 5,
-        rowsPerPageOptions: [5, 10, 20, 50, 100]
+        rows: 10,
+        rowsPerPageOptions: [5, 10, 20, 100]
     },
 
     comboBox: {

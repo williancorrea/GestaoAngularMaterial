@@ -84,7 +84,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         }
     }
 
-    mostrarFormacaoPreco(): void{
+    mostrarFormacaoPreco(): void {
         this.formacaoPreco = !this.formacaoPreco;
     }
 
@@ -498,45 +498,29 @@ export class FretamentoEventualNovoComponent implements OnInit {
     }
 
     gravarFretamento(): void {
-        // console.log('CONTROLE', this.formFretamentoEventual);
-        console.log('DADOS', this.formFretamentoEventual.getRawValue());
-
         if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
             this.formFretamentoEventual.get('contato').reset();
         } else {
             this.formFretamentoEventual.get('cliente').reset();
         }
 
-        this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
-            this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {
-                verticalPosition: 'bottom',
-                duration: 5000
+        if (this.tipoPagina === 'NOVO') {
+            this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
+                this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
+            }).catch(error => {
+                // TODO: Colocar mensagem de erro para o usuario
+                console.log('ERRO AO SALVAR: ', error);
+                // this.errorHandler.handle(error);
             });
-        }).catch(error => {
-            // TODO: Colocar mensagem de erro para o usuario
-            console.log('ERRO AO SALVAR: ', error);
-            // this.errorHandler.handle(error);
-        });
-
-
-        // const data = this.productForm.getRawValue();
-        // data.handle = FuseUtils.handleize(data.name);
-        //
-        // this._ecommerceProductService.addProduct(data)
-        //     .then(() => {
-        //
-        //         // Trigger the subscription with new data
-        //         this._ecommerceProductService.onProductChanged.next(data);
-        //
-        //         // Show the success message
-        //         this._matSnackBar.open('Product added', 'OK', {
-        //             verticalPosition: 'top',
-        //             duration: 2000
-        //         });
-        //
-        //         // Change the location with new one
-        //         this._location.go('apps/e-commerce/products/' + this.product.id + '/' + this.product.handle);
-        //     });
+        } else {
+            this.fretamentoService.atualizar(this.formFretamentoEventual.getRawValue()).then(response => {
+                this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
+            }).catch(error => {
+                // TODO: Colocar mensagem de erro para o usuario
+                console.log('ERRO AO SALVAR: ', error);
+                // this.errorHandler.handle(error);
+            });
+        }
     }
 
     calcularDespesas(): void {
@@ -552,11 +536,11 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         // Calculo dos combustivel
         this.formFretamentoEventual.get('custo').get('combustivelLts').setValue(this.formFretamentoEventual.get('itinerario').get('kmPercorridoQuantidade').value / this.formFretamentoEventual.get('itinerario').get('veiculo').value['consumoReal']);
-        if (this.formFretamentoEventual.get('custo').get('combustivelValor').value && this.formFretamentoEventual.get('custo').get('combustivelValor').value > 0.0){
+        if (this.formFretamentoEventual.get('custo').get('combustivelValor').value && this.formFretamentoEventual.get('custo').get('combustivelValor').value > 0.0) {
             this.formFretamentoEventual.get('custo').get('combustivelTotal').setValue(
                 this.formFretamentoEventual.get('custo').get('combustivelLts').value * this.formFretamentoEventual.get('custo').get('combustivelValor').value
             );
-        }else{
+        } else {
             this.formFretamentoEventual.get('custo').get('combustivelValor').setValue(0.0);
             this.formFretamentoEventual.get('custo').get('combustivelTotal').setValue(0.0);
         }

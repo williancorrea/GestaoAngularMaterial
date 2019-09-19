@@ -9,12 +9,11 @@ import {FretamentoService} from '../main/apps/fretamento/fretamento.service';
 import {GestaoService} from '../seguranca/autenticacao/gestao.service';
 import {IConfig, NgxMaskModule} from 'ngx-mask';
 
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatPaginatorIntl} from '@angular/material';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {CURRENCY_MASK_CONFIG, CurrencyMaskConfig} from 'ng2-currency-mask/src/currency-mask.config';
 import {VeiculoService} from '../main/apps/fretamento/veiculo.service';
-
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -37,6 +36,33 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     suffix: '',
     thousands: '.',
 };
+
+const paginadorAlcanceLabel = (page: number, pageSize: number, length: number) => {
+    if (length === 0 || pageSize === 0) {
+        return `0 de ${length}`;
+    }
+    length = Math.max(length, 0);
+
+    const startIndex = page * pageSize;
+
+    // If the start index exceeds the list length, do not try and fix the end index to the end.
+    const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
+    return `${startIndex + 1} - ${endIndex} de ${length}`;
+};
+
+
+export function getPaginadorTraducao(): any {
+    const paginatorIntl = new MatPaginatorIntl();
+
+    paginatorIntl.itemsPerPageLabel = 'Itens por pagina:';
+    paginatorIntl.firstPageLabel = 'Primeira pagina'
+    paginatorIntl.nextPageLabel = 'Próxima pagina';
+    paginatorIntl.previousPageLabel = 'Voltar pagina';
+    paginatorIntl.lastPageLabel = 'Ultima pagina';
+    paginatorIntl.getRangeLabel = paginadorAlcanceLabel;
+
+    return paginatorIntl;
+}
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
@@ -69,6 +95,9 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
         {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'},
         {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
         {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS},
+
+        // Paginador Material design
+        {provide: MatPaginatorIntl, useValue: getPaginadorTraducao()},
 
         GestaoService,
         ErroManipuladorService,

@@ -78,50 +78,54 @@ $typography: mat-typography-config(
 // -----------------------------------------------------------------------------------------------------
 
 // Import app and page component themes here to enable theming for them
-@import "src/app/layout/components/chat-panel/chat-panel.theme";
-@import "src/app/layout/components/toolbar/toolbar.theme";
+@import '~app/layout/components/chat-panel/chat-panel.theme';
+@import "~app/layout/components/toolbar/toolbar.theme";
 
-@import "src/app/main/apps/academy/academy.theme";
-@import "src/app/main/apps/calendar/calendar.theme";
-@import "src/app/main/apps/chat/chat.theme";
-@import "src/app/main/apps/contacts/contacts.theme";
-@import "src/app/main/apps/dashboards/project/project.theme";
-@import "src/app/main/apps/e-commerce/orders/orders.theme";
-@import "src/app/main/apps/e-commerce/products/products.theme";
-@import "src/app/main/apps/file-manager/file-manager.theme";
-@import "src/app/main/apps/mail/mail.theme";
-@import "src/app/main/apps/mail-ngrx/mail.theme";
-@import "src/app/main/apps/scrumboard/scrumboard.theme";
-@import "src/app/main/apps/todo/todo.theme";
+@import "~app/main/apps/academy/academy.theme";
+@import "~app/main/apps/calendar/calendar.theme";
+@import "~app/main/apps/chat/chat.theme";
+@import "~app/main/apps/contacts/contacts.theme";
+@import "~app/main/apps/dashboards/project/project.theme";
+@import "~app/main/apps/e-commerce/orders/orders.theme";
+@import "~app/main/apps/e-commerce/products/products.theme";
+@import "~app/main/apps/file-manager/file-manager.theme";
+@import "~app/main/apps/mail/mail.theme";
+@import "~app/main/apps/mail-ngrx/mail.theme";
+@import "~app/main/apps/scrumboard/scrumboard.theme";
+@import "~app/main/apps/todo/todo.theme";
 
-@import "src/app/main/pages/authentication/login/login.theme";
-@import "src/app/seguranca/autenticacao/login/login-2.theme";
-@import "src/app/main/pages/authentication/register/register.theme";
-@import "src/app/main/pages/authentication/register-2/register-2.theme";
-@import "src/app/main/pages/authentication/reset-password/reset-password.theme";
-@import "src/app/main/pages/authentication/reset-password-2/reset-password-2.theme";
-@import "src/app/main/pages/authentication/forgot-password/forgot-password.theme";
-@import "src/app/main/pages/authentication/forgot-password-2/forgot-password-2.theme";
-@import "src/app/main/pages/authentication/lock/lock.theme";
-@import "src/app/main/pages/authentication/mail-confirm/mail-confirm.theme";
-@import "src/app/main/pages/coming-soon/coming-soon.theme";
-@import "src/app/main/pages/errors/404/error-404.theme";
-@import "src/app/main/pages/errors/500/error-500.theme";
-@import "src/app/main/pages/maintenance/maintenance.theme";
-@import "src/app/main/pages/pricing/style-1/style-1.theme";
-@import "src/app/main/pages/pricing/style-2/style-2.theme";
-@import "src/app/main/pages/pricing/style-3/style-3.theme";
-@import "src/app/main/pages/profile/tabs/about/about.theme";
-@import "src/app/main/pages/profile/tabs/photos-videos/photos-videos.theme";
-@import "src/app/main/pages/profile/tabs/timeline/timeline.theme";
-@import "src/app/main/pages/search/classic/search-classic.theme";
-@import "src/app/main/pages/search/modern/search-modern.theme";
-@import "src/app/main/pages/faq/faq.theme";
-@import "src/app/main/pages/knowledge-base/knowledge-base.theme";
+@import "~app/main/pages/authentication/login/login.theme";
+@import "~app/seguranca/autenticacao/login/login-2.theme";
+@import "~app/main/pages/authentication/register/register.theme";
+@import "~app/main/pages/authentication/register-2/register-2.theme";
+@import "~app/main/pages/authentication/reset-password/reset-password.theme";
+@import "~app/main/pages/authentication/reset-password-2/reset-password-2.theme";
+@import "~app/main/pages/authentication/forgot-password/forgot-password.theme";
+@import "~app/main/pages/authentication/forgot-password-2/forgot-password-2.theme";
+@import "~app/main/pages/authentication/lock/lock.theme";
+@import "~app/main/pages/authentication/mail-confirm/mail-confirm.theme";
+@import "~app/main/pages/coming-soon/coming-soon.theme";
+@import "~app/main/pages/errors/404/error-404.theme";
+@import "~app/main/pages/errors/500/error-500.theme";
+@import "~app/main/pages/maintenance/maintenance.theme";
+@import "~app/main/pages/pricing/style-1/style-1.theme";
+@import "~app/main/pages/pricing/style-2/style-2.theme";
+@import "~app/main/pages/pricing/style-3/style-3.theme";
+@import "~app/main/pages/profile/tabs/about/about.theme";
+@import "~app/main/pages/profile/tabs/photos-videos/photos-videos.theme";
+@import "~app/main/pages/profile/tabs/timeline/timeline.theme";
+@import "~app/main/pages/search/classic/search-classic.theme";
+@import "~app/main/pages/search/modern/search-modern.theme";
+@import "~app/main/pages/faq/faq.theme";
+@import "~app/main/pages/knowledge-base/knowledge-base.theme";
 
-@import "src/app/main/ui/cards/cards.theme";
+@import "~app/main/ui/cards/cards.theme";
 
-@import "src/app/main/angular-material-elements/example-viewer/example-viewer.theme";
+@import "~app/main/angular-material-elements/example-viewer/example-viewer.theme";
+
+
+// PAGINAS PERSONALIZADAS
+@import "~app/main/apps/fretamento/fretamentoEventual/fretamento.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -143,6 +147,8 @@ $typography: mat-typography-config(
     @include mail-ngrx-theme($theme);
     @include scrumboard-theme($theme);
     @include todo-theme($theme);
+
+    @include wcorrea-theme($theme);
 
     // Pages
     @include login-theme($theme);
