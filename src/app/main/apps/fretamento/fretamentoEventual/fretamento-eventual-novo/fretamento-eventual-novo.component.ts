@@ -27,6 +27,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     form: FormGroup;
     tipoPagina: string;
+    env: any;
 
     formFretamentoEventual: FormGroup;
 
@@ -43,18 +44,18 @@ export class FretamentoEventualNovoComponent implements OnInit {
     ganhoReal: number;
     formacaoPreco: any;
 
-    constructor(
-        private _matSnackBar: MatSnackBar,
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private formBuild: FormBuilder,
-        private fretamentoService: FretamentoService,
-        private veiculoService: VeiculoService,
-        private errorHandler: ErroManipuladorService
-    ) {
+    constructor(private _matSnackBar: MatSnackBar,
+                private router: Router,
+                private activatedRoute: ActivatedRoute,
+                private formBuild: FormBuilder,
+                private fretamentoService: FretamentoService,
+                private veiculoService: VeiculoService,
+                private errorHandler: ErroManipuladorService) {
     }
 
     ngOnInit(): void {
+        moment.locale('pt-BR');
+        this.env = environment;
         this.formacaoPreco = false;
         this.configurarForm();
 
@@ -62,19 +63,19 @@ export class FretamentoEventualNovoComponent implements OnInit {
         if (editando) {
             this.tipoPagina = 'EDICAO';
             this.fretamentoService.buscarPorKey(editando).then(response => {
-
-                console.log(response);
+                console.log(1);
                 this.formFretamentoEventual.patchValue(response);
-                console.log('Executou tudo 1');
+                console.log(2);
                 this.formFretamentoEventual.updateValueAndValidity();
-                console.log('Executou tudo 2');
+                console.log(3);
                 this.calcularPrevisaoChegada();
-                console.log('Executou tudo 3');
+                console.log(4);
                 this.calcularDespesas();
-                console.log('Executou tudo 4');
+                console.log(5);
 
                 // this.mostrarModalCarregando(false);
             }).catch(error => {
+                this.tipoPagina = 'NOVO';
                 // this.errorHandler.handle(error);
                 // this.mostrarModalCarregando(false);
             });
@@ -127,7 +128,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.cmbClienteForm.updateValueAndValidity();
         this.cmbClienteForm.valueChanges
             .pipe(
-                debounceTime(environment.comboBox.filtroDelay),
+                debounceTime(this.env.comboBox.filtroDelay),
                 map(pesquisa => {
                     if (typeof pesquisa === 'string') {
                         return pesquisa.trim();
@@ -167,7 +168,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
             key: [null],
             situacao: [FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO, [Validators.required]],
             contato: this.formBuild.group({
-                nome: ['', [
+                nome: [null, [
                     Validators.required,
                     Validators.minLength(10),
                     Validators.maxLength(200)]
@@ -274,7 +275,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual.get('cliente').get('cidade').valueChanges
             .pipe(
-                debounceTime(environment.comboBox.filtroDelay),
+                debounceTime(this.env.comboBox.filtroDelay),
                 map(pesquisa => {
                     if (typeof pesquisa === 'string') {
                         return pesquisa.trim();
@@ -304,7 +305,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual.get('itinerario').get('partidaCidade').valueChanges
             .pipe(
-                debounceTime(environment.comboBox.filtroDelay),
+                debounceTime(this.env.comboBox.filtroDelay),
                 map(pesquisa => {
                     if (typeof pesquisa === 'string') {
                         return pesquisa.trim();
@@ -334,7 +335,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual.get('itinerario').get('retornoCidade').valueChanges
             .pipe(
-                debounceTime(environment.comboBox.filtroDelay),
+                debounceTime(this.env.comboBox.filtroDelay),
                 map(pesquisa => {
                     if (typeof pesquisa === 'string') {
                         return pesquisa.trim();
@@ -365,7 +366,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual.get('custo').get('motorista1').valueChanges
             .pipe(
-                debounceTime(environment.comboBox.filtroDelay),
+                debounceTime(this.env.comboBox.filtroDelay),
                 map(pesquisa => {
                     if (typeof pesquisa === 'string') {
                         return pesquisa.trim();
@@ -394,7 +395,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
             });
         this.formFretamentoEventual.get('custo').get('motorista2').valueChanges
             .pipe(
-                debounceTime(environment.comboBox.filtroDelay),
+                debounceTime(this.env.comboBox.filtroDelay),
                 map(pesquisa => {
                     if (typeof pesquisa === 'string') {
                         return pesquisa.trim();
@@ -424,7 +425,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual.get('itinerario').get('veiculo').valueChanges
             .pipe(
-                debounceTime(environment.comboBox.filtroDelay),
+                debounceTime(this.env.comboBox.filtroDelay),
                 map(pesquisa => {
                     if (typeof pesquisa === 'string') {
                         return pesquisa.trim();
@@ -561,10 +562,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue(0.0);
                 break;
             case 'NOTA_SERVICO':
-                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((environment.imposto.nfe / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
+                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((this.env.imposto.nfe / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
                 break;
             case 'CTE_OS':
-                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((environment.imposto.cteos / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
+                this.formFretamentoEventual.get('custo').get('notaFiscalImposto').setValue((this.env.imposto.cteos / 100) * this.formFretamentoEventual.get('custo').get('viagemPrecoFinal').value);
                 break;
         }
 
@@ -591,7 +592,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
         );
         this.calcularDespesas();
     }
-
 
     buscarCpfDigitado(): void {
         if (this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').valid) {

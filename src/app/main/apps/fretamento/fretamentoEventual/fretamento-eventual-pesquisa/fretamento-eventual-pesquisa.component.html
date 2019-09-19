@@ -30,9 +30,9 @@
             </div>
             <!-- / PESQUISA -->
 
-            <button mat-raised-button [routerLink]="'fretamento/novo'" class="add-product-button fuse-white mt-24 mt-md-0">
+            <a mat-raised-button [routerLink]="'/fretamento/eventual/novo'" class="add-product-button fuse-white mt-24 mt-md-0">
                 <span>NOVO FRETAMENTO</span>
-            </button>
+            </a>
 
         </div>
         <!-- / HEADER -->
@@ -40,8 +40,8 @@
         <!-- CONTENT CARD -->
         <div class="content-card">
 
-            <mat-table class="products-table"
-                       #table [dataSource]="dataSource"
+            <mat-table #table [dataSource]="fretamentoList"
+                       class="products-table"
                        matSort
                        [@animateStagger]="{value:'50'}"
                        fusePerfectScrollbar>
@@ -49,8 +49,8 @@
                 <!-- ID Column -->
                 <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-                    <mat-cell *matCellDef="let product">
-                        <p class="text-truncate">{{product.id}}</p>
+                    <mat-cell *matCellDef="let obj">
+                        <p class="text-truncate">{{obj.key}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -120,10 +120,10 @@
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 
-                <mat-row *matRowDef="let product; columns: displayedColumns;"
+                <mat-row *matRowDef="let obj; columns: displayedColumns;"
                          class="product"
                          matRipple
-                         [routerLink]="'fretamento/eventual/'+ product.id">
+                         [routerLink]="'/fretamento/eventual/'+ obj.key">
                 </mat-row>
 
             </mat-table>
@@ -133,7 +133,7 @@
                            [pageIndex]="0"
                            [pageSize]="env['dataTable']['rows']"
                            [pageSizeOptions]="env['dataTable']['rowsPerPageOptions']"
-                           (page)="serverData($event)">
+                           (page)="paginadorEvento($event)">
             </mat-paginator>
 
         </div>
