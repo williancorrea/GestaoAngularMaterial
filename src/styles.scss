@@ -21,3 +21,7 @@ input:read-only, textarea:read-only, [contenteditable]:read-only {
     background: rgba(0, 0, 0, .05) !important;
     border-radius: 5px !important;
 }
+
+// mat table zebrada
+.mat-row:nth-child(even){ background-color: #fff; }
+.mat-row:nth-child(odd){  background-color: #f1f1f1; }

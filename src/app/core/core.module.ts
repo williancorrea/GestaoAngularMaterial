@@ -1,7 +1,7 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
-import {CommonModule} from '@angular/common';
+import {CommonModule, registerLocaleData} from '@angular/common';
 
 import {ErroManipuladorService} from './erro-manipulador.service';
 import {MessageComponent} from './message/message.component';
@@ -14,6 +14,8 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {CURRENCY_MASK_CONFIG, CurrencyMaskConfig} from 'ng2-currency-mask/src/currency-mask.config';
 import {VeiculoService} from '../main/apps/fretamento/veiculo.service';
+
+import pt from '@angular/common/locales/pt';
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -66,6 +68,9 @@ export function getPaginadorTraducao(): any {
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
+// REGISRANDO A APLICACAO PARA PT-BR
+registerLocaleData(pt, 'pt');
+
 @NgModule({
     imports: [
         CommonModule,
@@ -87,6 +92,9 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     providers: [
         // AuthService,
         // JwtHelperService,
+
+        // Define a APLICACAO sendo do BR idependente do navegador
+        {provide: LOCALE_ID, useValue: 'pt'},
 
         // Dinheiro
         {provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig},

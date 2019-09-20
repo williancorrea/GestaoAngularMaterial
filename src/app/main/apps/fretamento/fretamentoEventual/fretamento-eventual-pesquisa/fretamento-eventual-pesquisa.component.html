@@ -1,4 +1,4 @@
-<div id="products" class="page-layout carded fullwidth inner-scroll">
+<div class="page-layout carded fullwidth inner-scroll wcorrea-topo-pagina">
 
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
@@ -57,54 +57,44 @@
                 <!-- Image Column -->
                 <ng-container matColumnDef="image">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let product">
-                        <img class="product-image"
-                             *ngIf="product.featuredImageId" [alt]="product.name"
-                             [src]="product.images[product.featuredImageId].url"/>
-                        <img *ngIf="!product.featuredImageId"
-                             [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                    <mat-cell *matCellDef="let obj">
+                        <mat-icon *ngIf="obj['contato']" style="font-size: 52px; width: 52px; height: 52px; color: #CCC">account_circle</mat-icon>
+                        <img class="product-image" *ngIf="!obj['contato']" [src]="obj['cliente']['imagem']"/>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                    <mat-cell *matCellDef="let product">
-                        <p class="text-truncate">{{product.name}}</p>
+                    <mat-cell *matCellDef="let obj" >
+                        <p *ngIf="obj['situacao'] !== 'AGENDADO'" class="text-truncate">{{obj['contato'] ? obj['contato']['nome'] : ''}}</p>
+                        <p *ngIf="obj['situacao'] === 'AGENDADO'" class="text-truncate">{{obj['cliente'] ? obj['cliente']['nome'] : ''}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Category Column -->
                 <ng-container matColumnDef="category">
                     <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Category</mat-header-cell>
-                    <mat-cell *matCellDef="let product" fxHide fxShow.gt-md>
-                        <p class="category text-truncate">
-                            {{product.categories[0]}}
-                        </p>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-md style="display: block">
+                        <p class="text-truncate">Partida: {{obj['itinerario']['partidaData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['partidaHora']}}</p>
+                        <p class="text-truncate">Retorno: {{obj['itinerario']['retornoData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['retornoHora']}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Price Column -->
                 <ng-container matColumnDef="price">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Price</mat-header-cell>
-                    <mat-cell *matCellDef="let product" fxHide fxShow.gt-xs>
-                        <p class="price text-truncate">
-                            {{product.priceTaxIncl | currency:'USD':'symbol'}}
-                        </p>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
+                        <p class="text-truncate">Partida: {{obj['itinerario']['partidaCidade']['nome']}}/{{obj['itinerario']['partidaCidade']['estado']['iniciais']}}</p>
+                        <p class="text-truncate">Partida: {{obj['itinerario']['retornoCidade']['nome']}}/{{obj['itinerario']['retornoCidade']['estado']['iniciais']}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Quantity Column -->
                 <ng-container matColumnDef="quantity">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Quantity</mat-header-cell>
-                    <mat-cell *matCellDef="let product" fxHide fxShow.gt-sm>
-
-                        <span class="quantity-indicator text-truncate"
-                              [ngClass]="{'red-500':product.quantity <= 5, 'amber-500':product.quantity > 5 && product.quantity <= 25,'green-600':product.quantity > 25}">
-                        </span>
-                        <span>
-                            {{product.quantity}}
-                        </span>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-sm>
+                        <p class="text-truncate">{{obj['custo']['viagemPrecoFinal'] | currency :"BRL"}}</p>
 
                     </mat-cell>
                 </ng-container>
@@ -112,9 +102,9 @@
                 <!-- Active Column -->
                 <ng-container matColumnDef="active">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
-                    <mat-cell *matCellDef="let product" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="product.active" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!product.active" class="active-icon red-500 s-16">close</mat-icon>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs>
+                        <!--                        <mat-icon *ngIf="product.active" class="active-icon green-600 s-16">check</mat-icon>-->
+                        <!--                        <mat-icon *ngIf="!product.active" class="active-icon red-500 s-16">close</mat-icon>-->
                     </mat-cell>
                 </ng-container>
 

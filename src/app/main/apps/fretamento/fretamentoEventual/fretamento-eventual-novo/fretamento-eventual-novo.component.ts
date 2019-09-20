@@ -63,15 +63,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
         if (editando) {
             this.tipoPagina = 'EDICAO';
             this.fretamentoService.buscarPorKey(editando).then(response => {
-                console.log(1);
                 this.formFretamentoEventual.patchValue(response);
-                console.log(2);
                 this.formFretamentoEventual.updateValueAndValidity();
-                console.log(3);
                 this.calcularPrevisaoChegada();
-                console.log(4);
                 this.calcularDespesas();
-                console.log(5);
 
                 // this.mostrarModalCarregando(false);
             }).catch(error => {
@@ -184,7 +179,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 obs: ['', [Validators.maxLength(500)]],
                 nome: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
                 fantasia: ['', [Validators.maxLength(250)]],
-                imagem: [''],
+                imagem: [null],
                 cidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 cep: ['', [Validators.maxLength(9)]],
                 endereco: [''],
