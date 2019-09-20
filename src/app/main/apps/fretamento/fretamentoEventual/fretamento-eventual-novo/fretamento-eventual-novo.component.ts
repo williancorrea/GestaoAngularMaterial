@@ -503,6 +503,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
         if (this.tipoPagina === 'NOVO') {
             this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
                 this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
+
+                this.router.navigateByUrl('/fretamento/eventual');
             }).catch(error => {
                 // TODO: Colocar mensagem de erro para o usuario
                 console.log('ERRO AO SALVAR: ', error);
@@ -511,6 +513,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
         } else {
             this.fretamentoService.atualizar(this.formFretamentoEventual.getRawValue()).then(response => {
                 this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
+
+                this.router.navigateByUrl('/fretamento/eventual');
             }).catch(error => {
                 // TODO: Colocar mensagem de erro para o usuario
                 console.log('ERRO AO SALVAR: ', error);

@@ -85,8 +85,8 @@
                 <ng-container matColumnDef="price">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Price</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
-                        <p class="text-truncate">Partida: {{obj['itinerario']['partidaCidade']['nome']}}/{{obj['itinerario']['partidaCidade']['estado']['iniciais']}}</p>
-                        <p class="text-truncate">Partida: {{obj['itinerario']['retornoCidade']['nome']}}/{{obj['itinerario']['retornoCidade']['estado']['iniciais']}}</p>
+                        <p class="text-truncate">{{obj['itinerario']['partidaCidade']['nome']}}/{{obj['itinerario']['partidaCidade']['estado']['iniciais']}}</p>
+                        <p class="text-truncate">{{obj['itinerario']['retornoCidade']['nome']}}/{{obj['itinerario']['retornoCidade']['estado']['iniciais']}}</p>
                     </mat-cell>
                 </ng-container>
 

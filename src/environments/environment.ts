@@ -46,4 +46,4 @@ export const environment = {
 
 
 // disableHostCheck é igual a  Access-Control-Allow-Origin: *
-// ng serve --port 4200 --host 192.168.5.10 --disableHostCheck
+// ng serve --port 4200 --host 192.168.5.9 --disableHostCheck
