@@ -47,12 +47,12 @@
                        fusePerfectScrollbar>
 
                 <!-- ID Column -->
-                <ng-container matColumnDef="id">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-                    <mat-cell *matCellDef="let obj">
-                        <p class="text-truncate">{{obj.key}}</p>
-                    </mat-cell>
-                </ng-container>
+<!--                <ng-container matColumnDef="id">-->
+<!--                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>-->
+<!--                    <mat-cell *matCellDef="let obj">-->
+<!--                        <p class="text-truncate">{{obj.key}}</p>-->
+<!--                    </mat-cell>-->
+<!--                </ng-container>-->
 
                 <!-- Image Column -->
                 <ng-container matColumnDef="image">
@@ -65,7 +65,7 @@
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let obj" >
                         <p *ngIf="obj['situacao'] !== 'AGENDADO'" class="text-truncate">{{obj['contato'] ? obj['contato']['nome'] : ''}}</p>
                         <p *ngIf="obj['situacao'] === 'AGENDADO'" class="text-truncate">{{obj['cliente'] ? obj['cliente']['nome'] : ''}}</p>
@@ -74,7 +74,7 @@
 
                 <!-- Category Column -->
                 <ng-container matColumnDef="category">
-                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Category</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Horários</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-md style="display: block">
                         <p class="text-truncate">Partida: {{obj['itinerario']['partidaData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['partidaHora']}}</p>
                         <p class="text-truncate">Retorno: {{obj['itinerario']['retornoData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['retornoHora']}}</p>
@@ -83,7 +83,7 @@
 
                 <!-- Price Column -->
                 <ng-container matColumnDef="price">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Price</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Itinerário</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
                         <p class="text-truncate">{{obj['itinerario']['partidaCidade']['nome']}}/{{obj['itinerario']['partidaCidade']['estado']['iniciais']}}</p>
                         <p class="text-truncate">{{obj['itinerario']['retornoCidade']['nome']}}/{{obj['itinerario']['retornoCidade']['estado']['iniciais']}}</p>
@@ -92,7 +92,7 @@
 
                 <!-- Quantity Column -->
                 <ng-container matColumnDef="quantity">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Quantity</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Valor</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-sm>
                         <p class="text-truncate">{{obj['custo']['viagemPrecoFinal'] | currency :"BRL"}}</p>
 
@@ -100,13 +100,13 @@
                 </ng-container>
 
                 <!-- Active Column -->
-                <ng-container matColumnDef="active">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
-                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs>
-                        <!--                        <mat-icon *ngIf="product.active" class="active-icon green-600 s-16">check</mat-icon>-->
-                        <!--                        <mat-icon *ngIf="!product.active" class="active-icon red-500 s-16">close</mat-icon>-->
-                    </mat-cell>
-                </ng-container>
+<!--                <ng-container matColumnDef="active">-->
+<!--                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>-->
+<!--                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs>-->
+<!--                        &lt;!&ndash;                        <mat-icon *ngIf="product.active" class="active-icon green-600 s-16">check</mat-icon>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                        <mat-icon *ngIf="!product.active" class="active-icon red-500 s-16">close</mat-icon>&ndash;&gt;-->
+<!--                    </mat-cell>-->
+<!--                </ng-container>-->
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 

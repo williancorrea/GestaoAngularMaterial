@@ -16,7 +16,8 @@ import {FretamentoService} from '../../fretamento.service';
 export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewInit {
 
     fretamentoList: null;
-    displayedColumns = ['id', 'image', 'name', 'category', 'price', 'quantity', 'active'];
+    // displayedColumns = ['id', 'image', 'name', 'category', 'price', 'quantity', 'active'];
+    displayedColumns = ['image', 'name', 'category', 'price', 'quantity'];
 
     @ViewChild(MatPaginator, {static: true})
     paginador: MatPaginator;
