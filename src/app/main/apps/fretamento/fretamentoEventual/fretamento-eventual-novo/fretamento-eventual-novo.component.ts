@@ -239,7 +239,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 valorKm: [null, [Validators.required]],
 
                 obsCusto: ['', [Validators.maxLength(500)]],
-            })
+            }),
+            dataContratacao: [null, [Validators.required]],
+            representanteComercial: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+            empresa: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]]
         });
 
         this.formFretamentoEventual.get('cliente').get('tipo').valueChanges.subscribe(valor => {

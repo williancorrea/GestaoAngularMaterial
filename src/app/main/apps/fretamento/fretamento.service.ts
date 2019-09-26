@@ -18,8 +18,6 @@ export class FretamentoService {
         moment.locale('pt-BR');
     }
 
-
-
     buscarPorCPF(key): any {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
@@ -98,6 +96,42 @@ export class FretamentoService {
             return response;
         });
     }
+
+    pesquisarRepresentanteComercialEmpresaRosinha(pesquisa: string): Promise<any> {
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        const params = new HttpParams()
+            .set('size', String(environment.comboBox.linhas))
+            .set('page', String(0))
+            .set('ordemClassificacao', 'ASC')
+            .set('campoOrdenacao', 'nome')
+            .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+
+        return this.http.get(`${this.apiUrl}/cmbRepresentanteComercialEmpresaRosinha`, {headers: headers, params: params}).toPromise().then(response => {
+            return response;
+        });
+    }
+
+    pesquisarEmpresaRosinha(pesquisa: string): Promise<any> {
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        const params = new HttpParams()
+            .set('size', String(environment.comboBox.linhas))
+            .set('page', String(0))
+            .set('ordemClassificacao', 'ASC')
+            .set('campoOrdenacao', 'nome')
+            .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+
+        return this.http.get(`${this.apiUrl}/cmbEmpresaRosinha`, {headers: headers, params: params}).toPromise().then(response => {
+            return response;
+        });
+    }
+
+
 
     salvar(obj: any): Promise<any> {
         // TODO: REmover a autenticacao FIXA DAQUI
