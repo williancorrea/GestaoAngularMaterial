@@ -17,7 +17,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
 
     fretamentoList: null;
     // displayedColumns = ['id', 'image', 'name', 'category', 'price', 'quantity', 'active'];
-    displayedColumns = ['numero_contrato', 'image', 'name', 'category', 'price', 'quantity'];
+    displayedColumns = ['numero_contrato', 'image', 'name', 'category', 'price', 'quantity', 'buttons'];
 
     @ViewChild(MatPaginator, {static: true})
     paginador: MatPaginator;
@@ -38,24 +38,17 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     }
 
     ngAfterViewInit(): void {
-        this.fretamentoService.listarTodos(this.paginador, this.filtro).then(response => {
-
-            this.fretamentoList = response['content'];
-            this.paginador.length = response['totalElements'];
-
-        }).catch(error => {
-            // TODO: Colocar mensagem de erro para o usuario
-            console.log('ERRO AO SALVAR: ', error);
-            // this.errorHandler.handle(error);
-        });
+        this.pesquisar();
     }
-
 
 
     paginadorEvento(event?: PageEvent): PageEvent {
 
         console.log('MUDOU A BAGAÇA', event.pageIndex * event.pageSize);
 
+        this.pesquisar();
+
+        // TODO: FAZER FUNCIONAR O PAGINADOR
 
         // this.fooService.getdata(event).subscribe(
         //     response =>{
@@ -73,5 +66,41 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         //     }
         // );
         return event;
+    }
+
+    pesquisar(): void {
+        this.fretamentoService.listarTodos(this.paginador, this.filtro).then(response => {
+
+            this.fretamentoList = response['content'];
+            this.paginador.length = response['totalElements'];
+
+        }).catch(error => {
+            // TODO: Colocar mensagem de erro para o usuario
+            console.log('ERRO AO SALVAR: ', error);
+            // this.errorHandler.handle(error);
+        });
+    }
+
+    imprimirContrato(key: string): void {
+        this.fretamentoService.gerarContrato(key).then(relatorio => {
+
+            const a = document.createElement('a');
+            a.style['display'] = 'none';
+            const blob = new Blob([relatorio], {type: 'application/pdf'});
+            const url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = 'Contrato.pdf';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+
+        }).catch(error => {
+            // TODO: Colocar mensagem de erro para o usuario
+            console.log('ERRO AO SALVAR: ', error);
+            // this.errorHandler.handle(error);
+        });
     }
 }

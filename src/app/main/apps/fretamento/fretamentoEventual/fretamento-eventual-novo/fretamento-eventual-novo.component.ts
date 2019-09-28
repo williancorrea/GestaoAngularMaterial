@@ -39,6 +39,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
     cmbMotoristaLista: any;
     cmbCidadeLista: any;
     cmbVeiculoLista: any;
+    cmbEmpresa: any;
+    cmbRepresentanteComercial: any;
 
     viagemPrecoFinalPorcentagem: number;
     ganhoReal: number;
@@ -59,25 +61,48 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.formacaoPreco = false;
         this.configurarForm();
 
-        const editando = this.activatedRoute.snapshot.params['key'];
-        if (editando) {
-            this.tipoPagina = 'EDICAO';
-            this.fretamentoService.buscarPorKey(editando).then(response => {
-                this.formFretamentoEventual.patchValue(response);
-                this.formFretamentoEventual.updateValueAndValidity();
-                this.calcularPrevisaoChegada();
-                this.calcularDespesas();
+        this.fretamentoService.pesquisarEmpresaRosinha().then(respostaEmpresa => {
+            this.cmbEmpresa = respostaEmpresa;
 
-                // this.mostrarModalCarregando(false);
-            }).catch(error => {
-                this.tipoPagina = 'NOVO';
-                // this.errorHandler.handle(error);
-                // this.mostrarModalCarregando(false);
+            this.fretamentoService.pesquisarRepresentanteComercialEmpresaRosinha().then(respostaRepresentanteComercial => {
+                this.cmbRepresentanteComercial = respostaRepresentanteComercial;
+
+                const editando = this.activatedRoute.snapshot.params['key'];
+                if (editando) {
+                    this.tipoPagina = 'EDICAO';
+                    this.fretamentoService.buscarPorKey(editando).then(response => {
+                        this.formFretamentoEventual.patchValue(response);
+                        this.formFretamentoEventual.updateValueAndValidity();
+                        this.calcularPrevisaoChegada();
+                        this.calcularDespesas();
+
+                        // this.mostrarModalCarregando(false);
+                    }).catch(error => {
+                        this.tipoPagina = 'NOVO';
+                        this.formFretamentoEventual.get('dataContratacao').setValue(moment());
+                        // this.errorHandler.handle(error);
+                        // this.mostrarModalCarregando(false);
+                    });
+                } else {
+                    this.tipoPagina = 'NOVO';
+                    this.formFretamentoEventual.get('dataContratacao').setValue(moment());
+                    // this.mostrarModalCarregando(false);
+                }
+
+
+            }).catch(erro => {
+                // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
+                this.errorHandler.handle(erro);
             });
-        } else {
-            this.tipoPagina = 'NOVO';
-            // this.mostrarModalCarregando(false);
-        }
+        }).catch(erro => {
+            // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
+            this.errorHandler.handle(erro);
+        });
+
+    }
+
+    compararObjetosMatSelect(f1: any, f2: any): any {
+        return f1 && f2 && f1.key === f2.key;
     }
 
     mostrarFormacaoPreco(): void {
@@ -240,7 +265,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 obsCusto: ['', [Validators.maxLength(500)]],
             }),
-            dataContratacao: [null, [Validators.required]],
+            dataContratacao: ['', [Validators.required]],
             representanteComercial: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
             empresa: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]]
         });

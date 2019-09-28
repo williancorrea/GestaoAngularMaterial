@@ -13,7 +13,7 @@ import {
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
-    MatInputModule,
+    MatInputModule, MatMenuModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatRadioModule,
@@ -85,6 +85,7 @@ const routes = [
         MatCardModule,
         MatCheckboxModule,
         MatSlideToggleModule,
+        MatMenuModule,
 
         NgxChartsModule,
 

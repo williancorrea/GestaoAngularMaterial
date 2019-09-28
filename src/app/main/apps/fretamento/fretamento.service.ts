@@ -97,7 +97,7 @@ export class FretamentoService {
         });
     }
 
-    pesquisarRepresentanteComercialEmpresaRosinha(pesquisa: string): Promise<any> {
+    pesquisarRepresentanteComercialEmpresaRosinha(): Promise<any> {
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
         headers.append('Content-Type', 'application/json');
@@ -106,15 +106,15 @@ export class FretamentoService {
             .set('size', String(environment.comboBox.linhas))
             .set('page', String(0))
             .set('ordemClassificacao', 'ASC')
-            .set('campoOrdenacao', 'nome')
-            .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+            .set('campoOrdenacao', 'nome');
+            // .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
         return this.http.get(`${this.apiUrl}/cmbRepresentanteComercialEmpresaRosinha`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
         });
     }
 
-    pesquisarEmpresaRosinha(pesquisa: string): Promise<any> {
+    pesquisarEmpresaRosinha(): Promise<any> {
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
         headers.append('Content-Type', 'application/json');
@@ -123,15 +123,27 @@ export class FretamentoService {
             .set('size', String(environment.comboBox.linhas))
             .set('page', String(0))
             .set('ordemClassificacao', 'ASC')
-            .set('campoOrdenacao', 'nome')
-            .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+            .set('campoOrdenacao', 'nome');
+            // .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
         return this.http.get(`${this.apiUrl}/cmbEmpresaRosinha`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
         });
     }
 
+    gerarContrato(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
 
+        return this.http.get(`${this.apiUrl}/${key}/contrato`, {headers, responseType: 'blob'})
+            .toPromise()
+            .then(response => {
+                return response;
+                // return new Blob([response], {type: 'application/pdf'});
+            });
+    }
 
     salvar(obj: any): Promise<any> {
         // TODO: REmover a autenticacao FIXA DAQUI
@@ -177,7 +189,7 @@ export class FretamentoService {
 
 
         const httpParams = new HttpParams()
-            .set('size', paginador.pageSize.toString())
+            .set('size', (paginador.pageIndex * paginador.pageSize).toString())
             .set('page', paginador.pageIndex.toString())
         ;
         // ordemClassificacao: 'DESC',
@@ -228,6 +240,7 @@ export class FretamentoService {
         clone.itinerario.retorno = obj.itinerario.retornoData.format('YYYY-MM-DD').toString() + ' ' + obj.itinerario.retornoHora;
         clone.itinerario.previsaoChegadaPartida = moment(clone.itinerario.previsaoChegadaPartida, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm').toString();
         clone.itinerario.previsaoChegadaRetorno = moment(clone.itinerario.previsaoChegadaRetorno, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm').toString();
+
         clone.itinerario.partidaCidade = {key: clone.itinerario.partidaCidade.key};
         clone.itinerario.retornoCidade = {key: clone.itinerario.retornoCidade.key};
 
@@ -243,6 +256,9 @@ export class FretamentoService {
         clone.custo.motorista1 = {key: clone.custo.motorista1.key};
         clone.custo.motorista2 = {key: clone.custo.motorista1.key};
 
+        clone.dataContratacao = moment(clone.dataContratacao).format('YYYY-MM-DD').toString();
+        clone.representanteComercial = {key: clone.representanteComercial.key};
+        clone.empresa = {key: clone.empresa.key};
         return clone;
     }
 
@@ -268,6 +284,9 @@ export class FretamentoService {
 
         response['itinerario']['previsaoChegadaPartida'] = moment(response['itinerario']['previsaoChegadaPartida'], 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm').toString();
         response['itinerario']['previsaoChegadaRetorno'] = moment(response['itinerario']['previsaoChegadaRetorno'], 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm').toString();
+
+        response['dataContratacao'] = moment(response['dataContratacao'], 'YYYY-MM-DD');
+
         return response;
     }
 }

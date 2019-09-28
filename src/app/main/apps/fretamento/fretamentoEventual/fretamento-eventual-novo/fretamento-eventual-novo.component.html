@@ -57,26 +57,6 @@
                                 <!-- HORIZONTAL STEPPER EXAMPLE -->
                                 <mat-horizontal-stepper class="mat-elevation-z4" [linear]="true">
 
-                                    <!--   ##############################  -->
-                                    <!--   #    CONCLUSAO DO FRETAMENTO    -->
-                                    <!--   ##############################  -->
-                                    <mat-step>
-                                        <ng-template matStepLabel>Concluir</ng-template>
-
-                                        <div class="h2 m-16" fxLayout="row" fxLayoutAlign="center center">
-                                            Concluir cadastro do fretamento?
-                                        </div>
-
-                                        <div fxLayout="row" fxLayoutAlign="center center">
-                                            <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
-                                                voltar
-                                            </button>
-                                            <button mat-raised-button type="button" color="accent" (click)="gravarFretamento()">
-                                                <span>{{tipoPagina === 'NOVO' ? 'Salvar Fretamento' : 'Atualizar Fretamento'}}</span>
-                                            </button>
-                                        </div>
-                                    </mat-step>
-
                                     <!--   ############################## -->
                                     <!--   #    CADASTRO DE CLIENTE       -->
                                     <!--   ############################## -->
@@ -870,6 +850,66 @@
                                         </form>
                                     </mat-step>
 
+                                    <!--   ##############################  -->
+                                    <!--   #    CONCLUSAO DO FRETAMENTO    -->
+                                    <!--   ##############################  -->
+                                    <mat-step [stepControl]="formFretamentoEventual">
+                                        <form fxLayout="column" [formGroup]="formFretamentoEventual">
+                                            <ng-template matStepLabel>Concluir</ng-template>
+
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="row">
+                                                <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                                                    <mat-label>Representante Comercial</mat-label>
+                                                    <mat-select formControlName="representanteComercial" [compareWith]="compararObjetosMatSelect">
+                                                        <mat-option *ngFor="let representante of cmbRepresentanteComercial" [value]="representante">
+                                                            {{representante['nome']}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('representanteComercial')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="34" class="pr-4">
+                                                    <mat-label>Empresa prestadora do serviço</mat-label>
+                                                    <mat-select formControlName="empresa" [compareWith]="compararObjetosMatSelect">
+                                                        <mat-option *ngFor="let empresa of cmbEmpresa" [value]="empresa">
+                                                            {{empresa['nome']}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('empresa')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                                                    <mat-label>Data do contrato</mat-label>
+                                                    <input matInput formControlName="dataContratacao" [matDatepicker]="dpDataContratacao">
+                                                    <mat-datepicker-toggle matSuffix [for]="dpDataContratacao"></mat-datepicker-toggle>
+                                                    <mat-datepicker #dpDataContratacao></mat-datepicker>
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('dataContratacao')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                            </div>
+
+
+                                            <div class="h2 m-16" fxLayout="row" fxLayoutAlign="center center">
+                                                Concluir cadastro do fretamento?
+                                            </div>
+
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+                                                <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
+                                                    voltar
+                                                </button>
+                                                <button mat-raised-button type="button" color="accent" (click)="gravarFretamento()"
+                                                        [disabled]="(this.formFretamentoEventual.get('representanteComercial').invalid || this.formFretamentoEventual.get('empresa').invalid ||  this.formFretamentoEventual.get('dataContratacao').invalid)">
+                                                    <span>{{tipoPagina === 'NOVO' ? 'Salvar Fretamento' : 'Atualizar Fretamento'}}</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </mat-step>
 
 
                                 </mat-horizontal-stepper>

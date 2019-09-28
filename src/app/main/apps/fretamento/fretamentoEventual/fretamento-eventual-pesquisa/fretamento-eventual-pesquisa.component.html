@@ -48,7 +48,7 @@
 
                 <!-- Numero do contrato-->
                 <ng-container matColumnDef="numero_contrato">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Contrato</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>Contrato</mat-header-cell>
                     <mat-cell *matCellDef="let obj">
                         <p class="text-truncate"><b>{{obj['numeroContrato']}}</b></p>
                     </mat-cell>
@@ -66,7 +66,7 @@
                 <!-- Nome do cliente -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
-                    <mat-cell *matCellDef="let obj" >
+                    <mat-cell *matCellDef="let obj">
                         <p *ngIf="obj['situacao'] !== 'AGENDADO'" class="text-truncate">{{obj['contato'] ? obj['contato']['nome'] : ''}}</p>
                         <p *ngIf="obj['situacao'] === 'AGENDADO'" class="text-truncate">{{obj['cliente'] ? obj['cliente']['nome'] : ''}}</p>
                     </mat-cell>
@@ -99,14 +99,53 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- Buttons Column -->
+                <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let obj">
+                        <div fxFlex="row" fxLayoutAlign="end center">
+
+
+                            <button mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
+                                <mat-icon class="amber-fg">star</mat-icon>
+                            </button>
+
+                            <button mat-icon-button [matMenuTriggerFor]="itensDoMenu" aria-label="Mais" (click)="$event.stopPropagation();">
+                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #itensDoMenu="matMenu">
+                                <button mat-menu-item aria-label="remove" (click)="imprimirContrato(obj['key'])">
+                                    <mat-icon>print</mat-icon>
+                                    <span>Imprimir Orçamento</span>
+                                </button>
+
+                                <button mat-menu-item aria-label="remove" (click)="imprimirContrato(obj['key'])">
+                                    <mat-icon>print</mat-icon>
+                                    <span>Imprimir Contrato</span>
+                                </button>
+
+                                <mat-divider></mat-divider>
+
+                                <button mat-menu-item aria-label="remove" style="color: red" (click)="imprimirContrato(obj['key'])">
+                                    <mat-icon style="color: red">delete_forever</mat-icon>
+                                    <span>Cancelar Contrato</span>
+                                </button>
+
+                            </mat-menu>
+                        </div>
+
+                    </mat-cell>
+                </ng-container>
+
                 <!-- Active Column -->
-<!--                <ng-container matColumnDef="active">-->
-<!--                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>-->
-<!--                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs>-->
-<!--                        &lt;!&ndash;                        <mat-icon *ngIf="product.active" class="active-icon green-600 s-16">check</mat-icon>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        <mat-icon *ngIf="!product.active" class="active-icon red-500 s-16">close</mat-icon>&ndash;&gt;-->
-<!--                    </mat-cell>-->
-<!--                </ng-container>-->
+                <!--                <ng-container matColumnDef="active">-->
+                <!--                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>-->
+                <!--                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs>-->
+                <!--                        &lt;!&ndash;                        <mat-icon *ngIf="product.active" class="active-icon green-600 s-16">check</mat-icon>&ndash;&gt;-->
+                <!--                        &lt;!&ndash;                        <mat-icon *ngIf="!product.active" class="active-icon red-500 s-16">close</mat-icon>&ndash;&gt;-->
+                <!--                    </mat-cell>-->
+                <!--                </ng-container>-->
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 
