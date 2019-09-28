@@ -46,15 +46,15 @@
                        [@animateStagger]="{value:'50'}"
                        fusePerfectScrollbar>
 
-                <!-- ID Column -->
-<!--                <ng-container matColumnDef="id">-->
-<!--                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>-->
-<!--                    <mat-cell *matCellDef="let obj">-->
-<!--                        <p class="text-truncate">{{obj.key}}</p>-->
-<!--                    </mat-cell>-->
-<!--                </ng-container>-->
+                <!-- Numero do contrato-->
+                <ng-container matColumnDef="numero_contrato">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Contrato</mat-header-cell>
+                    <mat-cell *matCellDef="let obj">
+                        <p class="text-truncate"><b>{{obj['numeroContrato']}}</b></p>
+                    </mat-cell>
+                </ng-container>
 
-                <!-- Image Column -->
+                <!-- Imagem do Cliente -->
                 <ng-container matColumnDef="image">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let obj">
@@ -63,7 +63,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Name Column -->
+                <!-- Nome do cliente -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let obj" >
@@ -72,7 +72,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Category Column -->
+                <!-- Data da Viagem -->
                 <ng-container matColumnDef="category">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Horários</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-md style="display: block">
@@ -81,7 +81,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Price Column -->
+                <!-- Itinerario da viagem -->
                 <ng-container matColumnDef="price">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Itinerário</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
@@ -90,7 +90,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Quantity Column -->
+                <!-- Preço -->
                 <ng-container matColumnDef="quantity">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Valor</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-sm>

@@ -210,7 +210,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 veiculo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 previsaoChegadaPartida: [null],
                 previsaoChegadaRetorno: [null],
-                obsItineratio: ['', [Validators.maxLength(500)]],
+                obsItineratio: ['', [Validators.maxLength(500)]]
             }),
             custo: this.formBuild.group({
                 motorista1: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],

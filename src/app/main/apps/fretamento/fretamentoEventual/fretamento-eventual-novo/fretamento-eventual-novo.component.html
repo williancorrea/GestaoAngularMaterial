@@ -57,10 +57,29 @@
                                 <!-- HORIZONTAL STEPPER EXAMPLE -->
                                 <mat-horizontal-stepper class="mat-elevation-z4" [linear]="true">
 
+                                    <!--   ##############################  -->
+                                    <!--   #    CONCLUSAO DO FRETAMENTO    -->
+                                    <!--   ##############################  -->
+                                    <mat-step>
+                                        <ng-template matStepLabel>Concluir</ng-template>
 
-                                    <!--   ########################### -->
-                                    <!--   #    CADASTRO DE CLIENTE    -->
-                                    <!--   ########################### -->
+                                        <div class="h2 m-16" fxLayout="row" fxLayoutAlign="center center">
+                                            Concluir cadastro do fretamento?
+                                        </div>
+
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
+                                                voltar
+                                            </button>
+                                            <button mat-raised-button type="button" color="accent" (click)="gravarFretamento()">
+                                                <span>{{tipoPagina === 'NOVO' ? 'Salvar Fretamento' : 'Atualizar Fretamento'}}</span>
+                                            </button>
+                                        </div>
+                                    </mat-step>
+
+                                    <!--   ############################## -->
+                                    <!--   #    CADASTRO DE CLIENTE       -->
+                                    <!--   ############################## -->
                                     <mat-step [stepControl]="formFretamentoEventual.get('cliente')" *ngIf="formFretamentoEventual.get('situacao').value != 'ORCAMENTO'">
 
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('cliente')">
@@ -319,9 +338,9 @@
 
                                     </mat-step>
 
-                                    <!--   ########################### -->
-                                    <!--   #    ORCAMENTO              -->
-                                    <!--   ########################### -->
+                                    <!--   ############################## -->
+                                    <!--   #    ORCAMENTO                 -->
+                                    <!--   ############################## -->
                                     <mat-step [stepControl]="formFretamentoEventual.get('contato')" *ngIf="formFretamentoEventual.get('situacao').value == 'ORCAMENTO'">
 
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('contato')">
@@ -417,9 +436,9 @@
 
                                         </form>
                                     </mat-step>
-                                    <!--   ########################### -->
-                                    <!--   #    ITINERARIO             -->
-                                    <!--   ########################### -->
+                                    <!--   ############################## -->
+                                    <!--   #    ITINERARIO                -->
+                                    <!--   ############################## -->
                                     <mat-step [stepControl]="formFretamentoEventual.get('itinerario')">
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('itinerario')">
 
@@ -574,9 +593,9 @@
                                         </form>
                                     </mat-step>
 
-                                    <!--   ########################### -->
-                                    <!--   #    CUSTO                  -->
-                                    <!--   ########################### -->
+                                    <!--   ############################## -->
+                                    <!--   #    CUSTO                     -->
+                                    <!--   ############################## -->
                                     <mat-step [stepControl]="formFretamentoEventual.get('custo')">
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('custo')">
 
@@ -851,22 +870,7 @@
                                         </form>
                                     </mat-step>
 
-                                    <mat-step>
-                                        <ng-template matStepLabel>Concluir</ng-template>
 
-                                        <div class="h2 m-16" fxLayout="row" fxLayoutAlign="center center">
-                                            Concluir cadastro do fretamento?
-                                        </div>
-
-                                        <div fxLayout="row" fxLayoutAlign="center center">
-                                            <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
-                                                voltar
-                                            </button>
-                                            <button mat-raised-button type="button" color="accent" (click)="gravarFretamento()">
-                                                <span>{{tipoPagina === 'NOVO' ? 'Salvar Fretamento' : 'Atualizar Fretamento'}}</span>
-                                            </button>
-                                        </div>
-                                    </mat-step>
 
                                 </mat-horizontal-stepper>
                                 <!-- / HORIZONTAL STEPPER -->
