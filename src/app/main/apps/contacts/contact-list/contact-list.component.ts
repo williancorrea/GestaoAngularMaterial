@@ -162,8 +162,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy
     /**
      * Delete Contact
      */
-    deleteContact(contact): void
-    {
+    deleteContact(contact): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });

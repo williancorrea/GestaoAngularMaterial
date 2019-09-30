@@ -2,7 +2,6 @@ import {ElementRef, Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {GestaoService} from '../../../seguranca/autenticacao/gestao.service';
-import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../core/modelos/FretamentoEventualSituacao';
 import * as moment from 'moment';
 
 import {MatPaginator} from '@angular/material';
@@ -107,7 +106,7 @@ export class FretamentoService {
             .set('page', String(0))
             .set('ordemClassificacao', 'ASC')
             .set('campoOrdenacao', 'nome');
-            // .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+        // .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
         return this.http.get(`${this.apiUrl}/cmbRepresentanteComercialEmpresaRosinha`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
@@ -124,7 +123,7 @@ export class FretamentoService {
             .set('page', String(0))
             .set('ordemClassificacao', 'ASC')
             .set('campoOrdenacao', 'nome');
-            // .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+        // .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
         return this.http.get(`${this.apiUrl}/cmbEmpresaRosinha`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
@@ -189,15 +188,11 @@ export class FretamentoService {
 
 
         const httpParams = new HttpParams()
-            .set('size', (paginador.pageIndex * paginador.pageSize).toString())
+            .set('size', paginador.pageSize.toString())
             .set('page', paginador.pageIndex.toString())
-        ;
+            .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '');
         // ordemClassificacao: 'DESC',
         // campoOrdenacao: grid.sortField
-
-        if (filtro.nativeElement.value && filtro.nativeElement.value.length > 0) {
-            httpParams.set('filtroGlobal', filtro.nativeElement.value.toSource());
-        }
 
         return this.http.get(`${this.apiUrl}`, {params: httpParams, headers: headers})
             .toPromise()
@@ -224,11 +219,30 @@ export class FretamentoService {
             });
     }
 
+    cancelarContrato(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.put(`${this.apiUrl}/${key}/cancelarContrato`, {headers})
+            .toPromise()
+            .then(response => {
+                return this.prepararDadosParaReceber(response);
+            });
+    }
+
     private prepararDadosParaSalvar(clone: any, obj: any): any {
-        if (clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
-            delete clone.cliente;
-        } else {
+        // if (clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
+        //     delete clone.cliente;
+        // } else {
+        //     delete clone.contato;
+        // }
+
+        if (clone['cliente'] != null) {
             delete clone.contato;
+        } else {
+            delete clone.cliente;
         }
 
         delete clone.itinerario.partidaData;
@@ -262,16 +276,23 @@ export class FretamentoService {
         return clone;
     }
 
-    private prepararDadosParaReceber(response: any): any{
-        if (response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
-            delete response['cliente'];
-        } else {
+    private prepararDadosParaReceber(response: any): any {
+
+        // if (response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
+        //     delete response['cliente'];
+        // } else if (response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO) {
+        //     delete response['contato'];
+        // }
+
+        if (response['cliente'] != null && response['cliente']['key'] != null) {
             delete response['contato'];
             if (response['cliente']['tipo'] === PESSOA_TIPO.FISICA) {
                 delete response['cliente']['pessoaJuridica'];
-            }else{
+            } else {
                 delete response['cliente']['pessoaFisica'];
             }
+        } else {
+            delete response['cliente'];
         }
 
         response['itinerario']['partidaData'] = moment(response['itinerario']['partida'], 'YYYY-MM-DD HH:mm');

@@ -5,6 +5,11 @@ import {MatSort} from '@angular/material/sort';
 import {fuseAnimations} from '@fuse/animations';
 import {environment} from '../../../../../../environments/environment';
 import {FretamentoService} from '../../fretamento.service';
+import {Utils} from '../../../../../core/utils/Utils';
+import {fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {FuseConfirmDialogComponent} from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-fretamento-eventual-pesquisa',
@@ -17,7 +22,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
 
     fretamentoList: null;
     // displayedColumns = ['id', 'image', 'name', 'category', 'price', 'quantity', 'active'];
-    displayedColumns = ['numero_contrato', 'image', 'name', 'category', 'price', 'quantity', 'buttons'];
+    displayedColumns = ['numero_contrato', 'image', 'name', 'itinerario_horarios', 'itinerario_cidade', 'valor', 'buttons'];
 
     @ViewChild(MatPaginator, {static: true})
     paginador: MatPaginator;
@@ -29,42 +34,50 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     filtro: ElementRef;
 
     env: any;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    constructor(private fretamentoService: FretamentoService) {
+    constructor(private fretamentoService: FretamentoService,
+                public dialog: MatDialog) {
     }
 
     ngOnInit(): void {
         this.env = environment;
+
+        fromEvent(this.filtro.nativeElement, 'keyup')
+            .pipe(
+                debounceTime(this.env.comboBox.filtroDelay),
+                distinctUntilChanged(),
+            )
+            .subscribe(() => {
+                this.pesquisar();
+            });
+
+    }
+
+    abrirDialogDeCancelamentoDeContrato(obj: any, indexColuna: number): void {
+        this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {disableClose: false});
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Tem certeza que deseja cancelar o contrato ' + obj['numeroContrato'] + ' ?';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.fretamentoService.cancelarContrato(obj['key']).then(resultado => {
+                    this.pesquisar();
+                }).catch(error => {
+                    // TODO: Colocar mensagem de erro para o usuario
+                    console.log('ERRO AO SALVAR: ', error);
+                    // this.errorHandler.handle(error);
+                });
+            }
+            this.confirmDialogRef = null;
+        });
     }
 
     ngAfterViewInit(): void {
         this.pesquisar();
     }
 
-
     paginadorEvento(event?: PageEvent): PageEvent {
-
-        console.log('MUDOU A BAGAÇA', event.pageIndex * event.pageSize);
-
         this.pesquisar();
-
-        // TODO: FAZER FUNCIONAR O PAGINADOR
-
-        // this.fooService.getdata(event).subscribe(
-        //     response =>{
-        //         if(response.error) {
-        //             // handle error
-        //         } else {
-        //             this.datasource = response.data;
-        //             this.pageIndex = response.pageIndex;
-        //             this.pageSize = response.pageSize;
-        //             this.length = response.length;
-        //         }
-        //     },
-        //     error =>{
-        //         // handle error
-        //     }
-        // );
         return event;
     }
 
@@ -81,22 +94,9 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         });
     }
 
-    imprimirContrato(key: string): void {
-        this.fretamentoService.gerarContrato(key).then(relatorio => {
-
-            const a = document.createElement('a');
-            a.style['display'] = 'none';
-            const blob = new Blob([relatorio], {type: 'application/pdf'});
-            const url = window.URL.createObjectURL(blob);
-            a.href = url;
-            a.download = 'Contrato.pdf';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 100);
-
+    imprimirContrato(obj: any): void {
+        this.fretamentoService.gerarContrato(obj['key']).then(relatorio => {
+            Utils.fazerDownloadArquivoBlobEmPDF('Contrato ' + obj['numeroContrato'] + ' - ' + obj['cliente']['nome'], relatorio);
         }).catch(error => {
             // TODO: Colocar mensagem de erro para o usuario
             console.log('ERRO AO SALVAR: ', error);

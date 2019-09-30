@@ -76,6 +76,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                         this.calcularPrevisaoChegada();
                         this.calcularDespesas();
 
+                        // this.formFretamentoEventual.disable();
+
                         // this.mostrarModalCarregando(false);
                     }).catch(error => {
                         this.tipoPagina = 'NOVO';
@@ -207,8 +209,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 imagem: [null],
                 cidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 cep: ['', [Validators.maxLength(9)]],
-                endereco: [''],
-                bairro: [''],
+                endereco: ['', [Validators.required, Validators.minLength(5)]],
+                bairro: ['', [Validators.required, Validators.minLength(5)]],
                 telefone1: ['', [Validators.required]],
                 telefone1Obs: [''],
                 telefone2: [''],

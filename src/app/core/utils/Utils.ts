@@ -3,6 +3,7 @@ export class Utils {
     public static clonarObjeto(obj: any): any {
         return JSON.parse(JSON.stringify(obj));
     }
+
     public static validarCPF(cpf): boolean {
         if (cpf === null) {
             return false;
@@ -129,5 +130,20 @@ export class Utils {
             return false;
         }
         return true;
+    }
+
+    public static fazerDownloadArquivoBlobEmPDF(nomeArquivo: string, dados): void {
+        const a = document.createElement('a');
+        a.style['display'] = 'none';
+        const blob = new Blob([dados], {type: 'application/pdf'});
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = nomeArquivo + '.pdf';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 100);
     }
 }

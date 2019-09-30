@@ -7,7 +7,7 @@ import {
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
-    MatDatepickerModule,
+    MatDatepickerModule, MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
@@ -24,7 +24,7 @@ import {
     MatSortModule,
     MatStepperModule,
     MatTableModule,
-    MatTabsModule
+    MatTabsModule, MatTooltipModule
 } from '@angular/material';
 
 import {FuseSharedModule} from '@fuse/shared.module';
@@ -36,6 +36,7 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {CoreModule} from '../../../core/core.module';
 import {NgxMaskModule} from 'ngx-mask';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
+import {FuseConfirmDialogModule} from '../../../../@fuse/components';
 
 const routes = [
     {
@@ -86,11 +87,14 @@ const routes = [
         MatCheckboxModule,
         MatSlideToggleModule,
         MatMenuModule,
+        MatDialogModule,
+        MatTooltipModule,
 
         NgxChartsModule,
 
         FuseSharedModule,
         FuseWidgetModule,
+        FuseConfirmDialogModule,
 
         CoreModule,
 
