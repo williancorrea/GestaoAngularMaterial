@@ -76,18 +76,21 @@ export class FretamentoEventualNovoComponent implements OnInit {
                         this.calcularPrevisaoChegada();
                         this.calcularDespesas();
 
-                        // this.formFretamentoEventual.disable();
+                        if (this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.CONTRATADO || this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO) {
+                            this.formFretamentoEventual.disable();
+                            this.cmbClienteForm.disable();
+                        }
 
                         // this.mostrarModalCarregando(false);
                     }).catch(error => {
                         this.tipoPagina = 'NOVO';
-                        this.formFretamentoEventual.get('dataContratacao').setValue(moment());
+                        this.formFretamentoEventual.get('dataImpressaoContrato').setValue(moment());
                         // this.errorHandler.handle(error);
                         // this.mostrarModalCarregando(false);
                     });
                 } else {
                     this.tipoPagina = 'NOVO';
-                    this.formFretamentoEventual.get('dataContratacao').setValue(moment());
+                    this.formFretamentoEventual.get('dataImpressaoContrato').setValue(moment());
                     // this.mostrarModalCarregando(false);
                 }
 
@@ -189,6 +192,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.formFretamentoEventual = this.formBuild.group({
             key: [null],
             situacao: [FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO, [Validators.required]],
+            situacaoData: [null],
             contato: this.formBuild.group({
                 nome: [null, [
                     Validators.required,
@@ -267,7 +271,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 obsCusto: ['', [Validators.maxLength(500)]],
             }),
-            dataContratacao: ['', [Validators.required]],
+            dataImpressaoContrato: ['', [Validators.required]],
             representanteComercial: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
             empresa: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]]
         });
@@ -524,12 +528,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
     }
 
     gravarFretamento(): void {
-        if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
-            this.formFretamentoEventual.get('contato').reset();
-        } else {
-            this.formFretamentoEventual.get('cliente').reset();
-        }
-
         if (this.tipoPagina === 'NOVO') {
             this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
                 this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});

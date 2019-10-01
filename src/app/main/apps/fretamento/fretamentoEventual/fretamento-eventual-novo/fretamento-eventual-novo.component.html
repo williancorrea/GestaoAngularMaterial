@@ -66,15 +66,17 @@
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('contato')">
                                             <ng-template matStepLabel>Orçamento</ng-template>
 
-                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center" >
                                                 <div fxFlex="75" fxLayoutAlign="end center" class="pr-4" style="margin-bottom: 22px;">
                                                     <div class="pr-4">
-                                                        <button mat-raised-button type="button" color="accent" (click)="btnOrcamento()">
+                                                        <button mat-raised-button type="button" color="accent" (click)="btnOrcamento()"
+                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
                                                             Orçamento
                                                         </button>
                                                     </div>
                                                     <div class="pr-4">
-                                                        <button mat-raised-button type="button" color="primary" (click)="btnNovoCliente()">
+                                                        <button mat-raised-button type="button" color="primary" (click)="btnNovoCliente()"
+                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
                                                             Novo Cliente
                                                         </button>
                                                     </div>
@@ -87,8 +89,7 @@
                                                         <input matInput type="text" placeholder="Selecione ..."
                                                                [formControl]="cmbClienteForm" [matAutocomplete]="autoCompleteCliente">
                                                         <mat-autocomplete autoActiveFirstOption #autoCompleteCliente="matAutocomplete"
-                                                                          [displayWith]="mostrarNomePessoa"
-                                                                          (optionSelected)="selecionandoUmCliente($event)">
+                                                                          [displayWith]="mostrarNomePessoa" (optionSelected)="selecionandoUmCliente($event)">
                                                             <mat-option *ngIf="cmbCarregando" class="is-loading">
                                                                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                                                             </mat-option>
@@ -178,12 +179,14 @@
 
                                                 <div fxFlex="25" fxLayoutAlign="end center" class="pr-4" style="margin-bottom: 22px;">
                                                     <div class="pr-4">
-                                                        <button mat-raised-button type="button" color="accent" (click)="btnOrcamento()">
+                                                        <button mat-raised-button type="button" color="accent" (click)="btnOrcamento()"
+                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
                                                             Orçamento
                                                         </button>
                                                     </div>
                                                     <div class="pr-4">
-                                                        <button mat-raised-button type="button" color="primary" (click)="btnNovoCliente()">
+                                                        <button mat-raised-button type="button" color="primary" (click)="btnNovoCliente()"
+                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
                                                             Novo Cliente
                                                         </button>
                                                     </div>
@@ -798,7 +801,8 @@
                                                         <mat-label>Preço Viagem %</mat-label>
                                                         <input currencyMask matInput [(ngModel)]="viagemPrecoFinalPorcentagem" [ngModelOptions]="{standalone: true}"
                                                                (keyup)="calcularViagemPrecoFinalPorcentagem()"
-                                                               [options]="{ prefix: '', suffix: '%', thousands: '', decimal: ',', precision: 1, allowNegative: true}">
+                                                               [options]="{ prefix: '', suffix: '%', thousands: '', decimal: ',', precision: 1, allowNegative: true}"
+                                                               [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
@@ -887,11 +891,11 @@
 
                                                 <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
                                                     <mat-label>Data do contrato</mat-label>
-                                                    <input matInput formControlName="dataContratacao" [matDatepicker]="dpDataContratacao">
+                                                    <input matInput formControlName="dataImpressaoContrato" [matDatepicker]="dpDataContratacao">
                                                     <mat-datepicker-toggle matSuffix [for]="dpDataContratacao"></mat-datepicker-toggle>
                                                     <mat-datepicker #dpDataContratacao></mat-datepicker>
                                                     <mat-error>
-                                                        <app-message [control]="formFretamentoEventual.get('dataContratacao')"></app-message>
+                                                        <app-message [control]="formFretamentoEventual.get('dataImpressaoContrato')"></app-message>
                                                     </mat-error>
                                                 </mat-form-field>
 
@@ -907,7 +911,7 @@
                                                     voltar
                                                 </button>
                                                 <button mat-raised-button type="button" color="accent" (click)="gravarFretamento()"
-                                                        [disabled]="(this.formFretamentoEventual.get('representanteComercial').invalid || this.formFretamentoEventual.get('empresa').invalid ||  this.formFretamentoEventual.get('dataContratacao').invalid)">
+                                                        [disabled]="(this.formFretamentoEventual.get('representanteComercial').invalid || this.formFretamentoEventual.get('empresa').invalid ||  this.formFretamentoEventual.get('dataImpressaoContrato').invalid) || (this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO')">
                                                     <span>{{tipoPagina === 'NOVO' ? 'Salvar Fretamento' : 'Atualizar Fretamento'}}</span>
                                                 </button>
                                             </div>

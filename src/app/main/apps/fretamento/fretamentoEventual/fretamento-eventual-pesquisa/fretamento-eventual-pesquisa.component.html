@@ -49,10 +49,18 @@
                 <!-- Numero do contrato-->
                 <ng-container matColumnDef="numero_contrato">
                     <mat-header-cell *matHeaderCellDef>Contrato</mat-header-cell>
-                    <mat-cell *matCellDef="let obj">
-                        <p class="text-truncate" matTooltip="Contratado" *ngIf="obj.situacao === 'CONTRATADO'" [ngClass]="obj.situacao === 'CONTRATADO' ? 'green-fg': ''"><b>{{obj['numeroContrato']}}</b></p>
-                        <p class="text-truncate" matTooltip="Orçado / Agendado" *ngIf="obj.situacao === 'AGENDADO' || obj.situacao === 'ORCAMENTO'" [ngClass]="obj.situacao === 'AGENDADO' || obj.situacao === 'ORCAMENTO' ? 'amber-fg' : ''"><b>{{obj['numeroContrato']}}</b></p>
-                        <p class="text-truncate" matTooltip="Não Contratado" *ngIf="obj.situacao === 'NAO_CONTRATADO'" [ngClass]="obj.situacao === 'NAO_CONTRATADO' ? 'red-fg' : ''"><b>{{obj['numeroContrato']}}</b></p>
+                    <mat-cell *matCellDef="let obj" style="display: block; text-align: center;">
+                        <p class="text-truncate" matTooltip="Orçado / Agendado" *ngIf="obj.situacao === 'AGENDADO' || obj.situacao === 'ORCAMENTO'" class="amber-fg"><b>{{obj['numeroContrato']}}</b></p>
+                        <p class="text-truncate" matTooltip="Contratado" *ngIf="obj.situacao === 'CONTRATADO'" class="green-fg"><b>{{obj['numeroContrato']}}</b></p>
+                        <p class="text-truncate" matTooltip="Não Contratado" *ngIf="obj.situacao === 'NAO_CONTRATADO'" class="red-fg"><b>{{obj['numeroContrato']}}</b></p>
+
+                        <p *ngIf="obj.situacao === 'AGENDADO' || obj.situacao === 'ORCAMENTO'" class="amber-fg text-truncate" style="margin: -17px 0px 0px 0px; font-size: smaller;">(Orçamento)</p>
+                        <p *ngIf="obj.situacao === 'CONTRATADO'" class="green-fg text-truncate" style="margin: -17px 0px 0px 0px; font-size: smaller;">(Contratado)</p>
+                        <p *ngIf="obj.situacao === 'NAO_CONTRATADO'" class="red-fg text-truncate" style="margin: -17px 0px 0px 0px; font-size: smaller;">(Não Contratado)</p>
+
+                        <p *ngIf="obj.situacao === 'AGENDADO' || obj.situacao === 'ORCAMENTO'" class="amber-fg text-truncate" style="margin: -3px 0px 0px 0px; font-size: smaller;">{{obj['situacaoData'] | date: 'dd/MM/yyyy'}}</p>
+                        <p *ngIf="obj.situacao === 'CONTRATADO'" class="green-fg text-truncate" style="margin: -3px 0px 0px 0px; font-size: smaller;">{{obj['situacaoData'] | date: 'dd/MM/yyyy'}}</p>
+                        <p *ngIf="obj.situacao === 'NAO_CONTRATADO'" class="red-fg text-truncate" style="margin: -3px 0px 0px 0px; font-size: smaller;">{{obj['situacaoData'] | date: 'dd/MM/yyyy'}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -76,8 +84,8 @@
 
                 <!-- Data da Viagem -->
                 <ng-container matColumnDef="itinerario_horarios">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Horários</mat-header-cell>
-                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-md style="display: block">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Horários</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
                         <p class="text-truncate">Partida: {{obj['itinerario']['partidaData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['partidaHora']}}</p>
                         <p class="text-truncate">Retorno: {{obj['itinerario']['retornoData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['retornoHora']}}</p>
                     </mat-cell>
@@ -134,9 +142,22 @@
                             </button>
 
                             <mat-menu #itensDoMenu="matMenu">
-                                <button mat-menu-item aria-label="remove" (click)="imprimirContrato(obj)" [disabled]="obj['contato'] != null || obj.situacao === 'NAO_CONTRATADO'">
+                                <button mat-menu-item aria-label="remove" (click)="imprimirContrato(obj)"
+                                        *ngIf="obj.situacao === 'CONTRATADO'">
                                     <mat-icon>print</mat-icon>
                                     <span>Imprimir Contrato</span>
+                                </button>
+
+                                <button mat-menu-item aria-label="remove" *ngIf="obj.situacao === 'NAO_CONTRATADO'"
+                                        style="color: orange" (click)="abrirDialogDeAtivarContrato(obj, indexColuna)">
+                                    <mat-icon style="color: orange">all_inclusive</mat-icon>
+                                    <span>Ativar Contrato (Orçamento)</span>
+                                </button>
+
+                                <button mat-menu-item aria-label="remove" *ngIf="obj.situacao != 'NAO_CONTRATADO' && obj.situacao != 'ORCAMENTO' && obj.situacao != 'CONTRATADO'"
+                                        style="color: green" (click)="abrirDialogDeConcluirFretamento(obj, indexColuna)">
+                                    <mat-icon style="color: green">all_inclusive</mat-icon>
+                                    <span>Concluir Contrato</span>
                                 </button>
 
                                 <mat-divider></mat-divider>

@@ -72,6 +72,47 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         });
     }
 
+    /**
+     * QUANDO O CONTRATO FOI CANCELADO, ESTA OPCAO O TORNARA ATIVO NOVAMENTE COM O ESTADO DE ORÇAMENTO
+     * @param obj
+     * @param indexColuna
+     */
+    abrirDialogDeAtivarContrato(obj: any, indexColuna: number): void {
+        this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {disableClose: false});
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Tem certeza que deseja ATIVAR o contrato ' + obj['numeroContrato'] + ' novamente ?';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.fretamentoService.ativarContrato(obj['key']).then(resultado => {
+                    this.pesquisar();
+                }).catch(error => {
+                    // TODO: Colocar mensagem de erro para o usuario
+                    console.log('ERRO AO SALVAR: ', error);
+                    // this.errorHandler.handle(error);
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
+    abrirDialogDeConcluirFretamento(obj: any, indexColuna: number): void {
+        this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {disableClose: false});
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Efetivar a contratação do orçamento ' + obj['numeroContrato'] + ' ?';
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.fretamentoService.contratarFretamento(obj['key']).then(resultado => {
+                    this.pesquisar();
+                }).catch(error => {
+                    // TODO: Colocar mensagem de erro para o usuario
+                    console.log('ERRO AO SALVAR: ', error);
+                    // this.errorHandler.handle(error);
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
     ngAfterViewInit(): void {
         this.pesquisar();
     }

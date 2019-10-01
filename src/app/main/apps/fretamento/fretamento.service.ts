@@ -232,17 +232,38 @@ export class FretamentoService {
             });
     }
 
-    private prepararDadosParaSalvar(clone: any, obj: any): any {
-        // if (clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
-        //     delete clone.cliente;
-        // } else {
-        //     delete clone.contato;
-        // }
+    ativarContrato(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
 
-        if (clone['cliente'] != null) {
-            delete clone.contato;
-        } else {
+        return this.http.put(`${this.apiUrl}/${key}/ativarContrato`, {headers})
+            .toPromise()
+            .then(response => {
+                return this.prepararDadosParaReceber(response);
+            });
+    }
+
+    contratarFretamento(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.put(`${this.apiUrl}/${key}/contratarFretamento`, {headers})
+            .toPromise()
+            .then(response => {
+                return this.prepararDadosParaReceber(response);
+            });
+    }
+
+
+    private prepararDadosParaSalvar(clone: any, obj: any): any {
+        if (clone['contato']['nome'].length > 0) {
             delete clone.cliente;
+        } else {
+            delete clone.contato;
         }
 
         delete clone.itinerario.partidaData;
@@ -270,20 +291,13 @@ export class FretamentoService {
         clone.custo.motorista1 = {key: clone.custo.motorista1.key};
         clone.custo.motorista2 = {key: clone.custo.motorista1.key};
 
-        clone.dataContratacao = moment(clone.dataContratacao).format('YYYY-MM-DD').toString();
+        clone.dataImpressaoContrato = moment(clone.dataImpressaoContrato).format('YYYY-MM-DD').toString();
         clone.representanteComercial = {key: clone.representanteComercial.key};
         clone.empresa = {key: clone.empresa.key};
         return clone;
     }
 
     private prepararDadosParaReceber(response: any): any {
-
-        // if (response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO) {
-        //     delete response['cliente'];
-        // } else if (response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO) {
-        //     delete response['contato'];
-        // }
-
         if (response['cliente'] != null && response['cliente']['key'] != null) {
             delete response['contato'];
             if (response['cliente']['tipo'] === PESSOA_TIPO.FISICA) {
@@ -306,7 +320,8 @@ export class FretamentoService {
         response['itinerario']['previsaoChegadaPartida'] = moment(response['itinerario']['previsaoChegadaPartida'], 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm').toString();
         response['itinerario']['previsaoChegadaRetorno'] = moment(response['itinerario']['previsaoChegadaRetorno'], 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm').toString();
 
-        response['dataContratacao'] = moment(response['dataContratacao'], 'YYYY-MM-DD');
+        response['dataImpressaoContrato'] = moment(response['dataImpressaoContrato'], 'YYYY-MM-DD');
+        response['situacaoData'] = moment(response['situacaoData'], 'YYYY-MM-DD');
 
         return response;
     }
