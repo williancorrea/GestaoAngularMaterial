@@ -6,6 +6,7 @@ import * as moment from 'moment';
 
 import {MatPaginator} from '@angular/material';
 import {PESSOA_TIPO} from '../../../core/modelos/PessoaTipo';
+import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../core/modelos/FretamentoEventualSituacao';
 
 @Injectable()
 export class FretamentoService {
@@ -258,10 +259,9 @@ export class FretamentoService {
             });
     }
 
-
     private prepararDadosParaSalvar(clone: any, obj: any): any {
 
-        if (clone['contato'] && clone['contato']['nome'] && clone['contato']['nome'].length > 0) {
+        if (clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO || clone['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO) {
             delete clone.cliente;
         } else {
             delete clone.contato;
@@ -299,15 +299,15 @@ export class FretamentoService {
     }
 
     private prepararDadosParaReceber(response: any): any {
-        if (response['cliente'] != null && response['cliente']['key'] != null) {
+        if (response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO || response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO) {
+            delete response['cliente'];
+        }else{
             delete response['contato'];
             if (response['cliente']['tipo'] === PESSOA_TIPO.FISICA) {
                 delete response['cliente']['pessoaJuridica'];
             } else {
                 delete response['cliente']['pessoaFisica'];
             }
-        } else {
-            delete response['cliente'];
         }
 
         response['itinerario']['partidaData'] = moment(response['itinerario']['partida'], 'YYYY-MM-DD HH:mm');

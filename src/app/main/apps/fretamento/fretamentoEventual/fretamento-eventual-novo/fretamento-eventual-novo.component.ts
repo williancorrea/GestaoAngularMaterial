@@ -76,7 +76,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
                         this.calcularPrevisaoChegada();
                         this.calcularDespesas();
 
-                        if (this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.CONTRATADO || this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO) {
+                        if (this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.CONTRATADO
+                            || this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO
+                            || this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CLIENTE) {
                             this.formFretamentoEventual.disable();
                             this.cmbClienteForm.disable();
                         }
@@ -191,7 +193,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual = this.formBuild.group({
             key: [null],
-            situacao: [FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO, [Validators.required]],
+            situacao: [FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO, [Validators.required]],
             situacaoData: [null],
             contato: this.formBuild.group({
                 nome: [null, [
@@ -486,7 +488,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         if (event && event.option && event.option.value) {
             const clone = Utils.clonarObjeto(event.option.value);
 
-            this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO);
+            this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CLIENTE);
             this.formFretamentoEventual.get('cliente').get('tipo').setValue(clone['tipo']);
 
             if (clone['tipo'] === PESSOA_TIPO.FISICA) {
@@ -502,7 +504,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
     }
 
     btnOrcamento(): void {
-        this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO);
+        this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO);
 
         this.formFretamentoEventual.get('contato').get('nome').setValue('');
         this.formFretamentoEventual.get('contato').get('telefone1').setValue('');
@@ -517,7 +519,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
     }
 
     btnNovoCliente(): void {
-        this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.AGENDADO);
+        this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CLIENTE);
 
         this.cmbClienteForm.reset();
         this.cmbClienteForm.updateValueAndValidity();

@@ -61,7 +61,7 @@
                                     <!--   #    ORCAMENTO                 -->
                                     <!--   ############################## -->
                                     <mat-step [stepControl]="formFretamentoEventual.get('contato')"
-                                              *ngIf="formFretamentoEventual.get('situacao').value == 'ORCAMENTO' || (formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO' && formFretamentoEventual.get('cliente').value['key'] == null )">
+                                              *ngIf="formFretamentoEventual.get('situacao').value == 'ORCAMENTO_CONTATO' || formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CONTATO'">
 
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('contato')">
                                             <ng-template matStepLabel>Orçamento</ng-template>
@@ -70,13 +70,13 @@
                                                 <div fxFlex="75" fxLayoutAlign="end center" class="pr-4" style="margin-bottom: 22px;">
                                                     <div class="pr-4">
                                                         <button mat-raised-button type="button" color="accent" (click)="btnOrcamento()"
-                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
-                                                            Orçamento
+                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CONTATO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CLIENTE'">
+                                                            Novo Orçamento
                                                         </button>
                                                     </div>
                                                     <div class="pr-4">
                                                         <button mat-raised-button type="button" color="primary" (click)="btnNovoCliente()"
-                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
+                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CONTATO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CLIENTE'">
                                                             Novo Cliente
                                                         </button>
                                                     </div>
@@ -162,7 +162,7 @@
                                     <!--   #    CADASTRO DE CLIENTE       -->
                                     <!--   ############################## -->
                                     <mat-step [stepControl]="formFretamentoEventual.get('cliente')"
-                                              *ngIf="formFretamentoEventual.get('situacao').value != 'ORCAMENTO' && formFretamentoEventual.get('cliente').value['key'] != null ">
+                                              *ngIf="formFretamentoEventual.get('situacao').value != 'ORCAMENTO_CONTATO' || formFretamentoEventual.get('situacao').value != 'NAO_CONTRATADO_CONTATO'">
 
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('cliente')">
                                             <ng-template matStepLabel>Cliente</ng-template>
@@ -180,13 +180,13 @@
                                                 <div fxFlex="25" fxLayoutAlign="end center" class="pr-4" style="margin-bottom: 22px;">
                                                     <div class="pr-4">
                                                         <button mat-raised-button type="button" color="accent" (click)="btnOrcamento()"
-                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
-                                                            Orçamento
+                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CONTATO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CLIENTE'">
+                                                            Novo Orçamento
                                                         </button>
                                                     </div>
                                                     <div class="pr-4">
                                                         <button mat-raised-button type="button" color="primary" (click)="btnNovoCliente()"
-                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO'">
+                                                                [disabled]="this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CONTATO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CLIENTE'">
                                                             Novo Cliente
                                                         </button>
                                                     </div>
@@ -911,7 +911,12 @@
                                                     voltar
                                                 </button>
                                                 <button mat-raised-button type="button" color="accent" (click)="gravarFretamento()"
-                                                        [disabled]="(this.formFretamentoEventual.get('representanteComercial').invalid || this.formFretamentoEventual.get('empresa').invalid ||  this.formFretamentoEventual.get('dataImpressaoContrato').invalid) || (this.formFretamentoEventual.get('situacao').value == 'CONTRATADO' || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO')">
+                                                        [disabled]="(this.formFretamentoEventual.get('representanteComercial').invalid
+                                                            || this.formFretamentoEventual.get('empresa').invalid
+                                                            ||  this.formFretamentoEventual.get('dataImpressaoContrato').invalid)
+                                                            || (this.formFretamentoEventual.get('situacao').value == 'CONTRATADO'
+                                                            || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CONTATO'
+                                                            || this.formFretamentoEventual.get('situacao').value == 'NAO_CONTRATADO_CLIENTE')">
                                                     <span>{{tipoPagina === 'NOVO' ? 'Salvar Fretamento' : 'Atualizar Fretamento'}}</span>
                                                 </button>
                                             </div>
