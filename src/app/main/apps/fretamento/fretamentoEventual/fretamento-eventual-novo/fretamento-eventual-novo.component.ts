@@ -149,7 +149,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
     }
 
     configurarForm(): void {
-        this.cmbClienteForm.setValidators([ValidacaoGenericaWCorrea.SelecionarItemCmb]);
+        this.cmbClienteForm.setValidators([ValidacaoGenericaWCorrea.SelecionarItemNaoObrigatorioCmb]);
         this.cmbClienteForm.updateValueAndValidity();
         this.cmbClienteForm.valueChanges
             .pipe(
@@ -245,7 +245,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
             }),
             custo: this.formBuild.group({
                 motorista1: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
-                motorista2: [null, [ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+                motorista2: [null, [ValidacaoGenericaWCorrea.SelecionarItemNaoObrigatorioCmb]],
                 valorMotorista1Diaria: [null, [Validators.required]],
                 valorMotorista2Diaria: [null],
 
@@ -525,6 +525,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.formFretamentoEventual.get('cliente').reset(this.formFretamentoEventual.get('contato').value);
         this.formFretamentoEventual.get('cliente').get('tipo').setValue(PESSOA_TIPO.FISICA);
         this.formFretamentoEventual.get('cliente').updateValueAndValidity();
+
+        this.formFretamentoEventual.get('contato').reset();
+        this.formFretamentoEventual.get('contato').updateValueAndValidity();
     }
 
     gravarFretamento(): void {

@@ -260,7 +260,8 @@ export class FretamentoService {
 
 
     private prepararDadosParaSalvar(clone: any, obj: any): any {
-        if (clone['contato']['nome'].length > 0) {
+
+        if (clone['contato'] && clone['contato']['nome'] && clone['contato']['nome'].length > 0) {
             delete clone.cliente;
         } else {
             delete clone.contato;

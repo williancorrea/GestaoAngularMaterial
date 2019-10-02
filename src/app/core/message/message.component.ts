@@ -16,7 +16,6 @@ import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef,
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'CPF_Invalido')">CPF Inválido</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'CNPJ_Invalido')">CNPJ Inválido</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'Selecionar_Item')">Selecione um item</span>
-        <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'Selecionar_Item')">Selecione um item</span>
 
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'matDatepickerMin')">matDatepickerMin</span>
         <span *ngIf="temErro() && (erroCodigo && erroCodigo === 'matDatepickerMax')">matDatepickerMax</span>

@@ -11,8 +11,8 @@ export class ValidacaoGenericaWCorrea {
         return Utils.validarCNPJ(input.value) ? null : {CNPJ_Invalido: true};
     }
 
-    public static SelecionarItemCmb(input: FormControl): any {
-        if (typeof input.value === 'string' || (input.value != null && input.value.length > 0)) {
+    public static SelecionarItemNaoObrigatorioCmb(input: FormControl): any {
+        if (typeof input.value === 'string' && input.value.length > 0) {
             return {Selecionar_Item: true};
         }
         return null;
