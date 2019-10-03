@@ -204,7 +204,8 @@ export class FretamentoService {
         const httpParams = new HttpParams()
             .set('size', paginador.pageSize.toString())
             .set('page', paginador.pageIndex.toString())
-            .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '');
+            .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '')
+            .set('ordemClassificacao', 'DESC');
         // ordemClassificacao: 'DESC',
         // campoOrdenacao: grid.sortField
 

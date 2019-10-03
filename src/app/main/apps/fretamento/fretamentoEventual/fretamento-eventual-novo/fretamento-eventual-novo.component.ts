@@ -254,8 +254,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 notaFiscalTipo: [null, [Validators.required]],
                 notaFiscalImposto: [null],
                 valorEstacionamento: [null],
-                valorGelo: [null],
                 valorAgua: [null],
+                valorGelo: [null],
                 valorDespesasAdicionais: [null],
                 valorDinheiroReserva: [null],
                 valorPedagio: [null],
@@ -303,6 +303,23 @@ export class FretamentoEventualNovoComponent implements OnInit {
             this.formFretamentoEventual.get('cliente').get('pessoaFisica').updateValueAndValidity(); // Forca a atualizacao do objeto
             this.formFretamentoEventual.get('cliente').get('pessoaJuridica').updateValueAndValidity(); // Forca a atualizacao do objeto
         });
+        this.formFretamentoEventual.get('custo').get('motorista2').valueChanges.subscribe(valor => {
+            if ((valor && valor['key'] && valor['key'].length > 0) || (typeof valor === 'string' && valor.length > 0)) {
+                this.formFretamentoEventual.get('custo').get('valorMotorista2Diaria').setValidators([Validators.required]);
+            } else {
+                this.formFretamentoEventual.get('custo').get('valorMotorista2Diaria').clearValidators();
+            }
+            this.formFretamentoEventual.get('custo').get('valorMotorista2Diaria').updateValueAndValidity();
+        });
+        this.formFretamentoEventual.get('custo').get('valorAgua').valueChanges.subscribe(valor => {
+            if (valor > 0.00 || (valor && valor.toString() !== '')) {
+                this.formFretamentoEventual.get('custo').get('valorGelo').setValidators([Validators.required]);
+            } else {
+                this.formFretamentoEventual.get('custo').get('valorGelo').clearValidators();
+            }
+            this.formFretamentoEventual.get('custo').get('valorGelo').updateValueAndValidity();
+        });
+
 
         this.formFretamentoEventual.get('cliente').get('cidade').valueChanges
             .pipe(

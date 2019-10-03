@@ -25,6 +25,12 @@ export class ValidacaoGenericaWCorrea {
         return null;
     }
 
+    public static RequeridoSePreenchido(requerido: AbstractControl): any {
+        if ((typeof requerido.value === 'string' && requerido.value.length > 0) || requerido == null) {
+            return {required: true};
+        }
+    }
+
     public static MoedaValorMinimo(min: number): any {
         return (input: AbstractControl): any => {
             if (input.value && input.value !== undefined && input.value < min) {
