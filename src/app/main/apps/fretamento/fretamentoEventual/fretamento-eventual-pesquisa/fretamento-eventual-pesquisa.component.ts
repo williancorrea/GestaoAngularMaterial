@@ -144,4 +144,15 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
             // this.errorHandler.handle(error);
         });
     }
+
+    imprimirTermoResponsabilidadeMotorista(obj: any): void {
+        this.fretamentoService.gerarTermoResponsabilidadeMotorista(obj['key']).then(relatorio => {
+            Utils.fazerDownloadArquivoBlobEmPDF('Termo_de_Responsabilidade', relatorio);
+        }).catch(error => {
+            // TODO: Colocar mensagem de erro para o usuario
+            console.log('ERRO AO SALVAR: ', error);
+            // this.errorHandler.handle(error);
+        });
+    }
+
 }

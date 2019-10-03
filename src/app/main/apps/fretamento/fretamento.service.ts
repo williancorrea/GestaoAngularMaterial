@@ -145,6 +145,19 @@ export class FretamentoService {
             });
     }
 
+    gerarTermoResponsabilidadeMotorista(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.get(`${this.apiUrl}/${key}/contratoTermoResponsabilidadeMotorista`, {headers, responseType: 'blob'})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+
     salvar(obj: any): Promise<any> {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
@@ -290,7 +303,11 @@ export class FretamentoService {
         clone.custo.valorKm = clone.custo.valorKm.toFixed(2);
 
         clone.custo.motorista1 = {key: clone.custo.motorista1.key};
-        clone.custo.motorista2 = {key: clone.custo.motorista1.key};
+        if (clone.custo.motorista2 && clone.custo.motorista2.key.length > 0) {
+            clone.custo.motorista2 = {key: clone.custo.motorista2.key};
+        } else {
+            delete clone.custo.motorista2;
+        }
 
         clone.dataImpressaoContrato = moment(clone.dataImpressaoContrato).format('YYYY-MM-DD').toString();
         clone.representanteComercial = {key: clone.representanteComercial.key};
@@ -301,7 +318,7 @@ export class FretamentoService {
     private prepararDadosParaReceber(response: any): any {
         if (response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO || response['situacao'] === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO) {
             delete response['cliente'];
-        }else{
+        } else {
             delete response['contato'];
             if (response['cliente']['tipo'] === PESSOA_TIPO.FISICA) {
                 delete response['cliente']['pessoaJuridica'];
