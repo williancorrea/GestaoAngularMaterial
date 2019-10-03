@@ -162,7 +162,7 @@
                                     <!--   #    CADASTRO DE CLIENTE       -->
                                     <!--   ############################## -->
                                     <mat-step [stepControl]="formFretamentoEventual.get('cliente')"
-                                              *ngIf="formFretamentoEventual.get('situacao').value != 'ORCAMENTO_CONTATO' || formFretamentoEventual.get('situacao').value != 'NAO_CONTRATADO_CONTATO'">
+                                              *ngIf="formFretamentoEventual.get('situacao').value != 'ORCAMENTO_CONTATO' && formFretamentoEventual.get('situacao').value != 'NAO_CONTRATADO_CONTATO'">
 
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('cliente')">
                                             <ng-template matStepLabel>Cliente</ng-template>
