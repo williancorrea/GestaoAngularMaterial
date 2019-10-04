@@ -10,6 +10,7 @@ import {fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FuseConfirmDialogComponent} from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import {ErroManipuladorService} from '../../../../../core/erro-manipulador.service';
 
 @Component({
     selector: 'app-fretamento-eventual-pesquisa',
@@ -20,6 +21,8 @@ import {FuseConfirmDialogComponent} from '@fuse/components/confirm-dialog/confir
 })
 export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewInit {
 
+    carregandoDados = false;
+    mensagemErro = '';
     fretamentoList: null;
     // displayedColumns = ['id', 'image', 'name', 'category', 'price', 'quantity', 'active'];
     displayedColumns = ['numero_contrato', 'image', 'name', 'itinerario_horarios', 'itinerario_cidade', 'valor', 'buttons'];
@@ -37,6 +40,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     constructor(private fretamentoService: FretamentoService,
+                private errorHandler: ErroManipuladorService,
                 public dialog: MatDialog) {
     }
 
@@ -60,12 +64,13 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         this.confirmDialogRef.componentInstance.confirmMessage = 'Tem certeza que deseja cancelar o contrato ' + obj['numeroContrato'] + ' ?';
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
+                this.carregandoDados = true;
                 this.fretamentoService.cancelarContrato(obj['key']).then(resultado => {
                     this.pesquisar();
                 }).catch(error => {
-                    // TODO: Colocar mensagem de erro para o usuario
-                    console.log('ERRO AO SALVAR: ', error);
-                    // this.errorHandler.handle(error);
+                    this.errorHandler.handle(error, this.mensagemErro);
+                }).finally(() => {
+                    this.carregandoDados = false;
                 });
             }
             this.confirmDialogRef = null;
@@ -83,12 +88,13 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         this.confirmDialogRef.componentInstance.confirmMessage = 'Tem certeza que deseja ATIVAR o contrato ' + obj['numeroContrato'] + ' novamente ?';
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
+                this.carregandoDados = true;
                 this.fretamentoService.ativarContrato(obj['key']).then(resultado => {
                     this.pesquisar();
                 }).catch(error => {
-                    // TODO: Colocar mensagem de erro para o usuario
-                    console.log('ERRO AO SALVAR: ', error);
-                    // this.errorHandler.handle(error);
+                    this.errorHandler.handle(error, this.mensagemErro);
+                }).finally(() => {
+                    this.carregandoDados = false;
                 });
             }
             this.confirmDialogRef = null;
@@ -101,12 +107,13 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         this.confirmDialogRef.componentInstance.confirmMessage = 'Efetivar a contratação do orçamento ' + obj['numeroContrato'] + ' ?';
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
+                this.carregandoDados = true;
                 this.fretamentoService.contratarFretamento(obj['key']).then(resultado => {
                     this.pesquisar();
                 }).catch(error => {
-                    // TODO: Colocar mensagem de erro para o usuario
-                    console.log('ERRO AO SALVAR: ', error);
-                    // this.errorHandler.handle(error);
+                    this.errorHandler.handle(error, this.mensagemErro);
+                }).finally(() => {
+                    this.carregandoDados = false;
                 });
             }
             this.confirmDialogRef = null;
@@ -123,35 +130,38 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     }
 
     pesquisar(): void {
+        this.carregandoDados = true;
         this.fretamentoService.listarTodos(this.paginador, this.filtro).then(response => {
 
             this.fretamentoList = response['content'];
             this.paginador.length = response['totalElements'];
 
         }).catch(error => {
-            // TODO: Colocar mensagem de erro para o usuario
-            console.log('ERRO AO SALVAR: ', error);
-            // this.errorHandler.handle(error);
+            this.errorHandler.handle(error, this.mensagemErro);
+        }).finally(() => {
+            this.carregandoDados = false;
         });
     }
 
     imprimirContrato(obj: any): void {
+        this.carregandoDados = true;
         this.fretamentoService.gerarContrato(obj['key']).then(relatorio => {
             Utils.fazerDownloadArquivoBlobEmPDF('Contrato ' + obj['numeroContrato'] + ' - ' + obj['cliente']['nome'], relatorio);
         }).catch(error => {
-            // TODO: Colocar mensagem de erro para o usuario
-            console.log('ERRO AO SALVAR: ', error);
-            // this.errorHandler.handle(error);
+            this.errorHandler.handle(error, this.mensagemErro);
+        }).finally(() => {
+            this.carregandoDados = false;
         });
     }
 
     imprimirTermoResponsabilidadeMotorista(obj: any): void {
+        this.carregandoDados = true;
         this.fretamentoService.gerarTermoResponsabilidadeMotorista(obj['key']).then(relatorio => {
             Utils.fazerDownloadArquivoBlobEmPDF('Termo_de_Responsabilidade', relatorio);
         }).catch(error => {
-            // TODO: Colocar mensagem de erro para o usuario
-            console.log('ERRO AO SALVAR: ', error);
-            // this.errorHandler.handle(error);
+            this.errorHandler.handle(error, this.mensagemErro);
+        }).finally(() => {
+            this.carregandoDados = false;
         });
     }
 

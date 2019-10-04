@@ -37,6 +37,7 @@ import {CoreModule} from '../../../core/core.module';
 import {NgxMaskModule} from 'ngx-mask';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {FuseConfirmDialogModule} from '../../../../@fuse/components';
+import {NgxLoadingModule} from 'ngx-loading';
 
 const routes = [
     {
@@ -99,7 +100,8 @@ const routes = [
         CoreModule,
 
         NgxMaskModule,
-        CurrencyMaskModule
+        CurrencyMaskModule,
+        NgxLoadingModule
     ],
     declarations: [
         FretamentoEventualNovoComponent,

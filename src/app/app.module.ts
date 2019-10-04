@@ -22,6 +22,7 @@ import {AppStoreModule} from 'app/store/store.module';
 import {LayoutModule} from 'app/layout/layout.module';
 import {SegurancaModule} from './seguranca/seguranca.module';
 import {CoreModule} from './core/core.module';
+import {ngxLoadingAnimationTypes, NgxLoadingModule} from 'ngx-loading';
 
 
 const appRoutes: Routes = [
@@ -98,6 +99,18 @@ const appRoutes: Routes = [
         LayoutModule,
         AppStoreModule,
 
+        // TODO: MONTAR UMA PAGINA DE CONFIGURACAO PERSONALIZADA PARA ESSAS CONFIGURACOES
+        // https://www.npmjs.com/package/ngx-loading
+        // https://stackblitz.com/github/Zak-C/ngx-loading?file=src%2Fapp%2Fapp.component.ts
+        NgxLoadingModule.forRoot({
+            animationType: ngxLoadingAnimationTypes.wanderingCubes,
+            backdropBackgroundColour: 'rgba(0,0,0,0.2)',
+            backdropBorderRadius: '0px',
+            primaryColour: 'green',
+            secondaryColour: 'red',
+            tertiaryColour: 'blue',
+            fullScreenBackdrop: true
+        }),
 
         // WCorrea
         SegurancaModule,

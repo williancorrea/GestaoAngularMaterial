@@ -25,6 +25,7 @@ import * as moment from 'moment';
 
 export class FretamentoEventualNovoComponent implements OnInit {
 
+    carregandoDados = false;
     form: FormGroup;
     tipoPagina: string;
     env: any;
@@ -61,6 +62,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.formacaoPreco = false;
         this.configurarForm();
 
+        this.carregandoDados = true;
         this.fretamentoService.pesquisarEmpresaRosinha().then(respostaEmpresa => {
             this.cmbEmpresa = respostaEmpresa;
 
@@ -69,6 +71,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 const editando = this.activatedRoute.snapshot.params['key'];
                 if (editando) {
+                    this.carregandoDados = true;
                     this.tipoPagina = 'EDICAO';
                     this.fretamentoService.buscarPorKey(editando).then(response => {
                         this.formFretamentoEventual.patchValue(response);
@@ -82,28 +85,33 @@ export class FretamentoEventualNovoComponent implements OnInit {
                             this.formFretamentoEventual.disable();
                             this.cmbClienteForm.disable();
                         }
-
-                        // this.mostrarModalCarregando(false);
                     }).catch(error => {
                         this.tipoPagina = 'NOVO';
                         this.formFretamentoEventual.get('dataImpressaoContrato').setValue(moment());
                         // this.errorHandler.handle(error);
-                        // this.mostrarModalCarregando(false);
+                    }).finally(() => {
+                        setTimeout(() => {
+                            this.carregandoDados = false;
+                        }, 1000);
                     });
                 } else {
                     this.tipoPagina = 'NOVO';
                     this.formFretamentoEventual.get('dataImpressaoContrato').setValue(moment());
-                    // this.mostrarModalCarregando(false);
+                    this.carregandoDados = false;
                 }
 
 
             }).catch(erro => {
                 // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                this.errorHandler.handle(erro);
+                // this.errorHandler.handle(erro);
+            }).finally(() => {
+                // this.carregandoDados = false;
             });
         }).catch(erro => {
             // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-            this.errorHandler.handle(erro);
+            // this.errorHandler.handle(erro);
+        }).finally(() => {
+            // this.carregandoDados = false;
         });
 
     }
@@ -184,7 +192,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbClienteLista = resposta;
                 }).catch(erro => {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    this.errorHandler.handle(erro);
+                    // this.errorHandler.handle(erro);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -345,7 +353,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbCidadeLista = resposta;
                 }).catch(erro => {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    this.errorHandler.handle(erro);
+                    // this.errorHandler.handle(erro);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -375,7 +383,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbCidadeLista = resposta;
                 }).catch(erro => {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    this.errorHandler.handle(erro);
+                    // this.errorHandler.handle(erro);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -405,7 +413,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbCidadeLista = resposta;
                 }).catch(erro => {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    this.errorHandler.handle(erro);
+                    // this.errorHandler.handle(erro);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -436,7 +444,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbMotoristaLista = resposta;
                 }).catch(erro => {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    this.errorHandler.handle(erro);
+                    // this.errorHandler.handle(erro);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -465,7 +473,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbMotoristaLista = resposta;
                 }).catch(erro => {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    this.errorHandler.handle(erro);
+                    // this.errorHandler.handle(erro);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -494,7 +502,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbVeiculoLista = resposta;
                 }).catch(erro => {
                     // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    this.errorHandler.handle(erro);
+                    // this.errorHandler.handle(erro);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -521,6 +529,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
     }
 
     btnOrcamento(): void {
+        this.carregandoDados = true;
+
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO);
 
         this.formFretamentoEventual.get('contato').get('nome').setValue('');
@@ -533,9 +543,14 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.cmbClienteForm.reset();
         this.cmbClienteForm.updateValueAndValidity();
+
+        setTimeout(() => {
+            this.carregandoDados = false;
+        }, 1000);
     }
 
     btnNovoCliente(): void {
+        this.carregandoDados = true;
         this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CLIENTE);
 
         this.cmbClienteForm.reset();
@@ -547,9 +562,14 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual.get('contato').reset();
         this.formFretamentoEventual.get('contato').updateValueAndValidity();
+
+        setTimeout(() => {
+            this.carregandoDados = false;
+        }, 1000);
     }
 
     gravarFretamento(): void {
+        this.carregandoDados = true;
         if (this.tipoPagina === 'NOVO') {
             this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
                 this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
@@ -559,6 +579,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 // TODO: Colocar mensagem de erro para o usuario
                 console.log('ERRO AO SALVAR: ', error);
                 // this.errorHandler.handle(error);
+            }).finally(() => {
+                this.carregandoDados = false;
             });
         } else {
             this.fretamentoService.atualizar(this.formFretamentoEventual.getRawValue()).then(response => {
@@ -569,6 +591,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 // TODO: Colocar mensagem de erro para o usuario
                 console.log('ERRO AO SALVAR: ', error);
                 // this.errorHandler.handle(error);
+            }).finally(() => {
+                this.carregandoDados = false;
             });
         }
     }
@@ -644,24 +668,31 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     buscarCpfDigitado(): void {
         if (this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').valid) {
+            this.carregandoDados = true;
             this.fretamentoService.buscarPorCPF(this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').value)
                 .then(response => {
                     this.formFretamentoEventual.get('cliente').patchValue(response);
                 })
                 .catch(error => {
                     console.log('CPF não encontrado, vida que segue!');
-                });
+                }).finally(() => {
+                this.carregandoDados = false;
+            });
         }
     }
 
     buscarCnpjDigitado(): void {
         if (this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').valid) {
+            this.carregandoDados = true;
             this.fretamentoService.buscarPorCNPJ(this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').value)
                 .then(response => {
                     this.formFretamentoEventual.get('cliente').patchValue(response);
                 })
                 .catch(error => {
                     console.log('CNPJ não encontrado, vida que segue!');
+                })
+                .finally(() => {
+                    this.carregandoDados = false;
                 });
         }
     }
