@@ -68,7 +68,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
                 this.fretamentoService.cancelarContrato(obj['key']).then(resultado => {
                     this.pesquisar();
                 }).catch(error => {
-                    this.errorHandler.handle(error, this.mensagemErro);
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.carregandoDados = false;
                 });
@@ -92,7 +92,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
                 this.fretamentoService.ativarContrato(obj['key']).then(resultado => {
                     this.pesquisar();
                 }).catch(error => {
-                    this.errorHandler.handle(error, this.mensagemErro);
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.carregandoDados = false;
                 });
@@ -111,7 +111,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
                 this.fretamentoService.contratarFretamento(obj['key']).then(resultado => {
                     this.pesquisar();
                 }).catch(error => {
-                    this.errorHandler.handle(error, this.mensagemErro);
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.carregandoDados = false;
                 });
@@ -137,7 +137,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
             this.paginador.length = response['totalElements'];
 
         }).catch(error => {
-            this.errorHandler.handle(error, this.mensagemErro);
+            this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {
             this.carregandoDados = false;
         });
@@ -148,7 +148,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         this.fretamentoService.gerarContrato(obj['key']).then(relatorio => {
             Utils.fazerDownloadArquivoBlobEmPDF('Contrato ' + obj['numeroContrato'] + ' - ' + obj['cliente']['nome'], relatorio);
         }).catch(error => {
-            this.errorHandler.handle(error, this.mensagemErro);
+            this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {
             this.carregandoDados = false;
         });
@@ -159,7 +159,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         this.fretamentoService.gerarTermoResponsabilidadeMotorista(obj['key']).then(relatorio => {
             Utils.fazerDownloadArquivoBlobEmPDF('Termo_de_Responsabilidade', relatorio);
         }).catch(error => {
-            this.errorHandler.handle(error, this.mensagemErro);
+            this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {
             this.carregandoDados = false;
         });

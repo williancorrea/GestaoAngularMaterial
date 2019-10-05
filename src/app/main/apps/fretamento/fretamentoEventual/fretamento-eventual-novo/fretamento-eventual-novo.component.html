@@ -54,6 +54,8 @@
 
                         <div class="tab-content p-24" fusePerfectScrollbar>
 
+                            <!-- MENSAGENS DE ERRO-->
+                            <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
 
                             <div class="horizontal-stepper-wrapper" [formGroup]="formFretamentoEventual">
 

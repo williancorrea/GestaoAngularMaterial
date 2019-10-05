@@ -25,6 +25,7 @@ import * as moment from 'moment';
 
 export class FretamentoEventualNovoComponent implements OnInit {
 
+    mensagemErro = '';
     carregandoDados = false;
     form: FormGroup;
     tipoPagina: string;
@@ -88,7 +89,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     }).catch(error => {
                         this.tipoPagina = 'NOVO';
                         this.formFretamentoEventual.get('dataImpressaoContrato').setValue(moment());
-                        // this.errorHandler.handle(error);
+                        this.mensagemErro = this.errorHandler.handle(error);
                     }).finally(() => {
                         setTimeout(() => {
                             this.carregandoDados = false;
@@ -101,17 +102,15 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 }
 
 
-            }).catch(erro => {
-                // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                // this.errorHandler.handle(erro);
+            }).catch(error => {
+                this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {
-                // this.carregandoDados = false;
+                this.carregandoDados = false;
             });
-        }).catch(erro => {
-            // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-            // this.errorHandler.handle(erro);
+        }).catch(error => {
+            this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {
-            // this.carregandoDados = false;
+            this.carregandoDados = false;
         });
 
     }
@@ -190,9 +189,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.fretamentoService.pesquisarClienteCmb(pesquisa).then(resposta => {
                     this.cmbClienteLista = resposta;
-                }).catch(erro => {
-                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    // this.errorHandler.handle(erro);
+                }).catch(error => {
+                        this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -351,9 +349,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
                     this.cmbCidadeLista = resposta;
-                }).catch(erro => {
-                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    // this.errorHandler.handle(erro);
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -381,9 +378,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
                     this.cmbCidadeLista = resposta;
-                }).catch(erro => {
-                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    // this.errorHandler.handle(erro);
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -411,9 +407,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
                     this.cmbCidadeLista = resposta;
-                }).catch(erro => {
-                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    // this.errorHandler.handle(erro);
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -442,9 +437,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.fretamentoService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
                     this.cmbMotoristaLista = resposta;
-                }).catch(erro => {
-                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    // this.errorHandler.handle(erro);
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -471,9 +465,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.fretamentoService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
                     this.cmbMotoristaLista = resposta;
-                }).catch(erro => {
-                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    // this.errorHandler.handle(erro);
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -500,9 +493,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 }
                 this.veiculoService.pesquisarVeiculoCmb(pesquisa).then(resposta => {
                     this.cmbVeiculoLista = resposta;
-                }).catch(erro => {
-                    // TODO: ARRUMAR O REDIRECIONAMENTO QUANDO DAR ERRO NA CONSULTA, APRESENTAR UMA MENSAGEM DE ERRO PARA O USUARIO
-                    // this.errorHandler.handle(erro);
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -576,9 +568,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.router.navigateByUrl('/fretamento/eventual');
             }).catch(error => {
-                // TODO: Colocar mensagem de erro para o usuario
-                console.log('ERRO AO SALVAR: ', error);
-                // this.errorHandler.handle(error);
+                this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {
                 this.carregandoDados = false;
             });
@@ -588,9 +578,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.router.navigateByUrl('/fretamento/eventual');
             }).catch(error => {
-                // TODO: Colocar mensagem de erro para o usuario
-                console.log('ERRO AO SALVAR: ', error);
-                // this.errorHandler.handle(error);
+                this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {
                 this.carregandoDados = false;
             });

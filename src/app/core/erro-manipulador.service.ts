@@ -9,39 +9,42 @@ export class ErroManipuladorService {
     constructor(private router: Router) {
     }
 
-    handle(errorResponse: any, bindMensagemErro: string): void {
-
+    handle(errorResponse: any): string {
+        let mensagemErro = '';
         // console.error('DEU ZICA', errorResponse);
 
         if (typeof errorResponse === 'string') {
-            bindMensagemErro = errorResponse;
+            mensagemErro = errorResponse;
         } else if (errorResponse instanceof NotAuthenticatedError) {
-            bindMensagemErro = 'Sua sessão expirou';
+            mensagemErro = 'Sua sessão expirou';
             this.router.navigate(['/autenticacao/login']);
         } else if (errorResponse instanceof HttpErrorResponse && errorResponse.status >= 400 && errorResponse.status <= 499) {
-            bindMensagemErro = 'Ocorreu um erro no servidor ao processar a sua solicitação, tente novamente.';
 
             try {
                 if (errorResponse['error']['error'] === 'invalid_grant') {
-                    bindMensagemErro = 'Usuário e/ou senha incorreto(s)';
+                    mensagemErro = 'Usuário e/ou senha incorreto(s)';
                 }
 
                 if (errorResponse.status === 403) {
-                    bindMensagemErro = 'Você não tem permissão para executar esta ação.';
+                    mensagemErro = 'Você não tem permissão para executar esta ação.';
                     // TODO: COLOCAR O COMPONENTE DE ACESSO NEGADO
                     this.router.navigate(['/acesso-negado']);
                 }
 
                 for (let i = 0; errorResponse.error.length > 0; i++) {
-                    bindMensagemErro += errorResponse.error[i].userMessage;
+                    mensagemErro += errorResponse.error[i].userMessage;
                     if (i > 0 && i < errorResponse.error.length) {
-                        bindMensagemErro += '<br>';
+                        mensagemErro += '<br>';
                     }
                 }
             } catch (e) {
             }
+
+            if (mensagemErro.length === 0) {
+                mensagemErro = 'Ocorreu um erro no servidor ao processar a sua solicitação, tente novamente.';
+            }
         } else {
-            bindMensagemErro = 'Ocorreu um erro no servidor ao processar a sua solicitação, tente novamente.';
+            mensagemErro = 'Ocorreu um erro no servidor ao processar a sua solicitação, tente novamente.';
 
 
             // Colocar uma Pagina personalizada para os erros do tipo 500
@@ -51,6 +54,7 @@ export class ErroManipuladorService {
             // TODO: COLOCAR O COMPONENTE DE PAGINA DE ERRO
             // this.router.navigate(['/erro']);
         }
+        return mensagemErro;
     }
 
 }

@@ -43,15 +43,7 @@
         <div class="content-card">
 
             <!-- MENSAGENS DE ERRO-->
-            <mat-card *ngIf="mensagemErro">
-                <div class="example-container mat-elevation-z8 message-box">
-                    <div [innerHTML]="mensagemErro"></div>
-                    <mat-icon style="position: absolute; right: 30px; top: 30px; cursor: pointer; transform: rotate(45deg);"
-                              (click)="mensagemErro = ''">
-                        add_circle_outline
-                    </mat-icon>
-                </div>
-            </mat-card>
+            <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
 
             <mat-table #table [dataSource]="fretamentoList"
                        class="products-table"

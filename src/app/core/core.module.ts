@@ -9,13 +9,14 @@ import {FretamentoService} from '../main/apps/fretamento/fretamento.service';
 import {GestaoService} from '../seguranca/autenticacao/gestao.service';
 import {IConfig, NgxMaskModule} from 'ngx-mask';
 
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatPaginatorIntl} from '@angular/material';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatCardModule, MatIconModule, MatPaginatorIntl} from '@angular/material';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {CURRENCY_MASK_CONFIG, CurrencyMaskConfig} from 'ng2-currency-mask/src/currency-mask.config';
 import {VeiculoService} from '../main/apps/fretamento/veiculo.service';
 
 import pt from '@angular/common/locales/pt';
+import {ErrorServiceComponent} from './message/error-service.component';
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -82,12 +83,16 @@ registerLocaleData(pt, 'pt');
 
         // Mascaras dos Campos
         NgxMaskModule.forRoot(options),
+        MatIconModule,
+        MatCardModule,
     ],
     declarations: [
-        MessageComponent
+        MessageComponent,
+        ErrorServiceComponent
     ],
     exports: [
-        MessageComponent
+        MessageComponent,
+        ErrorServiceComponent
     ],
     providers: [
         // AuthService,
