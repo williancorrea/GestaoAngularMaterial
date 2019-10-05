@@ -1,7 +1,7 @@
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
-import {NotAuthenticatedError} from '../seguranca/autenticacao/gestao.service';
+import {NotAuthenticatedError} from '../../seguranca/autenticacao/gestao.service';
 
 @Injectable()
 export class ErroManipuladorService {

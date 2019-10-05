@@ -3,8 +3,8 @@ import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule, registerLocaleData} from '@angular/common';
 
-import {ErroManipuladorService} from './erro-manipulador.service';
-import {MessageComponent} from './message/message.component';
+import {ErroManipuladorService} from './componentes/erro-manipulador.service';
+import {MessageComponent} from './componentes/message/message.component';
 import {FretamentoService} from '../main/apps/fretamento/fretamento.service';
 import {GestaoService} from '../seguranca/autenticacao/gestao.service';
 import {IConfig, NgxMaskModule} from 'ngx-mask';
@@ -16,7 +16,7 @@ import {CURRENCY_MASK_CONFIG, CurrencyMaskConfig} from 'ng2-currency-mask/src/cu
 import {VeiculoService} from '../main/apps/fretamento/veiculo.service';
 
 import pt from '@angular/common/locales/pt';
-import {ErrorServiceComponent} from './message/error-service.component';
+import {ErrorServiceComponent} from './componentes/message/error-service.component';
 
 export const APP_DATE_FORMATS = {
     parse: {

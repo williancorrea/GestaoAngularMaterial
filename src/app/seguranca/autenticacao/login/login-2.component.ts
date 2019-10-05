@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {FuseConfigService} from '@fuse/services/config.service';
 import {fuseAnimations} from '@fuse/animations';
-import {ErroManipuladorService} from '../../../core/erro-manipulador.service';
+import {ErroManipuladorService} from '../../../core/componentes/erro-manipulador.service';
 import {Router} from '@angular/router';
 
 @Component({

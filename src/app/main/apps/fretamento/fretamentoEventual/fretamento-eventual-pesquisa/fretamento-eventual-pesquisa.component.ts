@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 
@@ -10,7 +10,7 @@ import {fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FuseConfirmDialogComponent} from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import {ErroManipuladorService} from '../../../../../core/erro-manipulador.service';
+import {ErroManipuladorService} from '../../../../../core/componentes/erro-manipulador.service';
 
 @Component({
     selector: 'app-fretamento-eventual-pesquisa',
@@ -19,7 +19,7 @@ import {ErroManipuladorService} from '../../../../../core/erro-manipulador.servi
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewInit {
+export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked {
 
     carregandoDados = false;
     mensagemErro = '';
@@ -41,7 +41,8 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
 
     constructor(private fretamentoService: FretamentoService,
                 private errorHandler: ErroManipuladorService,
-                public dialog: MatDialog) {
+                public dialog: MatDialog,
+                private cdr: ChangeDetectorRef) {
     }
 
     ngOnInit(): void {
@@ -55,8 +56,21 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
             .subscribe(() => {
                 this.pesquisar();
             });
-
     }
+
+    ngAfterViewInit(): void {
+        this.pesquisar();
+        this.cdr.detectChanges();
+    }
+
+    ngAfterViewChecked(): void {
+        this.cdr.detectChanges();
+    }
+
+    ngAfterContentChecked(): void {
+        this.cdr.detectChanges();
+    }
+
 
     abrirDialogDeCancelamentoDeContrato(obj: any, indexColuna: number): void {
         this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {disableClose: false});
@@ -120,9 +134,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         });
     }
 
-    ngAfterViewInit(): void {
-        this.pesquisar();
-    }
+
 
     paginadorEvento(event?: PageEvent): PageEvent {
         this.pesquisar();
@@ -140,6 +152,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
             this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {
             this.carregandoDados = false;
+            this.cdr.detectChanges();
         });
     }
 

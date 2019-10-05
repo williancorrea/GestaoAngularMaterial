@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '@fuse/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FretamentoService} from '../../fretamento.service';
-import {ErroManipuladorService} from '../../../../../core/erro-manipulador.service';
+import {ErroManipuladorService} from '../../../../../core/componentes/erro-manipulador.service';
 import {PESSOA_TIPO} from '../../../../../core/modelos/PessoaTipo';
 import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../../../core/modelos/FretamentoEventualSituacao';
 import {ValidacaoGenericaWCorrea} from '../../../../../core/utils/ValidacaoGenericaWCorrea';

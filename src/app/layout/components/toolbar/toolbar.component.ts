@@ -9,7 +9,7 @@ import {FuseSidebarService} from '@fuse/components/sidebar/sidebar.service';
 
 import {navigation} from 'app/navigation/navigation';
 import {LogoutService} from '../../../seguranca/logout.service';
-import {ErroManipuladorService} from '../../../core/erro-manipulador.service';
+import {ErroManipuladorService} from '../../../core/componentes/erro-manipulador.service';
 import {Router} from '@angular/router';
 
 @Component({
