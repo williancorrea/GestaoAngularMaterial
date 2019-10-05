@@ -24,7 +24,6 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     carregandoDados = false;
     mensagemErro = '';
     fretamentoList: null;
-    // displayedColumns = ['id', 'image', 'name', 'category', 'price', 'quantity', 'active'];
     displayedColumns = ['numero_contrato', 'image', 'name', 'itinerario_horarios', 'itinerario_cidade', 'valor', 'buttons'];
 
     @ViewChild(MatPaginator, {static: true})
@@ -70,7 +69,6 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     ngAfterContentChecked(): void {
         this.cdr.detectChanges();
     }
-
 
     abrirDialogDeCancelamentoDeContrato(obj: any, indexColuna: number): void {
         this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {disableClose: false});
@@ -133,8 +131,6 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
             this.confirmDialogRef = null;
         });
     }
-
-
 
     paginadorEvento(event?: PageEvent): PageEvent {
         this.pesquisar();
