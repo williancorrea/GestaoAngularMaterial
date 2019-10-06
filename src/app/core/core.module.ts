@@ -17,6 +17,8 @@ import {VeiculoService} from '../main/apps/fretamento/veiculo.service';
 
 import pt from '@angular/common/locales/pt';
 import {ErrorServiceComponent} from './componentes/message/error-service.component';
+import { ImagemBase64Component } from './componentes/imagem-base64/imagem-base64.component';
+import { ImagemBase64DialogComponent } from './componentes/imagem-base64-dialog/imagem-base64-dialog.component';
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -58,7 +60,7 @@ export function getPaginadorTraducao(): any {
     const paginatorIntl = new MatPaginatorIntl();
 
     paginatorIntl.itemsPerPageLabel = 'Itens por pagina:';
-    paginatorIntl.firstPageLabel = 'Primeira pagina'
+    paginatorIntl.firstPageLabel = 'Primeira pagina';
     paginatorIntl.nextPageLabel = 'Próxima pagina';
     paginatorIntl.previousPageLabel = 'Voltar pagina';
     paginatorIntl.lastPageLabel = 'Ultima pagina';
@@ -88,11 +90,15 @@ registerLocaleData(pt, 'pt');
     ],
     declarations: [
         MessageComponent,
-        ErrorServiceComponent
+        ErrorServiceComponent,
+        ImagemBase64Component,
+        ImagemBase64DialogComponent
     ],
     exports: [
         MessageComponent,
-        ErrorServiceComponent
+        ErrorServiceComponent,
+        ImagemBase64Component,
+        ImagemBase64DialogComponent
     ],
     providers: [
         // AuthService,

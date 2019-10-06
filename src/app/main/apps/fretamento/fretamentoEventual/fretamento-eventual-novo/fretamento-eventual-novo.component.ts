@@ -48,6 +48,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
     ganhoReal: number;
     formacaoPreco: any;
 
+    imagemCliente: string;
+
     constructor(private _matSnackBar: MatSnackBar,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
@@ -85,7 +87,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
                             || this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CLIENTE) {
                             this.formFretamentoEventual.disable();
                             this.cmbClienteForm.disable();
+                        } else {
+                            this.imagemCliente = this.formFretamentoEventual.get('cliente').get('imagem').value ? this.formFretamentoEventual.get('cliente').get('imagem').value : '';
                         }
+
                     }).catch(error => {
                         this.tipoPagina = 'NOVO';
                         this.formFretamentoEventual.get('dataImpressaoContrato').setValue(moment());
@@ -112,7 +117,6 @@ export class FretamentoEventualNovoComponent implements OnInit {
         }).finally(() => {
             this.carregandoDados = false;
         });
-
     }
 
     compararObjetosMatSelect(f1: any, f2: any): any {
@@ -190,7 +194,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 this.fretamentoService.pesquisarClienteCmb(pesquisa).then(resposta => {
                     this.cmbClienteLista = resposta;
                 }).catch(error => {
-                        this.mensagemErro = this.errorHandler.handle(error);
+                    this.mensagemErro = this.errorHandler.handle(error);
                 }).finally(() => {
                     this.cmbCarregando = false;
                 });
@@ -562,6 +566,12 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
     gravarFretamento(): void {
         this.carregandoDados = true;
+
+        // Adicionando imagem ao cliente
+        if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO || this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO) {
+            this.formFretamentoEventual.get('cliente').get('imagem').setValue(this.imagemCliente ? this.imagemCliente : '');
+        }
+
         if (this.tipoPagina === 'NOVO') {
             this.fretamentoService.salvar(this.formFretamentoEventual.getRawValue()).then(response => {
                 this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
