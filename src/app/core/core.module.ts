@@ -9,7 +9,7 @@ import {FretamentoService} from '../main/apps/fretamento/fretamento.service';
 import {GestaoService} from '../seguranca/autenticacao/gestao.service';
 import {IConfig, NgxMaskModule} from 'ngx-mask';
 
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatCardModule, MatIconModule, MatPaginatorIntl} from '@angular/material';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatButtonModule, MatCardModule, MatDialogModule, MatIconModule, MatPaginatorIntl} from '@angular/material';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {CURRENCY_MASK_CONFIG, CurrencyMaskConfig} from 'ng2-currency-mask/src/currency-mask.config';
@@ -17,8 +17,9 @@ import {VeiculoService} from '../main/apps/fretamento/veiculo.service';
 
 import pt from '@angular/common/locales/pt';
 import {ErrorServiceComponent} from './componentes/message/error-service.component';
-import { ImagemBase64Component } from './componentes/imagem-base64/imagem-base64.component';
-import { ImagemBase64DialogComponent } from './componentes/imagem-base64-dialog/imagem-base64-dialog.component';
+import {ImagemBase64Component} from './componentes/imagem-base64/imagem-base64.component';
+import {ImagemBase64DialogComponent} from './componentes/imagem-base64-dialog/imagem-base64-dialog.component';
+import {ImageCropperModule} from 'ngx-image-cropper';
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -87,6 +88,14 @@ registerLocaleData(pt, 'pt');
         NgxMaskModule.forRoot(options),
         MatIconModule,
         MatCardModule,
+
+        MatDialogModule,
+        MatButtonModule,
+        ImageCropperModule
+    ],
+    entryComponents:[
+        ImagemBase64Component,
+        ImagemBase64DialogComponent
     ],
     declarations: [
         MessageComponent,

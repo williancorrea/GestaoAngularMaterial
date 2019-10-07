@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {MatDialog} from '@angular/material';
+import {ImagemBase64DialogComponent} from '../imagem-base64-dialog/imagem-base64-dialog.component';
 
 @Component({
     selector: 'app-imagem-base64',
@@ -9,21 +10,25 @@ import {FormControl} from '@angular/forms';
 export class ImagemBase64Component implements OnInit {
 
     @Input() imagemBase64: string;
-    @Output() imagemBase64Change: string; // Two-way binding - TEM SER ASSIM
+    @Output() imagemBase64Change: EventEmitter<string> = new EventEmitter<string>();  // Two-way binding - TEM SER ASSIM
 
-    constructor() {
+    constructor(public dialog: MatDialog) {
+
     }
 
     ngOnInit(): void {
     }
 
-    abrirModalTrocarImagem(): void{
-        console.log('Vai Abrir o dialog');
-    }
+    abrirModalTrocarImagem(): void {
+        const dialogRef = this.dialog.open(ImagemBase64DialogComponent,
+            {autoFocus: false, data: {imagem: this.imagemBase64}}
+            );
 
-    imagemBase64Alterado(): any {
-        // this.imagemBase64.setValue('');
-        // this.imagemBase64.emit(this.erro);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.imagemBase64 = result;
+                this.imagemBase64Change.emit(this.imagemBase64);
+            }
+        });
     }
-
 }

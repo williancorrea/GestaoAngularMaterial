@@ -1,1 +1,51 @@
-<p>imagem-base64-dialog works!</p>
+<h2 mat-dialog-title>Buscar Imagens</h2>
+
+<mat-dialog-content>
+    <img *ngIf="!imagemSelecionada" src="assets/wcorrea/img/buscar-imagens.png" style="opacity: 0.2;"/>
+    <div *ngIf="imagemSelecionada" style=" width: 400px; height: 100%">
+        <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="4 / 4"
+            [resizeToWidth]="150"
+            [cropperMinWidth]="150"
+            [onlyScaleDown]="true"
+            [roundCropper]="false"
+            format="png"
+            outputType="base64"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()"
+            [style.display]="showCropper ? null : 'none'"
+            style="max-height: 400px;"
+        ></image-cropper>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button>Tirar Foto</button>
+
+    <input id="selectedFile" style="display: none;" type="file" accept="image/*" (change)="fileChangeEvent($event)"/>
+    <button mat-button onclick="document.getElementById('selectedFile').click();">Selecionar Arquivo</button>
+
+    <button mat-button mat-dialog-close [matDialogClose]="this.croppedImage" style="margin-left: auto;" [disabled]="!imagemSelecionada">Usar Imagem</button>
+</mat-dialog-actions>
+
+
+<!--<div style="width: 100%; text-align: center;">-->
+
+
+<!--    <button *ngIf="imagemSelecionada" class="btn-recortar-imagem fa fa-undo" (click)="rotateLeft()"></button>-->
+<!--    <button *ngIf="imagemSelecionada" class="btn-recortar-imagem fa fa-repeat" (click)="rotateRight()"></button>-->
+<!--    <button *ngIf="imagemSelecionada" class="btn-recortar-imagem fa fa-exchange" (click)="flipHorizontal()"></button>-->
+<!--    <button *ngIf="imagemSelecionada" class="btn-recortar-imagem fa fa-exchange fa-rotate-90" (click)="flipVertical()"></button>-->
+<!--    <br *ngIf="imagemSelecionada">-->
+<!--    <hr>-->
+
+
+<!--    <hr *ngIf="imagemSelecionada">-->
+<!--    <img *ngIf="imagemSelecionada" [src]="croppedImage"/>-->
+
+
+<!--</div>-->
