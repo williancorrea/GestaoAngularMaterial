@@ -48,7 +48,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
     ganhoReal: number;
     formacaoPreco: any;
 
-    imagemCliente: string;
+    imagemCliente = '';
 
     constructor(private _matSnackBar: MatSnackBar,
                 private router: Router,
@@ -87,7 +87,10 @@ export class FretamentoEventualNovoComponent implements OnInit {
                             || this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CLIENTE) {
                             this.formFretamentoEventual.disable();
                             this.cmbClienteForm.disable();
-                        } else {
+                        }
+
+                        if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.CONTRATADO
+                            || this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO) {
                             this.imagemCliente = this.formFretamentoEventual.get('cliente').get('imagem').value ? this.formFretamentoEventual.get('cliente').get('imagem').value : '';
                         }
 

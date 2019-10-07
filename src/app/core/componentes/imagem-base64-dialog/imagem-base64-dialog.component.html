@@ -1,13 +1,32 @@
-<h2 mat-dialog-title>Buscar Imagens</h2>
+<ngx-loading [show]="carregandoDados"></ngx-loading>
+
+<div mat-dialog-title style="display: flex">
+    <h2>Buscar Imagens</h2>
+    <button *ngIf="imagemSelecionada" mat-button (click)="rotateRight()"
+            style="transform: rotate(180deg); margin: 0 0 0 auto; -webkit-transform: scaleX(-1); transform: scaleX(-1);">
+        <mat-icon>screen_rotation</mat-icon>
+    </button>
+    <button *ngIf="imagemSelecionada" mat-button (click)="flipHorizontal()">
+        <mat-icon>flip</mat-icon>
+    </button>
+    <button *ngIf="imagemSelecionada" mat-button (click)="flipVertical()" style="transform: rotate(90deg);">
+        <mat-icon>flip</mat-icon>
+    </button>
+</div>
+
 
 <mat-dialog-content>
-    <img *ngIf="!imagemSelecionada" src="assets/wcorrea/img/buscar-imagens.png" style="opacity: 0.2;"/>
-    <div *ngIf="imagemSelecionada" style=" width: 400px; height: 100%">
+    <img *ngIf="!imagemSelecionada && !imagemCameraAberta"
+         style="width: 400px; height: 100%; margin: 0 auto;"
+         src="assets/wcorrea/img/buscar-imagens.png" style="opacity: 0.2;"/>
+
+    <div [hidden]="!imagemSelecionada" style="width: 400px; height: 100%; margin: 0 auto;">
         <image-cropper
+            #imageCropperID
             [imageChangedEvent]="imageChangedEvent"
             [maintainAspectRatio]="true"
             [aspectRatio]="4 / 4"
-            [resizeToWidth]="150"
+            [resizeToWidth]="180"
             [cropperMinWidth]="150"
             [onlyScaleDown]="true"
             [roundCropper]="false"
@@ -20,32 +39,31 @@
             [style.display]="showCropper ? null : 'none'"
             style="max-height: 400px;"
         ></image-cropper>
+        <p style="color: red; text-align: center;" *ngIf="tamanhoMinimodaImagem">(Imagem já está com tamanho mínimo definido.)</p>
     </div>
+
+    <!-- WEB CAM -->
+    <div [hidden]="!imagemCameraAberta" class="areaCamera">
+        <video autoplay="true" id="webCamera"></video>
+        <button type="button" (click)="tirarFotoWebCamera()">Tirar foto</button>
+    </div>
+
 </mat-dialog-content>
 
-<mat-dialog-actions>
-    <button mat-button>Tirar Foto</button>
+<mat-dialog-actions *ngIf="!imagemCameraAberta">
+    <button mat-button (click)="carregarCamera()">
+        <mat-icon>photo_camera</mat-icon>
+        Abrir Camera
+    </button>
 
     <input id="selectedFile" style="display: none;" type="file" accept="image/*" (change)="fileChangeEvent($event)"/>
-    <button mat-button onclick="document.getElementById('selectedFile').click();">Selecionar Arquivo</button>
+    <button mat-button onclick="document.getElementById('selectedFile').click();">
+        <mat-icon>insert_drive_file</mat-icon>
+        Selecionar Arquivo
+    </button>
 
-    <button mat-button mat-dialog-close [matDialogClose]="this.croppedImage" style="margin-left: auto;" [disabled]="!imagemSelecionada">Usar Imagem</button>
+    <button mat-button mat-dialog-close [matDialogClose]="this.croppedImage" style="margin-left: auto;" [disabled]="!imagemSelecionada">
+        <mat-icon>check</mat-icon>
+        Usar Imagem
+    </button>
 </mat-dialog-actions>
-
-
-<!--<div style="width: 100%; text-align: center;">-->
-
-
-<!--    <button *ngIf="imagemSelecionada" class="btn-recortar-imagem fa fa-undo" (click)="rotateLeft()"></button>-->
-<!--    <button *ngIf="imagemSelecionada" class="btn-recortar-imagem fa fa-repeat" (click)="rotateRight()"></button>-->
-<!--    <button *ngIf="imagemSelecionada" class="btn-recortar-imagem fa fa-exchange" (click)="flipHorizontal()"></button>-->
-<!--    <button *ngIf="imagemSelecionada" class="btn-recortar-imagem fa fa-exchange fa-rotate-90" (click)="flipVertical()"></button>-->
-<!--    <br *ngIf="imagemSelecionada">-->
-<!--    <hr>-->
-
-
-<!--    <hr *ngIf="imagemSelecionada">-->
-<!--    <img *ngIf="imagemSelecionada" [src]="croppedImage"/>-->
-
-
-<!--</div>-->

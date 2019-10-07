@@ -71,7 +71,7 @@
                                         <form fxLayout="column" [formGroup]="formFretamentoEventual.get('contato')">
                                             <ng-template matStepLabel>Orçamento</ng-template>
 
-                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center" >
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
                                                 <div fxFlex="75" fxLayoutAlign="end center" class="pr-4" style="margin-bottom: 22px;">
                                                     <div class="pr-4">
                                                         <button mat-raised-button type="button" color="accent" (click)="btnOrcamento()"
@@ -226,14 +226,17 @@
                                             <mat-grid-list cols="5" rowHeight="87px">
                                                 <mat-grid-tile colspan="1" rowspan="2">
 
-<!--                                                    <div *ngIf="!formFretamentoEventual.get('cliente').get('imagem').value"-->
-<!--                                                         style="top: -10px; position: relative;    border-radius: 10px;    border: 1px solid #ccc; width: 140px;    height: 140px;">-->
-<!--                                                    </div>-->
-<!--                                                    <img *ngIf="formFretamentoEventual.get('cliente').get('imagem').value"-->
-<!--                                                         [src]="formFretamentoEventual.get('cliente').get('imagem').value"-->
-<!--                                                         style="top: -10px; position: relative; border-radius: 10px; border: 1px solid #ccc; width: 140px; height: 140px;"/>-->
+                                                    <!--                                                    <div *ngIf="!formFretamentoEventual.get('cliente').get('imagem').value"-->
+                                                    <!--                                                         style="top: -10px; position: relative;    border-radius: 10px;    border: 1px solid #ccc; width: 140px;    height: 140px;">-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                    <img *ngIf="formFretamentoEventual.get('cliente').get('imagem').value"-->
+                                                    <!--                                                         [src]="formFretamentoEventual.get('cliente').get('imagem').value"-->
+                                                    <!--                                                         style="top: -10px; position: relative; border-radius: 10px; border: 1px solid #ccc; width: 140px; height: 140px;"/>-->
 
-                                                    <app-imagem-base64 [imagemBase64]="imagemCliente" style="top: -10px; position: relative;  width: 140px; height: 140px;"></app-imagem-base64>
+                                                    <app-imagem-base64 [disabled]="(this.formFretamentoEventual.get('situacao').value === 'CONTRATADO'
+                                                                                || this.formFretamentoEventual.get('situacao').value === 'NAO_CONTRATADO_CONTATO'
+                                                                                || this.formFretamentoEventual.get('situacao').value === 'NAO_CONTRATADO_CLIENTE')"
+                                                                       [(imagemBase64)]="imagemCliente" style="top: -10px; position: relative;  width: 140px; height: 140px;"></app-imagem-base64>
 
                                                 </mat-grid-tile>
                                                 <mat-grid-tile colspan="4" rowspan="1">

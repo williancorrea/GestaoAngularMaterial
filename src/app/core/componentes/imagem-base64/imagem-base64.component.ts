@@ -9,6 +9,7 @@ import {ImagemBase64DialogComponent} from '../imagem-base64-dialog/imagem-base64
 })
 export class ImagemBase64Component implements OnInit {
 
+    @Input() disabled: boolean;
     @Input() imagemBase64: string;
     @Output() imagemBase64Change: EventEmitter<string> = new EventEmitter<string>();  // Two-way binding - TEM SER ASSIM
 

@@ -1,0 +1,35 @@
+.areaCamera{
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    max-width: 500px;
+}
+
+.areaCamera video{
+    width: 100%;
+    height: auto;
+    background-color: whitesmoke;
+
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+
+.areaCamera button{
+    -webkit-appearance: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+    background-color: #068c84;
+    color: white;
+    text-transform: uppercase;
+    border: 1px solid white;
+    box-shadow: 0 1px 5px #666;
+}
+
+.areaCamera button:focus{
+    outline: none;
+    background-color: #0989b0;
+}

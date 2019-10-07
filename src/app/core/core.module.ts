@@ -20,6 +20,7 @@ import {ErrorServiceComponent} from './componentes/message/error-service.compone
 import {ImagemBase64Component} from './componentes/imagem-base64/imagem-base64.component';
 import {ImagemBase64DialogComponent} from './componentes/imagem-base64-dialog/imagem-base64-dialog.component';
 import {ImageCropperModule} from 'ngx-image-cropper';
+import {NgxLoadingModule} from 'ngx-loading';
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -91,7 +92,8 @@ registerLocaleData(pt, 'pt');
 
         MatDialogModule,
         MatButtonModule,
-        ImageCropperModule
+        ImageCropperModule,
+        NgxLoadingModule
     ],
     entryComponents:[
         ImagemBase64Component,
