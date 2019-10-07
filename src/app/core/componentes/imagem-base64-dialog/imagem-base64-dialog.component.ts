@@ -140,6 +140,12 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
                 })
                 .catch(error => {
                     this.carregandoDados = false;
+                    this.imagemCameraAberta = false;
+
+                    this.imagemSelecionada = false;
+                    this.croppedImage = '';
+                    this.showCropper = false;
+
                     alert('Oooopps... Falhou : \'(');
                 });
         }

@@ -9,7 +9,7 @@
     border-radius: 10px;
 }
 
-.container > button {
+.container button {
     position: absolute;
     top: 0;
     left: 0;
@@ -25,18 +25,19 @@
     font-size: 16px;
 }
 
-.container > button > mat-icon{
+.container button mat-icon{
     font-size: 70px;
     width: 70px;
     height: 70px;
+    margin-top: 45px;
 }
 
-.container > button:focus {
+.container button:focus {
     outline: none;
 }
 
 .container:hover{}
-.container:hover > button {
+.container:hover button {
     opacity: 0.5;
     border-radius: 70px;
 }
