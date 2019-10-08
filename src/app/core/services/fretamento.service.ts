@@ -1,12 +1,12 @@
 import {ElementRef, Injectable} from '@angular/core';
-import {environment} from '../../../../environments/environment';
 import {HttpHeaders, HttpParams} from '@angular/common/http';
-import {GestaoService} from '../../../seguranca/autenticacao/gestao.service';
+import {GestaoService} from '../../seguranca/autenticacao/gestao.service';
 import * as moment from 'moment';
 
 import {MatPaginator} from '@angular/material';
-import {PESSOA_TIPO} from '../../../core/modelos/PessoaTipo';
-import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../core/modelos/FretamentoEventualSituacao';
+import {PESSOA_TIPO} from '../modelos/PessoaTipo';
+import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../modelos/FretamentoEventualSituacao';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class FretamentoService {
