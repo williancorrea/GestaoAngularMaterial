@@ -115,6 +115,7 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
         this.imageCropper.flipVertical();
     }
 
+    // https://velhobit.com.br/programacao/como-tirar-uma-foto-usando-a-webcam-javascript-html.html
     carregarCamera(): void {
         this.imagemSelecionada = false;
         this.croppedImage = '';
@@ -166,6 +167,11 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
         // @ts-ignore
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+        this.mirrorImage(ctx, canvas, 0, 0, true, false); // horizontal mirror
+        // this.mirrorImage(ctx, canvas, 0, 0, false, true); // vertical mirror
+        // this.mirrorImage(ctx, canvas, 0, 0, true, true);  // horizontal and vertical mirror
+
+
         // Criando o JPG
         const imbBase64 = canvas.toDataURL('image/png'); // O resultado é um BASE64 de uma imagem.
 
@@ -179,10 +185,19 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
 
         this.tamanhoMinimodaImagem = false;
         this.cdr.detectChanges();
-
-        setTimeout(() => {
-            this.flipHorizontal();
-            this.cdr.detectChanges();
-        }, 500);
     }
+
+    // https://stackoverflow.com/questions/3129099/how-to-flip-images-horizontally-with-html5
+    mirrorImage(ctx, image, x = 0, y = 0, horizontal, vertical): any {
+        ctx.save();  // save the current canvas state
+        ctx.setTransform(
+            horizontal ? -1 : 1, 0, // set the direction of x axis
+            0, vertical ? -1 : 1,   // set the direction of y axis
+            x + horizontal ? image.width : 0, // set the x origin
+            y + vertical ? image.height : 0   // set the y origin
+        );
+        ctx.drawImage(image, 0, 0);
+        ctx.restore(); // restore the state as it was when this function was called
+    }
+
 }

@@ -1,6 +1,7 @@
 <div class="container">
-    <img [src]="imagemBase64">
-    <button *ngIf="!disabled" mat-icon-button (click)="abrirModalTrocarImagem()">
+    <img *ngIf="imagemBase64" [src]="imagemBase64">
+    <img *ngIf="!imagemBase64" [src]="'assets/wcorrea/img/usuario01.png'" style="opacity: 0.5;">
+    <button type="button" *ngIf="!disabled" mat-icon-button (click)="abrirModalTrocarImagem()">
         <mat-icon>photo_camera</mat-icon>
     </button>
 </div>

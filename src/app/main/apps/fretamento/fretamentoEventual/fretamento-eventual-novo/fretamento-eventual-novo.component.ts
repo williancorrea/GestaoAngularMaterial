@@ -13,6 +13,8 @@ import {environment} from '../../../../../../environments/environment';
 import {Utils} from '../../../../../core/utils/Utils';
 import {VeiculoService} from '../../../../../core/services/veiculo.service';
 import * as moment from 'moment';
+import {CidadeService} from '../../../../../core/services/cidade.service';
+import {PessoaService} from '../../../../../core/services/Pessoa.service';
 
 
 @Component({
@@ -56,6 +58,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 private formBuild: FormBuilder,
                 private fretamentoService: FretamentoService,
                 private veiculoService: VeiculoService,
+                private cidadeService: CidadeService,
+                private pessoaService: PessoaService,
                 private errorHandler: ErroManipuladorService) {
     }
 
@@ -69,6 +73,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.fretamentoService.pesquisarEmpresaRosinha().then(respostaEmpresa => {
             this.cmbEmpresa = respostaEmpresa;
 
+            this.carregandoDados = true;
             this.fretamentoService.pesquisarRepresentanteComercialEmpresaRosinha().then(respostaRepresentanteComercial => {
                 this.cmbRepresentanteComercial = respostaRepresentanteComercial;
 
@@ -354,7 +359,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     return;
                 }
 
-                this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
+                this.cidadeService.pesquisarCidadeCmb(pesquisa).then(resposta => {
                     this.cmbCidadeLista = resposta;
                 }).catch(error => {
                     this.mensagemErro = this.errorHandler.handle(error);
@@ -383,7 +388,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     return;
                 }
 
-                this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
+                this.cidadeService.pesquisarCidadeCmb(pesquisa).then(resposta => {
                     this.cmbCidadeLista = resposta;
                 }).catch(error => {
                     this.mensagemErro = this.errorHandler.handle(error);
@@ -412,7 +417,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     return;
                 }
 
-                this.fretamentoService.pesquisarCidadeCmb(pesquisa).then(resposta => {
+                this.cidadeService.pesquisarCidadeCmb(pesquisa).then(resposta => {
                     this.cmbCidadeLista = resposta;
                 }).catch(error => {
                     this.mensagemErro = this.errorHandler.handle(error);
@@ -587,7 +592,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
             });
         } else {
             this.fretamentoService.atualizar(this.formFretamentoEventual.getRawValue()).then(response => {
-                this._matSnackBar.open('Fretamento gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
+                this._matSnackBar.open('Fretamento atualizado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
 
                 this.router.navigateByUrl('/fretamento/eventual');
             }).catch(error => {

@@ -22,6 +22,7 @@ import {ImagemBase64DialogComponent} from './componentes/imagem-base64-dialog/im
 import {ImageCropperModule} from 'ngx-image-cropper';
 import {NgxLoadingModule} from 'ngx-loading';
 import {PessoaService} from './services/Pessoa.service';
+import {CidadeService} from './services/cidade.service';
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -135,7 +136,8 @@ registerLocaleData(pt, 'pt');
 
         FretamentoService,
         VeiculoService,
-        PessoaService
+        PessoaService,
+        CidadeService
 
         // ControleKmService,
         // CombustivelService,

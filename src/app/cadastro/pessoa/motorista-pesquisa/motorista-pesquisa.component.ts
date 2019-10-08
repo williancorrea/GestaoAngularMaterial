@@ -86,4 +86,27 @@ export class MotoristaPesquisaComponent implements OnInit, AfterViewInit, AfterV
         });
     }
 
+   inativarotorista(key: string, inativarMotorista: boolean): void {
+        this.carregandoDados = true;
+
+        if (inativarMotorista) {
+            this.pessoaService.desativarMotorista(key).then(response => {
+                this.pesquisar();
+            }).catch(error => {
+                this.mensagemErro = this.errorHandler.handle(error);
+            }).finally(() => {
+                this.carregandoDados = false;
+                this.cdr.detectChanges();
+            });
+        } else {
+            this.pessoaService.ativarMotorista(key).then(response => {
+                this.pesquisar();
+            }).catch(error => {
+                this.mensagemErro = this.errorHandler.handle(error);
+            }).finally(() => {
+                this.carregandoDados = false;
+                this.cdr.detectChanges();
+            });
+        }
+    }
 }

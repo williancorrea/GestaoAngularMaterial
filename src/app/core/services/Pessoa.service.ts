@@ -30,7 +30,7 @@ export class PessoaService {
             .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '')
             .set('ordemClassificacao', 'ASC')
             .set('campoOrdenacao', 'nome')
-            .set('motorista',  Boolean(true).toString());
+            .set('cnh', Boolean(true).toString());
 
         return this.http.get(`${this.apiUrl}`, {params: httpParams, headers: headers})
             .toPromise()
@@ -44,6 +44,32 @@ export class PessoaService {
             });
     }
 
+    ativarMotorista(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.put(`${this.apiUrl}/${key}/motorista/ativar`, {headers})
+            .toPromise()
+            .then(response => {
+                return this.prepararDadosParaReceber(response);
+            });
+    }
+
+    desativarMotorista(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.put(`${this.apiUrl}/${key}/motorista/desativar`, {headers})
+            .toPromise()
+            .then(response => {
+                return this.prepararDadosParaReceber(response);
+            });
+    }
+
     private prepararDadosParaSalvar(clone: any, obj: any): any {
 
         return clone;
@@ -54,34 +80,53 @@ export class PessoaService {
         return response;
     }
 
-    // buscarPorKey(key): any {
-    //     // TODO: REmover a autenticacao FIXA DAQUI
-    //     const headers = new HttpHeaders();
-    //     headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
-    //     headers.append('Content-Type', 'application/json');
-    //
-    //     return this.http.get(`${this.apiUrl}/${key}`, {headers})
-    //         .toPromise()
-    //         .then(response => {
-    //             return response;
-    //         });
-    // }
+    buscarPorKey(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
 
-    // pesquisarVeiculoCmb(pesquisa: string): Promise<any> {
-    //     const headers = new HttpHeaders();
-    //     headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
-    //     headers.append('Content-Type', 'application/json');
-    //
-    //     const params = new HttpParams()
-    //         .set('size', String(environment.comboBox.linhas))
-    //         .set('page', String(0))
-    //         .set('ordemClassificacao', 'ASC')
-    //         .set('campoOrdenacao', 'frota')
-    //         .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
-    //
-    //     return this.http.get(`${this.apiUrl}/cmb`, {headers: headers, params: params}).toPromise().then(response => {
-    //         return response;
-    //     });
-    // }
+        return this.http.get(`${this.apiUrl}/${key}`, {headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+
+    salvar(obj: any): Promise<any> {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+
+        let clone = JSON.parse(JSON.stringify(obj));
+        clone = this.prepararDadosParaSalvar(clone, obj);
+        delete clone['key'];
+
+        return this.http.post(this.apiUrl, clone, {headers: headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+
+    atualizar(obj: any): Promise<any> {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        const key = obj.key;
+        let clone = JSON.parse(JSON.stringify(obj));
+        clone = this.prepararDadosParaSalvar(clone, obj);
+        delete clone['key'];
+
+        return this.http.put(`${this.apiUrl}/${key}`, clone, {headers: headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
 
 }
