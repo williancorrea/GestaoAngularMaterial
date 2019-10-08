@@ -23,6 +23,7 @@ import {LayoutModule} from 'app/layout/layout.module';
 import {SegurancaModule} from './seguranca/seguranca.module';
 import {CoreModule} from './core/core.module';
 import {ngxLoadingAnimationTypes, NgxLoadingModule} from 'ngx-loading';
+import {PessoaModule} from './cadastro/pessoa/pessoa.module';
 
 
 const appRoutes: Routes = [
@@ -57,6 +58,11 @@ const appRoutes: Routes = [
     {
         path: 'fretamento',
         loadChildren: './main/apps/fretamento/fretamento.module#FretamentoModule'
+    },
+
+    {
+        path: 'cadastro/pessoa',
+        loadChildren: './cadastro/pessoa/pessoa.module#PessoaModule'
     },
 
     {
@@ -113,8 +119,8 @@ const appRoutes: Routes = [
         }),
 
         // WCorrea
-        SegurancaModule,
-        CoreModule
+        CoreModule,
+        SegurancaModule
     ],
     bootstrap: [
         AppComponent

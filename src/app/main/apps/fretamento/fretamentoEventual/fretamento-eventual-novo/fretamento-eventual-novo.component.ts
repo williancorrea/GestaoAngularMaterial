@@ -3,7 +3,7 @@ import {MatAutocompleteSelectedEvent, MatSnackBar} from '@angular/material';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {fuseAnimations} from '@fuse/animations';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FretamentoService} from '../../fretamento.service';
+import {FretamentoService} from '../../../../../core/services/fretamento.service';
 import {ErroManipuladorService} from '../../../../../core/componentes/erro-manipulador.service';
 import {PESSOA_TIPO} from '../../../../../core/modelos/PessoaTipo';
 import {FRETAMENTO_EVENTUAL_SITUACAO_ENUM} from '../../../../../core/modelos/FretamentoEventualSituacao';
@@ -11,7 +11,7 @@ import {ValidacaoGenericaWCorrea} from '../../../../../core/utils/ValidacaoGener
 import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {environment} from '../../../../../../environments/environment';
 import {Utils} from '../../../../../core/utils/Utils';
-import {VeiculoService} from '../../veiculo.service';
+import {VeiculoService} from '../../../../../core/services/veiculo.service';
 import * as moment from 'moment';
 
 

@@ -4,7 +4,7 @@ import {MatSort} from '@angular/material/sort';
 
 import {fuseAnimations} from '@fuse/animations';
 import {environment} from '../../../../../../environments/environment';
-import {FretamentoService} from '../../fretamento.service';
+import {FretamentoService} from '../../../../../core/services/fretamento.service';
 import {Utils} from '../../../../../core/utils/Utils';
 import {fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
@@ -70,6 +70,26 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         this.cdr.detectChanges();
     }
 
+    paginadorEvento(event?: PageEvent): PageEvent {
+        this.pesquisar();
+        return event;
+    }
+
+    pesquisar(): void {
+        this.carregandoDados = true;
+        this.fretamentoService.listarTodos(this.paginador, this.filtro).then(response => {
+
+            this.fretamentoList = response['content'];
+            this.paginador.length = response['totalElements'];
+
+        }).catch(error => {
+            this.mensagemErro = this.errorHandler.handle(error);
+        }).finally(() => {
+            this.carregandoDados = false;
+            this.cdr.detectChanges();
+        });
+    }
+
     abrirDialogDeCancelamentoDeContrato(obj: any, indexColuna: number): void {
         this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {disableClose: false});
 
@@ -132,26 +152,6 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         });
     }
 
-    paginadorEvento(event?: PageEvent): PageEvent {
-        this.pesquisar();
-        return event;
-    }
-
-    pesquisar(): void {
-        this.carregandoDados = true;
-        this.fretamentoService.listarTodos(this.paginador, this.filtro).then(response => {
-
-            this.fretamentoList = response['content'];
-            this.paginador.length = response['totalElements'];
-
-        }).catch(error => {
-            this.mensagemErro = this.errorHandler.handle(error);
-        }).finally(() => {
-            this.carregandoDados = false;
-            this.cdr.detectChanges();
-        });
-    }
-
     imprimirContrato(obj: any): void {
         this.carregandoDados = true;
         this.fretamentoService.gerarContrato(obj['key']).then(relatorio => {
@@ -173,5 +173,4 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
             this.carregandoDados = false;
         });
     }
-
 }

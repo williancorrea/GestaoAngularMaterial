@@ -13,7 +13,15 @@ export const navigation: FuseNavigation[] = [
                 type : 'item',
                 icon : 'directions_bus',
                 url  : '/fretamento/eventual'
-            }
+            },
+            {
+                id   : 'motorista',
+                title: 'Motoristas',
+                type : 'item',
+                icon : 'perm_identity',
+                url  : '/cadastro/pessoa/motorista'
+            },
+
             // ,
             // {
             //     id   : 'continuo',

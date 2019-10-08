@@ -161,7 +161,6 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
         canvas.height = video['videoHeight'];
 
         const ctx = canvas.getContext('2d');
-        // ctx.scale(-1, 1);
 
         // Desenhando e convertendo as dimensões
         // @ts-ignore
@@ -184,6 +183,6 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
         setTimeout(() => {
             this.flipHorizontal();
             this.cdr.detectChanges();
-        }, 200);
+        }, 500);
     }
 }
