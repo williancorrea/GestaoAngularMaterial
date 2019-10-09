@@ -28,7 +28,7 @@
                         {{tipoPagina === 'EDICAO' ? 'Edição do Motorista' : 'Novo Motorista'}}
                     </div>
                     <div class="subtitle secondary-text">
-                        <span>Detalhes do fretamento</span>
+                        <span>Detalhes do motorista</span>
                     </div>
                 </div>
             </div>
@@ -45,10 +45,11 @@
         <div class="content-card">
 
             <!-- CONTENT -->
-            <div class="content" style="padding: 30px;" fusePerfectScrollbar>
+            <div #conteudoScroll class="content" style="padding: 30px;" fusePerfectScrollbar>
 
                 <!-- MENSAGENS DE ERRO-->
                 <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
+                <app-error-service-message [(erro)]="mensagemAlerta" [erroTipo]="'warning'"></app-error-service-message>
 
                 <form fxLayout="column" [formGroup]="form">
 
@@ -101,7 +102,18 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="75" class="pr-4">
+                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                                    <mat-label>Sexo</mat-label>
+                                    <mat-select formControlName="sexo">
+                                        <mat-option value="M">Masculino</mat-option>
+                                        <mat-option value="F">Feminino</mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        <app-message [control]="form.get('pessoaFisica').get('sexo')"></app-message>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
                                     <mat-label>E-mail</mat-label>
                                     <input matInput formControlName="email">
                                     <mat-icon matSuffix class="secondary-text">alternate_email</mat-icon>
@@ -214,63 +226,81 @@
                         </mat-form-field>
                     </div>
 
+
+                    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" style="background: #ccc; margin-bottom: 15px; border-radius: 10px">
+                        <p style="font-weight: bold; font-size: medium; padding: 4px 22px;">CARTEIRA NASCIONAL DE HABILITAÇÃO (CNH)</p>
+                    </div>
+
+
+
+
+
                     <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
 
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>CHN Número</mat-label>
+                        <mat-form-field appearance="outline" fxFlex="20" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                            <mat-label>Nº Registro</mat-label>
                             <input matInput formControlName="cnhNumero">
                             <mat-error>
                                 <app-message [control]="form.get('pessoaFisica').get('cnhNumero')"></app-message>
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>Orgão RG</mat-label>
-                            <input matInput formControlName="orgaoRg">
-                            <mat-error>
-                                <app-message [control]="form.get('pessoaFisica').get('orgaoRg')"></app-message>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>CNH Primeira Habilitação</mat-label>
-                            <input matInput formControlName="cnhPrimeiraHabilitacao">
-                            <mat-error>
-                                <app-message [control]="form.get('pessoaFisica').get('cnhPrimeiraHabilitacao')"></app-message>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>CNH Emissão Data</mat-label>
-                            <input matInput formControlName="cnhEmissaoData">
-                            <mat-error>
-                                <app-message [control]="form.get('pessoaFisica').get('cnhEmissaoData')"></app-message>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>CNH Emissão Cidade</mat-label>
-                            <input matInput formControlName="cnhEmissaoCidade">
-                            <mat-error>
-                                <app-message [control]="form.get('pessoaFisica').get('cnhEmissaoCidade')"></app-message>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>CNH Vencimento</mat-label>
-                            <input matInput formControlName="cnhVencimento">
+                        <mat-form-field appearance="outline" fxFlex="15" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                            <mat-label>Validade</mat-label>
+                            <input matInput formControlName="cnhVencimento" [matDatepicker]="dpDataVencimento">
+                            <mat-datepicker-toggle matSuffix [for]="dpDataVencimento"></mat-datepicker-toggle>
+                            <mat-datepicker #dpDataVencimento></mat-datepicker>
                             <mat-error>
                                 <app-message [control]="form.get('pessoaFisica').get('cnhVencimento')"></app-message>
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                        <mat-form-field appearance="outline" fxFlex="15" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                            <mat-label>Categoria Hab.</mat-label>
+                            <mat-select formControlName="cnhCategoria">
+                                <mat-option value="A">A</mat-option>
+                                <mat-option value="AB">AB</mat-option>
+                                <mat-option value="AC">AC</mat-option>
+                                <mat-option value="AD">AD</mat-option>
+                                <mat-option value="AE">AE</mat-option>
+                                <mat-option value="B">B</mat-option>
+                                <mat-option value="C">C</mat-option>
+                                <mat-option value="D">D</mat-option>
+                                <mat-option value="E">E</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <app-message [control]="form.get('pessoaFisica').get('cnhCategoria')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="15" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                            <mat-label>1º Habilitação</mat-label>
+                            <input matInput formControlName="cnhPrimeiraHabilitacao" [matDatepicker]="dpPrimeiraHabilitacao">
+                            <mat-datepicker-toggle matSuffix [for]="dpPrimeiraHabilitacao"></mat-datepicker-toggle>
+                            <mat-datepicker #dpPrimeiraHabilitacao></mat-datepicker>
+                            <mat-error>
+                                <app-message [control]="form.get('pessoaFisica').get('cnhPrimeiraHabilitacao')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="20" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                            <mat-label>Orgão Emissor/RG</mat-label>
+                            <input matInput formControlName="orgaoRg" maxlength="10" onkeyup="this.value = this.value.toUpperCase();">
+                            <mat-error>
+                                <app-message [control]="form.get('pessoaFisica').get('orgaoRg')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="15" class="pr-4" [formGroup]="form.get('pessoaFisica')">
                             <mat-label>Data nascimento</mat-label>
-                            <input matInput formControlName="dataNascimento">
+                            <input matInput formControlName="dataNascimento" [matDatepicker]="dpDataNascimento">
+                            <mat-datepicker-toggle matSuffix [for]="dpDataNascimento"></mat-datepicker-toggle>
+                            <mat-datepicker #dpDataNascimento></mat-datepicker>
                             <mat-error>
                                 <app-message [control]="form.get('pessoaFisica').get('dataNascimento')"></app-message>
                             </mat-error>
                         </mat-form-field>
+
 
                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
                             <mat-label>Nome da Mãe</mat-label>
@@ -288,22 +318,35 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>Sexo</mat-label>
-                            <input matInput formControlName="sexo">
+                        <mat-form-field appearance="outline" fxFlex="35" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                            <mat-label>Cidade de Emissão</mat-label>
+                            <mat-icon matSuffix class="secondary-text">search</mat-icon>
+                            <input matInput type="text" placeholder="Pesquisar cidade ..."
+                                   formControlName="cnhEmissaoCidade" [matAutocomplete]="autoCompleteCnhEmissaoCidade">
+                            <mat-autocomplete autoActiveFirstOption #autoCompleteCnhEmissaoCidade="matAutocomplete" [displayWith]="mostrarNomeCidade">
+                                <mat-option *ngIf="cmbCarregando" class="is-loading">
+                                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                </mat-option>
+                                <ng-container *ngIf="!cmbCarregando">
+                                    <mat-option *ngFor="let cidade of cmbCidadeLista" [value]="cidade">
+                                        <span><b>{{cidade['nome']}} / {{ cidade['estado']['nome']}}</b></span>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete>
                             <mat-error>
-                                <app-message [control]="form.get('pessoaFisica').get('sexo')"></app-message>
+                                <app-message [control]="form.get('pessoaFisica').get('cnhEmissaoCidade')"></app-message>
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>CHN Categoria</mat-label>
-                            <input matInput formControlName="cnhCategoria">
+                        <mat-form-field appearance="outline" fxFlex="15" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                            <mat-label>Data Emissão</mat-label>
+                            <input matInput formControlName="cnhEmissaoData" [matDatepicker]="dpDataEmissao">
+                            <mat-datepicker-toggle matSuffix [for]="dpDataEmissao"></mat-datepicker-toggle>
+                            <mat-datepicker #dpDataEmissao></mat-datepicker>
                             <mat-error>
-                                <app-message [control]="form.get('pessoaFisica').get('cnhCategoria')"></app-message>
+                                <app-message [control]="form.get('pessoaFisica').get('cnhEmissaoData')"></app-message>
                             </mat-error>
                         </mat-form-field>
-
                     </div>
 
                 </form>

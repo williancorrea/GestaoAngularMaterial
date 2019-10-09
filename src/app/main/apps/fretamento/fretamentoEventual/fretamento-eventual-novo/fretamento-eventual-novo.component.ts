@@ -577,7 +577,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         // Adicionando imagem ao cliente
         if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO || this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO) {
-            this.formFretamentoEventual.get('cliente').get('imagem').setValue(this.imagemCliente ? this.imagemCliente : '');
+            this.formFretamentoEventual.get('cliente').get('imagem').setValue(this.imagemCliente);
         }
 
         if (this.tipoPagina === 'NOVO') {

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
@@ -11,6 +11,7 @@ import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {PESSOA_TIPO} from '../../../core/modelos/PessoaTipo';
 import {PessoaService} from '../../../core/services/Pessoa.service';
 import {CidadeService} from '../../../core/services/cidade.service';
+import {ImageCropperComponent} from 'ngx-image-cropper';
 
 @Component({
     selector: 'app-motorista-novo',
@@ -22,6 +23,7 @@ import {CidadeService} from '../../../core/services/cidade.service';
 export class MotoristaNovoComponent implements OnInit {
 
     mensagemErro = '';
+    mensagemAlerta = '';
     carregandoDados = false;
     form: FormGroup;
     tipoPagina: string;
@@ -32,6 +34,7 @@ export class MotoristaNovoComponent implements OnInit {
     cmbCarregando = false;
     cmbCidadeLista: any;
 
+    @ViewChild('conteudoScroll', {static: true}) conteudoScroll: ElementRef;
 
     constructor(private _matSnackBar: MatSnackBar,
                 private router: Router,
@@ -97,7 +100,7 @@ export class MotoristaNovoComponent implements OnInit {
                 rg: [''],
                 inativoMotorista: [false],
                 cnhNumero: ['', [Validators.required, Validators.maxLength(30)]],
-                orgaoRg: ['', Validators.required, Validators.maxLength(10)],
+                orgaoRg: ['', [Validators.required, Validators.maxLength(10)]],
                 cnhPrimeiraHabilitacao: ['', [Validators.required]],
                 cnhEmissaoData: ['', [Validators.required]],
                 cnhEmissaoCidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
@@ -130,7 +133,34 @@ export class MotoristaNovoComponent implements OnInit {
                     return;
                 }
 
-                console.log('CONSULTANDO CIDADE');
+                this.cidadeService.pesquisarCidadeCmb(pesquisa).then(resposta => {
+                    this.cmbCidadeLista = resposta;
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
+                }).finally(() => {
+                    this.cmbCarregando = false;
+                });
+            });
+
+        this.form.get('pessoaFisica').get('cnhEmissaoCidade').valueChanges
+            .pipe(
+                debounceTime(this.env.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbCidadeLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCarregando = false;
+                    return;
+                }
 
                 this.cidadeService.pesquisarCidadeCmb(pesquisa).then(resposta => {
                     this.cmbCidadeLista = resposta;
@@ -144,17 +174,20 @@ export class MotoristaNovoComponent implements OnInit {
 
     gravarFretamento(): void {
         this.carregandoDados = true;
+        this.mensagemAlerta = '';
 
         this.form.markAllAsTouched();
         this.form.updateValueAndValidity();
 
         if (this.form.invalid) {
+            this.conteudoScroll.nativeElement.scrollTop = 0;
+            this.mensagemAlerta = 'Formulário não está preenchido corretamente, verifique..';
             this.carregandoDados = false;
             return;
         }
 
         // Adicionando imagem ao cliente
-        this.form.get('imagem').setValue(this.imagemCliente ? this.imagemCliente : '');
+        this.form.get('imagem').setValue(this.imagemCliente);
 
         if (this.tipoPagina === 'NOVO') {
             this.pessoaService.salvar(this.form.getRawValue()).then(response => {
@@ -166,7 +199,7 @@ export class MotoristaNovoComponent implements OnInit {
                 this.carregandoDados = false;
             });
         } else {
-            this.pessoaService.atualizar(this.form.getRawValue()).then(response => {
+            this.pessoaService.atualizarMotorista(this.form.getRawValue()).then(response => {
                 this._matSnackBar.open('Motorista atualizado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
                 this.router.navigateByUrl('/cadastro/pessoa/motorista');
             }).catch(error => {

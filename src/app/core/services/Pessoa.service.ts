@@ -5,7 +5,6 @@ import {environment} from '../../../environments/environment';
 
 import * as moment from 'moment';
 import {MatPaginator} from '@angular/material';
-import {PESSOA_TIPO} from '../modelos/PessoaTipo';
 
 
 @Injectable()
@@ -82,7 +81,7 @@ export class PessoaService {
             .set('page', String(0))
             .set('ordemClassificacao', 'ASC')
             .set('campoOrdenacao', 'nome')
-            .set('nome', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+            .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
         return this.http.get(`${this.apiUrl}/cmbClientes`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
@@ -100,7 +99,7 @@ export class PessoaService {
             .set('page', String(0))
             .set('ordemClassificacao', 'ASC')
             .set('campoOrdenacao', 'nome')
-            .set('nome', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
+            .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
         return this.http.get(`${this.apiUrl}/cmbMotoristas`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
@@ -198,7 +197,25 @@ export class PessoaService {
             });
     }
 
-    atualizar(obj: any): Promise<any> {
+    // atualizar(obj: any): Promise<any> {
+    //     // TODO: REmover a autenticacao FIXA DAQUI
+    //     const headers = new HttpHeaders();
+    //     headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+    //     headers.append('Content-Type', 'application/json');
+    //
+    //     const key = obj.key;
+    //     let clone = JSON.parse(JSON.stringify(obj));
+    //     clone = this.prepararDadosParaSalvar(clone);
+    //     delete clone['key'];
+    //
+    //     return this.http.put(`${this.apiUrl}/${key}`, clone, {headers: headers})
+    //         .toPromise()
+    //         .then(response => {
+    //             return response;
+    //         });
+    // }
+
+    atualizarMotorista(obj: any): Promise<any> {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
@@ -209,7 +226,7 @@ export class PessoaService {
         clone = this.prepararDadosParaSalvar(clone);
         delete clone['key'];
 
-        return this.http.put(`${this.apiUrl}/${key}`, clone, {headers: headers})
+        return this.http.put(`${this.apiUrl}/${key}/motorista`, clone, {headers: headers})
             .toPromise()
             .then(response => {
                 return response;
@@ -218,22 +235,24 @@ export class PessoaService {
 
     private prepararDadosParaSalvar(clone: any): any {
 
-        if (clone['tipo'] === PESSOA_TIPO.FISICA) {
-            delete clone['pessoaJuridica'];
-        } else {
-            delete clone['pessoaFisica'];
-        }
+        delete clone['pessoaJuridica'];
+        clone.pessoaFisica.cnhPrimeiraHabilitacao = moment(clone.pessoaFisica.cnhPrimeiraHabilitacao).format('YYYY-MM-DD').toString();
+        clone.pessoaFisica.cnhEmissaoData = moment(clone.pessoaFisica.cnhEmissaoData).format('YYYY-MM-DD').toString();
+        clone.pessoaFisica.dataNascimento = moment(clone.pessoaFisica.dataNascimento).format('YYYY-MM-DD').toString();
+        clone.pessoaFisica.cnhVencimento = moment(clone.pessoaFisica.cnhVencimento).format('YYYY-MM-DD').toString();
+        clone.cidade = {key: clone.cidade.key};
+        clone.pessoaFisica.cnhEmissaoCidade = {key: clone.pessoaFisica.cnhEmissaoCidade.key};
 
         return clone;
     }
 
     private prepararDadosParaReceber(response: any): any {
 
-        if (response['tipo'] === PESSOA_TIPO.FISICA) {
-            delete response['pessoaJuridica'];
-        } else {
-            delete response['pessoaFisica'];
-        }
+        delete response['pessoaJuridica'];
+        response.pessoaFisica.cnhPrimeiraHabilitacao = moment(response['pessoaFisica']['cnhPrimeiraHabilitacao'], 'YYYY-MM-DD');
+        response.pessoaFisica.cnhEmissaoData = moment(response['pessoaFisica']['cnhEmissaoData'], 'YYYY-MM-DD');
+        response.pessoaFisica.dataNascimento = moment(response['pessoaFisica']['dataNascimento'], 'YYYY-MM-DD');
+        response.pessoaFisica.cnhVencimento = moment(response['pessoaFisica']['cnhVencimento'], 'YYYY-MM-DD');
 
         return response;
     }
