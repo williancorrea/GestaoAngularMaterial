@@ -70,11 +70,11 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.configurarForm();
 
         this.carregandoDados = true;
-        this.fretamentoService.pesquisarEmpresaRosinha().then(respostaEmpresa => {
+        this.pessoaService.pesquisarEmpresaRosinha().then(respostaEmpresa => {
             this.cmbEmpresa = respostaEmpresa;
 
             this.carregandoDados = true;
-            this.fretamentoService.pesquisarRepresentanteComercialEmpresaRosinha().then(respostaRepresentanteComercial => {
+            this.pessoaService.pesquisarRepresentanteComercialEmpresaRosinha().then(respostaRepresentanteComercial => {
                 this.cmbRepresentanteComercial = respostaRepresentanteComercial;
 
                 const editando = this.activatedRoute.snapshot.params['key'];
@@ -199,7 +199,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     return;
                 }
 
-                this.fretamentoService.pesquisarClienteCmb(pesquisa).then(resposta => {
+                this.pessoaService.pesquisarClienteCmb(pesquisa).then(resposta => {
                     this.cmbClienteLista = resposta;
                 }).catch(error => {
                     this.mensagemErro = this.errorHandler.handle(error);
@@ -236,7 +236,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 endereco: ['', [Validators.required, Validators.minLength(5)]],
                 bairro: ['', [Validators.required, Validators.minLength(5)]],
                 telefone1: ['', [Validators.required]],
-                telefone1Obs: [''],
+                telefone1Obs: ['', [Validators.required]],
                 telefone2: [''],
                 telefone2Obs: [''],
                 pessoaFisica: this.formBuild.group({
@@ -447,7 +447,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     return;
                 }
 
-                this.fretamentoService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
+                this.pessoaService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
                     this.cmbMotoristaLista = resposta;
                 }).catch(error => {
                     this.mensagemErro = this.errorHandler.handle(error);
@@ -475,7 +475,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     return;
                 }
 
-                this.fretamentoService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
+                this.pessoaService.pesquisarMotoristaCmb(pesquisa).then(resposta => {
                     this.cmbMotoristaLista = resposta;
                 }).catch(error => {
                     this.mensagemErro = this.errorHandler.handle(error);
@@ -673,33 +673,37 @@ export class FretamentoEventualNovoComponent implements OnInit {
     }
 
     buscarCpfDigitado(): void {
-        if (this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').valid) {
-            this.carregandoDados = true;
-            this.fretamentoService.buscarPorCPF(this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').value)
-                .then(response => {
-                    this.formFretamentoEventual.get('cliente').patchValue(response);
-                })
-                .catch(error => {
-                    console.log('CPF não encontrado, vida que segue!');
-                }).finally(() => {
-                this.carregandoDados = false;
-            });
+        if (!this.formFretamentoEventual.get('cliente').get('key').value) {
+            if (this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').valid) {
+                this.carregandoDados = true;
+                this.pessoaService.buscarPorCPF(this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').value)
+                    .then(response => {
+                        this.formFretamentoEventual.get('cliente').patchValue(response);
+                    })
+                    .catch(error => {
+                        console.log('CPF não encontrado, vida que segue!');
+                    }).finally(() => {
+                    this.carregandoDados = false;
+                });
+            }
         }
     }
 
     buscarCnpjDigitado(): void {
-        if (this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').valid) {
-            this.carregandoDados = true;
-            this.fretamentoService.buscarPorCNPJ(this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').value)
-                .then(response => {
-                    this.formFretamentoEventual.get('cliente').patchValue(response);
-                })
-                .catch(error => {
-                    console.log('CNPJ não encontrado, vida que segue!');
-                })
-                .finally(() => {
-                    this.carregandoDados = false;
-                });
+        if (!this.formFretamentoEventual.get('cliente').get('key').value) {
+            if (this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').valid) {
+                this.carregandoDados = true;
+                this.pessoaService.buscarPorCNPJ(this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').value)
+                    .then(response => {
+                        this.formFretamentoEventual.get('cliente').patchValue(response);
+                    })
+                    .catch(error => {
+                        console.log('CNPJ não encontrado, vida que segue!');
+                    })
+                    .finally(() => {
+                        this.carregandoDados = false;
+                    });
+            }
         }
     }
 }

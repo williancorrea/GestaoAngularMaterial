@@ -1,21 +1,34 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {MotoristaPesquisaComponent} from './motorista-pesquisa/motorista-pesquisa.component';
 import {MotoristaNovoComponent} from './motorista-novo/motorista-novo.component';
 import {RouterModule} from '@angular/router';
 import {
     MatAutocompleteModule,
-    MatButtonModule, MatCardModule, MatCheckboxModule,
-    MatChipsModule, MatDatepickerModule, MatDialogModule, MatDividerModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
     MatExpansionModule,
-    MatFormFieldModule, MatGridListModule,
+    MatFormFieldModule,
+    MatGridListModule,
     MatIconModule,
-    MatInputModule, MatMenuModule,
-    MatPaginatorModule, MatProgressBarModule, MatRadioModule,
+    MatInputModule,
+    MatMenuModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatRadioModule,
     MatRippleModule,
-    MatSelectModule, MatSlideToggleModule,
+    MatSelectModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
-    MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatTooltipModule
+    MatSortModule,
+    MatStepperModule,
+    MatTableModule,
+    MatTabsModule,
+    MatTooltipModule
 } from '@angular/material';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {FuseSharedModule} from '../../../@fuse/shared.module';

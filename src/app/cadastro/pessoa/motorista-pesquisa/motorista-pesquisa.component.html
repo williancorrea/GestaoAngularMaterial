@@ -73,8 +73,10 @@
                 <ng-container matColumnDef="nome">
                     <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
                     <mat-cell *matCellDef="let obj" style="display: block" [ngStyle]="obj['pessoaFisica']['inativoMotorista'] ? {color: 'red'} : ''">
-                        <p class="text-truncate"><b>{{obj['nome']}}</b></p>
-                        <b *ngIf="obj['fantasia']">({{obj['fantasia']}})</b>
+                        <p class="text-truncate">
+                            <b>{{obj['nome']}}  </b>
+                            <b *ngIf="obj['fantasia']">({{obj['fantasia']}})</b>
+                        </p>
                     </mat-cell>
                 </ng-container>
 

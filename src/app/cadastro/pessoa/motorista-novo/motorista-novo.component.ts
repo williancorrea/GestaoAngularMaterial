@@ -55,28 +55,19 @@ export class MotoristaNovoComponent implements OnInit {
             this.tipoPagina = 'EDICAO';
             this.pessoaService.buscarPorKey(editando).then(response => {
                 this.form.patchValue(response);
+                this.form.get('pessoaFisica').get('cpf').disable();
                 this.imagemCliente = this.form.get('imagem').value ? this.form.get('imagem').value : '';
 
             }).catch(error => {
                 this.tipoPagina = 'NOVO';
                 this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {
-                setTimeout(() => {
-                    this.carregandoDados = false;
-                }, 1000);
+                this.carregandoDados = false;
             });
         } else {
             this.tipoPagina = 'NOVO';
             this.carregandoDados = false;
         }
-    }
-
-    compararObjetosMatSelect(f1: any, f2: any): any {
-        return f1 && f2 && f1.key === f2.key;
-    }
-
-    mostrarNomePessoa(obj?: any): string | undefined {
-        return obj ? obj.nome : undefined;
     }
 
     mostrarNomeCidade(obj?: any): string | undefined {
@@ -97,45 +88,26 @@ export class MotoristaNovoComponent implements OnInit {
             endereco: ['', [Validators.required, Validators.minLength(5)]],
             bairro: ['', [Validators.required, Validators.minLength(5)]],
             telefone1: ['', [Validators.required]],
-            telefone1Obs: [''],
+            telefone1Obs: ['', [Validators.required]],
             telefone2: [''],
             telefone2Obs: [''],
             pessoaFisica: this.formBuild.group({
                 key: [null],
                 cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],
                 rg: [''],
-            }),
-            pessoaJuridica: this.formBuild.group({
-                key: [null],
-                cnpj: [''],
-                inscricaoEstadual: [''],
+                inativoMotorista: [false],
+                cnhNumero: ['', [Validators.required, Validators.maxLength(30)]],
+                orgaoRg: ['', Validators.required, Validators.maxLength(10)],
+                cnhPrimeiraHabilitacao: ['', [Validators.required]],
+                cnhEmissaoData: ['', [Validators.required]],
+                cnhEmissaoCidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+                cnhVencimento: ['', [Validators.required]],
+                dataNascimento: ['', [Validators.required]],
+                nomeMae: [''],
+                nomePai: [''],
+                sexo: ['', [Validators.required]],
+                cnhCategoria: [null, [Validators.required]]
             })
-        });
-
-        this.form.get('tipo').valueChanges.subscribe(valor => {
-            if (valor === PESSOA_TIPO.JURIDICA.toString()) {
-                this.form.get('pessoaFisica').get('cpf').clearValidators();
-                this.form.get('pessoaJuridica').get('cnpj').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCNPJ]);
-                this.form.get('pessoaJuridica').get('inscricaoEstadual').setValidators([Validators.maxLength(15)]);
-            } else {
-                this.form.get('pessoaFisica').get('cpf').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCPF]);
-                this.form.get('pessoaJuridica').get('cnpj').clearValidators();
-                this.form.get('pessoaJuridica').get('inscricaoEstadual').clearValidators();
-            }
-
-            // DESABILITAR A EDICAO DO CPF E CNPJ
-            setTimeout(() => {
-                if (this.form.get('key').value) {
-                    this.form.get('pessoaFisica').get('cpf').disable();
-                    this.form.get('pessoaJuridica').get('cnpj').disable();
-                } else {
-                    this.form.get('pessoaFisica').get('cpf').enable();
-                    this.form.get('pessoaJuridica').get('cnpj').enable();
-                }
-            });
-            this.form.updateValueAndValidity(); // Forca a atualizacao do objeto
-            this.form.get('pessoaFisica').updateValueAndValidity(); // Forca a atualizacao do objeto
-            this.form.get('pessoaJuridica').updateValueAndValidity(); // Forca a atualizacao do objeto
         });
 
         this.form.get('cidade').valueChanges
@@ -158,6 +130,8 @@ export class MotoristaNovoComponent implements OnInit {
                     return;
                 }
 
+                console.log('CONSULTANDO CIDADE');
+
                 this.cidadeService.pesquisarCidadeCmb(pesquisa).then(resposta => {
                     this.cmbCidadeLista = resposta;
                 }).catch(error => {
@@ -171,13 +145,20 @@ export class MotoristaNovoComponent implements OnInit {
     gravarFretamento(): void {
         this.carregandoDados = true;
 
+        this.form.markAllAsTouched();
+        this.form.updateValueAndValidity();
+
+        if (this.form.invalid) {
+            this.carregandoDados = false;
+            return;
+        }
+
         // Adicionando imagem ao cliente
         this.form.get('imagem').setValue(this.imagemCliente ? this.imagemCliente : '');
 
         if (this.tipoPagina === 'NOVO') {
             this.pessoaService.salvar(this.form.getRawValue()).then(response => {
                 this._matSnackBar.open('Motorista gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
-
                 this.router.navigateByUrl('/cadastro/pessoa/motorista');
             }).catch(error => {
                 this.mensagemErro = this.errorHandler.handle(error);
@@ -187,7 +168,6 @@ export class MotoristaNovoComponent implements OnInit {
         } else {
             this.pessoaService.atualizar(this.form.getRawValue()).then(response => {
                 this._matSnackBar.open('Motorista atualizado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
-
                 this.router.navigateByUrl('/cadastro/pessoa/motorista');
             }).catch(error => {
                 this.mensagemErro = this.errorHandler.handle(error);
@@ -198,34 +178,24 @@ export class MotoristaNovoComponent implements OnInit {
     }
 
     buscarCpfDigitado(): void {
-        if (this.form.get('pessoaFisica').get('cpf').valid) {
-            this.carregandoDados = true;
-            this.fretamentoService.buscarPorCPF(this.form.get('pessoaFisica').get('cpf').value)
-                .then(response => {
-                    this.form.patchValue(response);
-                })
-                .catch(error => {
-                    console.log('CPF não encontrado, vida que segue!');
-                }).finally(() => {
-                this.carregandoDados = false;
-            });
-        }
-    }
+        if (!this.form.get('key').value) {
+            if (this.form.get('pessoaFisica').get('cpf').valid) {
+                this.carregandoDados = true;
+                this.pessoaService.buscarPorCPF(this.form.get('pessoaFisica').get('cpf').value)
+                    .then(response => {
+                        this.tipoPagina = 'EDICAO';
 
-    buscarCnpjDigitado(): void {
-        if (this.form.get('pessoaJuridica').get('cnpj').valid) {
-            this.carregandoDados = true;
-            this.fretamentoService.buscarPorCNPJ(this.form.get('pessoaJuridica').get('cnpj').value)
-                .then(response => {
-                    this.form.patchValue(response);
-                })
-                .catch(error => {
-                    console.log('CNPJ não encontrado, vida que segue!');
-                })
-                .finally(() => {
+                        this.form.patchValue(response);
+                        this.form.get('pessoaFisica').get('cpf').disable();
+
+                        this.imagemCliente = this.form.get('imagem').value ? this.form.get('imagem').value : '';
+                    })
+                    .catch(error => {
+                        console.log('CPF não encontrado, vida que segue!');
+                    }).finally(() => {
                     this.carregandoDados = false;
                 });
+            }
         }
     }
-
 }

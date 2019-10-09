@@ -224,7 +224,7 @@
                                             <mat-divider style="margin: 10px; border: 0.5px solid grey;"></mat-divider>
 
                                             <mat-grid-list cols="5" rowHeight="87px">
-                                                <mat-grid-tile colspan="1" rowspan="2">
+                                                <mat-grid-tile colspan="1" rowspan="2" >
 
                                                     <!--                                                    <div *ngIf="!formFretamentoEventual.get('cliente').get('imagem').value"-->
                                                     <!--                                                         style="top: -10px; position: relative;    border-radius: 10px;    border: 1px solid #ccc; width: 140px;    height: 140px;">-->
@@ -233,14 +233,14 @@
                                                     <!--                                                         [src]="formFretamentoEventual.get('cliente').get('imagem').value"-->
                                                     <!--                                                         style="top: -10px; position: relative; border-radius: 10px; border: 1px solid #ccc; width: 140px; height: 140px;"/>-->
 
-                                                    <app-imagem-base64 [disabled]="(this.formFretamentoEventual.get('situacao').value === 'CONTRATADO'
+                                                    <app-imagem-base64 class="pr-4" [disabled]="(this.formFretamentoEventual.get('situacao').value === 'CONTRATADO'
                                                                                 || this.formFretamentoEventual.get('situacao').value === 'NAO_CONTRATADO_CONTATO'
                                                                                 || this.formFretamentoEventual.get('situacao').value === 'NAO_CONTRATADO_CLIENTE')"
                                                                        [(imagemBase64)]="imagemCliente" style="top: -10px; position: relative;  width: 140px; height: 140px;"></app-imagem-base64>
 
                                                 </mat-grid-tile>
                                                 <mat-grid-tile colspan="4" rowspan="1">
-                                                    <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
                                                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
                                                                         [formGroup]="formFretamentoEventual.get('cliente').get('pessoaFisica')"
                                                                         *ngIf="formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? true : false">
@@ -287,7 +287,7 @@
                                                     </div>
                                                 </mat-grid-tile>
                                                 <mat-grid-tile colspan="4" rowspan="1">
-                                                    <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
                                                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4"
                                                                         [formGroup]="formFretamentoEventual.get('cliente').get('pessoaFisica')"
                                                                         *ngIf="formFretamentoEventual.get('cliente').get('tipo').value === 'FISICA' ? true : false">

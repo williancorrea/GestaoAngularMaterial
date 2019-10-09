@@ -17,7 +17,6 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
     showCropper = false;
 
     imagemSelecionada = false;
-    tamanhoMinimodaImagem = false;
     imagemCameraAberta = false;
 
     @ViewChild(ImageCropperComponent, {static: false}) imageCropper: ImageCropperComponent;
@@ -41,8 +40,6 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
             this.croppedImage = '';
             this.showCropper = false;
 
-            this.verificarTamanhoMinimoDaImagem(this.data.imagem, 150);
-
             this.cdr.detectChanges();
         }
     }
@@ -53,17 +50,6 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
 
     ngAfterContentChecked(): void {
         this.cdr.detectChanges();
-    }
-
-    verificarTamanhoMinimoDaImagem(imagemBase64: string, tamanhoMinimo: number): void {
-        const img = new Image();
-        img.src = imagemBase64;
-
-        if (img.width <= tamanhoMinimo || img.height <= tamanhoMinimo) {
-            this.tamanhoMinimodaImagem = true;
-        } else {
-            this.tamanhoMinimodaImagem = false;
-        }
     }
 
     fileChangeEvent(event: any): void {
@@ -80,8 +66,6 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
         this.imagemSelecionada = true;
         this.croppedImage = '';
         this.showCropper = false;
-
-        this.verificarTamanhoMinimoDaImagem(this.imageCropper.imageBase64, 150);
     }
 
     imageCropped(event: ImageCroppedEvent): void {
@@ -183,7 +167,6 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
         this.croppedImage = '';
         this.showCropper = false;
 
-        this.tamanhoMinimodaImagem = false;
         this.cdr.detectChanges();
     }
 

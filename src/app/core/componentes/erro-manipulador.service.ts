@@ -33,9 +33,7 @@ export class ErroManipuladorService {
 
                 for (let i = 0; errorResponse.error.length > 0; i++) {
                     mensagemErro += errorResponse.error[i].userMessage;
-                    if (i > 0 && i < errorResponse.error.length) {
-                        mensagemErro += '<br>';
-                    }
+                    mensagemErro += '<br>';
                 }
             } catch (e) {
             }
