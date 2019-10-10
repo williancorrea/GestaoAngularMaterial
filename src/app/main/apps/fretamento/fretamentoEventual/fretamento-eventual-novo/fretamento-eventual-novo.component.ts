@@ -261,7 +261,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 veiculo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
                 previsaoChegadaPartida: [null],
                 previsaoChegadaRetorno: [null],
-                obsItineratio: ['', [Validators.maxLength(500)]]
+                obsItineratio: ['', [Validators.maxLength(500)]],
+                localSaida: ['', [Validators.required, Validators.maxLength(250)]],
+                localRetorno: ['', [Validators.required, Validators.maxLength(250)]]
             }),
             custo: this.formBuild.group({
                 motorista1: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
@@ -544,6 +546,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual.get('contato').reset(this.formFretamentoEventual.get('cliente').value);
         this.formFretamentoEventual.get('contato').updateValueAndValidity();
+
+        this.imagemCliente = '';
 
         this.cmbClienteForm.reset();
         this.cmbClienteForm.updateValueAndValidity();

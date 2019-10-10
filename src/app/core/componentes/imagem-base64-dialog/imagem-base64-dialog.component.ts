@@ -115,9 +115,14 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
         video.setAttribute('muted', '');
         video.setAttribute('playsinline', '');
 
+        // navigator.getUserMedia = (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
         // Verifica se o navegador pode capturar mídia
-        if (navigator.mediaDevices.getUserMedia) {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: 'user'}})
+            // navigator.mediaDevices.getUserMedia({audio: false, video: true})
+            // navigator.mediaDevices.getUserMedia({audio: false, video: { facingMode: { exact: "environment" } }})
+
                 .then(stream => {
                     // Definir o elemento vídeo a carregar o capturado pela webcam
                     video['srcObject'] = stream;
@@ -133,7 +138,46 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
 
                     alert('Oooopps... Falhou : \'(');
                 });
+        }else{
+            this.carregandoDados = false;
+            this.imagemCameraAberta = false;
+
+            this.imagemSelecionada = false;
+            this.croppedImage = '';
+            this.showCropper = false;
+
+            alert('Oooopps... Falhou : \'(');
         }
+
+
+        // navigator['getMedia'] = ( navigator.getUserMedia ||
+        //     navigator['webkitGetUserMedia'] ||
+        //     navigator['mozGetUserMedia'] ||
+        //     navigator['msGetUserMedia']);
+        //
+        // navigator['getMedia'] (
+        //
+        //     // permissoes
+        //     {
+        //         video: true,
+        //         audio: false
+        //     },
+        //
+        //     // callbackSucesso
+        //     localMediaStream => {
+        //         const video = document.querySelector('video');
+        //         video.src = window.URL.createObjectURL(localMediaStream);
+        //         video.onloadedmetadata = (e) => {
+        //             console.log('ENTROU AQUI 1');
+        //         };
+        //     },
+        //
+        //     // callbackErro
+        //     err => {
+        //         console.log("O seguinte erro ocorreu: " + err);
+        //     }
+        //
+        // );
     }
 
     tirarFotoWebCamera(): void {

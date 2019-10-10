@@ -129,7 +129,8 @@
                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                             <mat-label>Telefone 1</mat-label>
                             <input matInput formControlName="telefone1"
-                                   [mask]="(form.get('telefone1').value && form.get('telefone1').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                   [mask]="(form.get('telefone1').value && form.get('telefone1').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'"
+                                   [validation]="false">
                             <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                             <mat-error>
                                 <app-message [control]="form.get('telefone1')"></app-message>
@@ -147,7 +148,8 @@
                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                             <mat-label>Telefone 2</mat-label>
                             <input matInput formControlName="telefone2"
-                                   [mask]="(form.get('telefone2').value && form.get('telefone2').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                   [mask]="(form.get('telefone2').value && form.get('telefone2').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'"
+                                   [validation]="false">
                             <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                             <mat-error>
                                 <app-message [control]="form.get('telefone2')"></app-message>

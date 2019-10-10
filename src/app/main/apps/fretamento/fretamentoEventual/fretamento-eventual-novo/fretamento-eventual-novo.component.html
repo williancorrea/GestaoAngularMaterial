@@ -125,7 +125,8 @@
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 1</mat-label>
                                                     <input matInput formControlName="telefone1"
-                                                           [mask]="(formFretamentoEventual.get('contato').get('telefone1').value && formFretamentoEventual.get('contato').get('telefone1').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="(formFretamentoEventual.get('contato').get('telefone1').value && formFretamentoEventual.get('contato').get('telefone1').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'"
+                                                           [validation]="false">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('contato').get('telefone1')"></app-message>
@@ -135,7 +136,8 @@
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 2</mat-label>
                                                     <input matInput formControlName="telefone2"
-                                                           [mask]="(formFretamentoEventual.get('contato').get('telefone2').value && formFretamentoEventual.get('contato').get('telefone2').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="(formFretamentoEventual.get('contato').get('telefone2').value && formFretamentoEventual.get('contato').get('telefone2').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'"
+                                                           [validation]="false">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('contato').get('telefone2')"></app-message>
@@ -224,7 +226,7 @@
                                             <mat-divider style="margin: 10px; border: 0.5px solid grey;"></mat-divider>
 
                                             <mat-grid-list cols="5" rowHeight="87px">
-                                                <mat-grid-tile colspan="1" rowspan="2" >
+                                                <mat-grid-tile colspan="1" rowspan="2">
 
                                                     <!--                                                    <div *ngIf="!formFretamentoEventual.get('cliente').get('imagem').value"-->
                                                     <!--                                                         style="top: -10px; position: relative;    border-radius: 10px;    border: 1px solid #ccc; width: 140px;    height: 140px;">-->
@@ -326,7 +328,8 @@
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 1</mat-label>
                                                     <input matInput formControlName="telefone1"
-                                                           [mask]="(formFretamentoEventual.get('cliente').get('telefone1').value && formFretamentoEventual.get('cliente').get('telefone1').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="(formFretamentoEventual.get('cliente').get('telefone1').value && formFretamentoEventual.get('cliente').get('telefone1').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'"
+                                                           [validation]="false">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('cliente').get('telefone1')"></app-message>
@@ -344,7 +347,8 @@
                                                 <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                                                     <mat-label>Telefone 2</mat-label>
                                                     <input matInput formControlName="telefone2"
-                                                           [mask]="(formFretamentoEventual.get('cliente').get('telefone2').value && formFretamentoEventual.get('cliente').get('telefone2').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'">
+                                                           [mask]="(formFretamentoEventual.get('cliente').get('telefone2').value && formFretamentoEventual.get('cliente').get('telefone2').value.toString().length <=10) ? '(00) 0000-00009' : '(00) 00000-0000'"
+                                                           [validation]="false">
                                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                                     <mat-error>
                                                         <app-message [control]="formFretamentoEventual.get('cliente').get('telefone2')"></app-message>
@@ -488,6 +492,16 @@
                                                 </mat-form-field>
                                             </div>
 
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                                    <mat-label>Local de Saída</mat-label>
+                                                    <input matInput formControlName="localSaida" maxlength="250">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('itinerario').get('localSaida')"></app-message>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
                                             <div fxFlex="1 0 auto" fxLayoutAlign="row">
                                                 <mat-form-field appearance="outline" fxFlex="46" class="pr-4">
                                                     <mat-label>Cidade de retorno</mat-label>
@@ -532,6 +546,16 @@
                                                     <mat-label>Previsão de Chegada</mat-label>
                                                     <input matInput formControlName="previsaoChegadaRetorno" readonly style="color: blue">
                                                     <mat-icon matSuffix class="secondary-text">timer</mat-icon>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                                                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                                    <mat-label>Local de Retorno</mat-label>
+                                                    <input matInput formControlName="localRetorno" maxlength="250">
+                                                    <mat-error>
+                                                        <app-message [control]="formFretamentoEventual.get('itinerario').get('localRetorno')"></app-message>
+                                                    </mat-error>
                                                 </mat-form-field>
                                             </div>
 

@@ -58,7 +58,7 @@
         "ngx-cookie-service": "2.2.0",
         "ngx-image-cropper": "^2.0.0",
         "ngx-loading": "3.0.1",
-        "ngx-mask": "8.0.3",
+        "ngx-mask": "8.1.0",
         "perfect-scrollbar": "1.4.0",
         "prismjs": "1.16.0",
         "rxjs": "6.5.2",
