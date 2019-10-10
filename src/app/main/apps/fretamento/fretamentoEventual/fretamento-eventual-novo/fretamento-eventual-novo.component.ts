@@ -533,7 +533,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
             }
 
             this.formFretamentoEventual.get('cliente').patchValue(clone);
-            this.imagemCliente = clone.cliente.imagem;
+            this.imagemCliente = clone.imagem;
 
             this.cmbClienteForm.reset();
             this.cmbClienteForm.updateValueAndValidity();
