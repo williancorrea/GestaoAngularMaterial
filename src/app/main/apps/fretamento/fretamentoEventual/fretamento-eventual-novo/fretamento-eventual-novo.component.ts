@@ -77,9 +77,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
             this.pessoaService.pesquisarRepresentanteComercialEmpresaRosinha().then(respostaRepresentanteComercial => {
                 this.cmbRepresentanteComercial = respostaRepresentanteComercial;
 
+                this.carregandoDados = true;
                 const editando = this.activatedRoute.snapshot.params['key'];
                 if (editando) {
-                    this.carregandoDados = true;
                     this.tipoPagina = 'EDICAO';
                     this.fretamentoService.buscarPorKey(editando).then(response => {
                         this.formFretamentoEventual.patchValue(response);
@@ -114,16 +114,19 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.carregandoDados = false;
                 }
 
-
             }).catch(error => {
                 this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {
-                this.carregandoDados = false;
+                setTimeout(() => {
+                    this.carregandoDados = false;
+                }, 1000);
             });
         }).catch(error => {
             this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {
-            this.carregandoDados = false;
+            setTimeout(() => {
+                this.carregandoDados = false;
+            }, 1000);
         });
     }
 
@@ -457,6 +460,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbCarregando = false;
                 });
             });
+
         this.formFretamentoEventual.get('custo').get('motorista2').valueChanges
             .pipe(
                 debounceTime(this.env.comboBox.filtroDelay),
@@ -527,7 +531,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
             } else {
                 delete clone['pessoaFisica'];
             }
+
             this.formFretamentoEventual.get('cliente').patchValue(clone);
+            this.imagemCliente = clone.cliente.imagem;
 
             this.cmbClienteForm.reset();
             this.cmbClienteForm.updateValueAndValidity();
@@ -571,6 +577,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
         this.formFretamentoEventual.get('contato').reset();
         this.formFretamentoEventual.get('contato').updateValueAndValidity();
 
+        this.imagemCliente = '';
         setTimeout(() => {
             this.carregandoDados = false;
         }, 1000);

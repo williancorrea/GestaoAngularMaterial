@@ -32,18 +32,7 @@ export class FretamentoService {
             });
     }
 
-    gerarTermoResponsabilidadeMotorista(key): any {
-        // TODO: REmover a autenticacao FIXA DAQUI
-        const headers = new HttpHeaders();
-        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
-        headers.append('Content-Type', 'application/json');
 
-        return this.http.get(`${this.apiUrl}/${key}/contratoTermoResponsabilidadeMotorista`, {headers, responseType: 'blob'})
-            .toPromise()
-            .then(response => {
-                return response;
-            });
-    }
 
     salvar(obj: any): Promise<any> {
         // TODO: REmover a autenticacao FIXA DAQUI
@@ -92,9 +81,8 @@ export class FretamentoService {
             .set('size', paginador.pageSize.toString())
             .set('page', paginador.pageIndex.toString())
             .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '')
+            .set('campoOrdenacao', 'id')
             .set('ordemClassificacao', 'DESC');
-        // ordemClassificacao: 'DESC',
-        // campoOrdenacao: grid.sortField
 
         return this.http.get(`${this.apiUrl}`, {params: httpParams, headers: headers})
             .toPromise()
@@ -157,6 +145,18 @@ export class FretamentoService {
             .toPromise()
             .then(response => {
                 return this.prepararDadosParaReceber(response);
+            });
+    }
+    gerarTermoResponsabilidadeMotorista(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.get(`${this.apiUrl}/${key}/contratoTermoResponsabilidadeMotorista`, {headers, responseType: 'blob'})
+            .toPromise()
+            .then(response => {
+                return response;
             });
     }
 

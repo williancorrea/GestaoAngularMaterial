@@ -45,7 +45,7 @@
             <!-- MENSAGENS DE ERRO-->
             <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
 
-            <mat-table #table [dataSource]="fretamentoList"
+            <mat-table #tabela [dataSource]="fretamentoList"
                        class="products-table"
                        matSort
                        [@animateStagger]="{value:'50'}"

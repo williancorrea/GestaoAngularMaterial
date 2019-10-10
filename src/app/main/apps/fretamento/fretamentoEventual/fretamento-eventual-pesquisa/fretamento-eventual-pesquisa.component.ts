@@ -35,6 +35,8 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     @ViewChild('filter', {static: true})
     filtro: ElementRef;
 
+    @ViewChild('tabela', {read: ElementRef, static: true}) tabela: ElementRef;
+
     env: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -81,10 +83,10 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
 
             this.fretamentoList = response['content'];
             this.paginador.length = response['totalElements'];
-
         }).catch(error => {
             this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {
+            this.tabela.nativeElement['scrollTop'] = 0;
             this.carregandoDados = false;
             this.cdr.detectChanges();
         });

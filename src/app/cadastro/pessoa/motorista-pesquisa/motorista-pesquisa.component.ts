@@ -1,6 +1,6 @@
 import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {fuseAnimations} from '../../../../@fuse/animations';
-import {MatDialog, MatDialogRef, MatPaginator, MatSort, PageEvent} from '@angular/material';
+import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTable, PageEvent} from '@angular/material';
 import {FuseConfirmDialogComponent} from '../../../../@fuse/components/confirm-dialog/confirm-dialog.component';
 import {ErroManipuladorService} from '../../../core/componentes/erro-manipulador.service';
 import {environment} from '../../../../environments/environment';
@@ -30,6 +30,8 @@ export class MotoristaPesquisaComponent implements OnInit, AfterViewInit, AfterV
 
     @ViewChild('filter', {static: true})
     filtro: ElementRef;
+
+    @ViewChild('tabela', {read: ElementRef, static: true}) tabela: ElementRef;
 
     env: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -81,6 +83,7 @@ export class MotoristaPesquisaComponent implements OnInit, AfterViewInit, AfterV
         }).catch(error => {
             this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {
+            this.tabela.nativeElement['scrollTop'] = 0;
             this.carregandoDados = false;
             this.cdr.detectChanges();
         });

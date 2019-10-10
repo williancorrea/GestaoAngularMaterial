@@ -303,20 +303,19 @@
                             </mat-error>
                         </mat-form-field>
 
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
+                            <mat-label>Nome do Pai</mat-label>
+                            <input matInput formControlName="nomePai">
+                            <mat-error>
+                                <app-message [control]="form.get('pessoaFisica').get('nomePai')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
                             <mat-label>Nome da Mãe</mat-label>
                             <input matInput formControlName="nomeMae">
                             <mat-error>
                                 <app-message [control]="form.get('pessoaFisica').get('nomeMae')"></app-message>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4" [formGroup]="form.get('pessoaFisica')">
-                            <mat-label>Nome do Pai</mat-label>
-                            <input matInput formControlName="nomePai">
-                            <mat-error>
-                                <app-message [control]="form.get('pessoaFisica').get('nomePai')"></app-message>
                             </mat-error>
                         </mat-form-field>
 
