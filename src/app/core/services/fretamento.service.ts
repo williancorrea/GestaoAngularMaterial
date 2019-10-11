@@ -135,7 +135,7 @@ export class FretamentoService {
             });
     }
 
-    contratarFretamento(key): any {
+    gerarContratarFretamento(key): any {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
@@ -154,6 +154,18 @@ export class FretamentoService {
         headers.append('Content-Type', 'application/json');
 
         return this.http.get(`${this.apiUrl}/${key}/contratoTermoResponsabilidadeMotorista`, {headers, responseType: 'blob'})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+    gerarRelatorioViagem(key): any {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.get(`${this.apiUrl}/${key}/contratoRelatorioViagem`, {headers, responseType: 'blob'})
             .toPromise()
             .then(response => {
                 return response;

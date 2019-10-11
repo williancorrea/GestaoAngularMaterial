@@ -142,7 +142,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.carregandoDados = true;
-                this.fretamentoService.contratarFretamento(obj['key']).then(resultado => {
+                this.fretamentoService.gerarContratarFretamento(obj['key']).then(resultado => {
                     this.pesquisar();
                 }).catch(error => {
                     this.mensagemErro = this.errorHandler.handle(error);
@@ -168,7 +168,18 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     imprimirTermoResponsabilidadeMotorista(obj: any): void {
         this.carregandoDados = true;
         this.fretamentoService.gerarTermoResponsabilidadeMotorista(obj['key']).then(relatorio => {
-            Utils.fazerDownloadArquivoBlobEmPDF('Termo_de_Responsabilidade', relatorio);
+            Utils.fazerDownloadArquivoBlobEmPDF('Contrato ' + obj['numeroContrato'] + ' - Termo de Responsabilidade', relatorio);
+        }).catch(error => {
+            this.mensagemErro = this.errorHandler.handle(error);
+        }).finally(() => {
+            this.carregandoDados = false;
+        });
+    }
+
+    imprimirRelatorioViagem(obj: any): void {
+        this.carregandoDados = true;
+        this.fretamentoService.gerarRelatorioViagem(obj['key']).then(relatorio => {
+            Utils.fazerDownloadArquivoBlobEmPDF('Contrato ' + obj['numeroContrato'] + ' - Relatório de Viagem', relatorio);
         }).catch(error => {
             this.mensagemErro = this.errorHandler.handle(error);
         }).finally(() => {

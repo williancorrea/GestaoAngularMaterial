@@ -161,6 +161,11 @@
                                     <mat-icon>print</mat-icon>
                                     <span>Imprimir Termo Responsabilidade do Motorista</span>
                                 </button>
+                                <button mat-menu-item aria-label="remove" (click)="imprimirRelatorioViagem(obj)"
+                                        *ngIf="obj.situacao === 'CONTRATADO'">
+                                    <mat-icon>print</mat-icon>
+                                    <span>Imprimir Relatório de Viagem</span>
+                                </button>
 
                                 <button mat-menu-item aria-label="remove" *ngIf="obj.situacao === 'NAO_CONTRATADO_CONTATO' || obj.situacao === 'NAO_CONTRATADO_CLIENTE'"
                                         style="color: orange" (click)="abrirDialogDeAtivarContrato(obj, indexColuna)">
