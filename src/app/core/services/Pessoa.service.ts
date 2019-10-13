@@ -18,12 +18,6 @@ export class PessoaService {
     }
 
     listarTodosMotoristas(paginador: MatPaginator, filtro: ElementRef): Promise<any> {
-        // TODO: REmover a autenticacao FIXA DAQUI
-        const headers = new HttpHeaders();
-        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
-        headers.append('Content-Type', 'application/json');
-
-
         const httpParams = new HttpParams()
             .set('size', paginador.pageSize.toString())
             .set('page', paginador.pageIndex.toString())
@@ -32,16 +26,17 @@ export class PessoaService {
             .set('campoOrdenacao', 'nome')
             .set('cnh', Boolean(true).toString());
 
-        return this.http.get(`${this.apiUrl}`, {params: httpParams, headers: headers})
-            .toPromise()
-            .then(response => {
+        return this.listarTodos(httpParams);
+    }
 
-                const lista = response;
-                for (let i = 0; i < response['content']['length']; i++) {
-                    lista['content'][i] = (this.prepararDadosParaReceber(response['content'][i]));
-                }
-                return lista;
-            });
+    listarTodosClienteFornecedor(paginador: MatPaginator, filtro: ElementRef): Promise<any> {
+        const httpParams = new HttpParams()
+            .set('size', paginador.pageSize.toString())
+            .set('page', paginador.pageIndex.toString())
+            .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '')
+            .set('ordemClassificacao', 'ASC')
+            .set('campoOrdenacao', 'nome');
+        return this.listarTodos(httpParams);
     }
 
     buscarPorCPF(key): any {
@@ -175,7 +170,7 @@ export class PessoaService {
         return this.http.get(`${this.apiUrl}/${key}`, {headers})
             .toPromise()
             .then(response => {
-                return response;
+                return this.prepararDadosParaReceber(response);
             });
     }
 
@@ -197,24 +192,6 @@ export class PessoaService {
             });
     }
 
-    // atualizar(obj: any): Promise<any> {
-    //     // TODO: REmover a autenticacao FIXA DAQUI
-    //     const headers = new HttpHeaders();
-    //     headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
-    //     headers.append('Content-Type', 'application/json');
-    //
-    //     const key = obj.key;
-    //     let clone = JSON.parse(JSON.stringify(obj));
-    //     clone = this.prepararDadosParaSalvar(clone);
-    //     delete clone['key'];
-    //
-    //     return this.http.put(`${this.apiUrl}/${key}`, clone, {headers: headers})
-    //         .toPromise()
-    //         .then(response => {
-    //             return response;
-    //         });
-    // }
-
     atualizarMotorista(obj: any): Promise<any> {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
@@ -233,26 +210,76 @@ export class PessoaService {
             });
     }
 
-    private prepararDadosParaSalvar(clone: any): any {
+    atualizarClienteFornecedor(obj: any): Promise<any> {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
 
-        delete clone['pessoaJuridica'];
-        clone.pessoaFisica.cnhPrimeiraHabilitacao = moment(clone.pessoaFisica.cnhPrimeiraHabilitacao).format('YYYY-MM-DD').toString();
-        clone.pessoaFisica.cnhEmissaoData = moment(clone.pessoaFisica.cnhEmissaoData).format('YYYY-MM-DD').toString();
-        clone.pessoaFisica.dataNascimento = moment(clone.pessoaFisica.dataNascimento).format('YYYY-MM-DD').toString();
-        clone.pessoaFisica.cnhVencimento = moment(clone.pessoaFisica.cnhVencimento).format('YYYY-MM-DD').toString();
+        const key = obj.key;
+        let clone = JSON.parse(JSON.stringify(obj));
+        clone = this.prepararDadosParaSalvar(clone);
+        delete clone['key'];
+
+        return this.http.put(`${this.apiUrl}/${key}/cliente-fornecedor`, clone, {headers: headers})
+            .toPromise()
+            .then(response => {
+                return response;
+            });
+    }
+
+    private listarTodos(httpParams: HttpParams): Promise<any> {
+        // TODO: REmover a autenticacao FIXA DAQUI
+        const headers = new HttpHeaders();
+        headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.get(`${this.apiUrl}`, {params: httpParams, headers: headers})
+            .toPromise()
+            .then(response => {
+
+                const lista = response;
+                for (let i = 0; i < response['content']['length']; i++) {
+                    lista['content'][i] = (this.prepararDadosParaReceber(response['content'][i]));
+                }
+                return lista;
+            });
+    }
+
+    private prepararDadosParaSalvar(clone: any): any {
+        if (clone.tipo === 'FISICA') {
+            delete clone.pessoaJuridica;
+
+            if (clone.pessoaFisica.cnhEmissaoCidade) {
+                clone.pessoaFisica.cnhEmissaoCidade = {key: clone.pessoaFisica.cnhEmissaoCidade.key};
+            } else {
+                delete clone.pessoaFisica.cnhEmissaoCidade;
+            }
+
+            clone.pessoaFisica.cnhPrimeiraHabilitacao = clone.pessoaFisica.cnhPrimeiraHabilitacao ? moment(clone.pessoaFisica.cnhPrimeiraHabilitacao).format('YYYY-MM-DD').toString() : '';
+            clone.pessoaFisica.cnhEmissaoData = clone.pessoaFisica.cnhEmissaoData ? moment(clone.pessoaFisica.cnhEmissaoData).format('YYYY-MM-DD').toString() : '';
+            clone.pessoaFisica.dataNascimento = clone.pessoaFisica.dataNascimento ? moment(clone.pessoaFisica.dataNascimento).format('YYYY-MM-DD').toString() : '';
+            clone.pessoaFisica.cnhVencimento = clone.pessoaFisica.cnhVencimento ? moment(clone.pessoaFisica.cnhVencimento).format('YYYY-MM-DD').toString() : '';
+        } else if (clone.tipo === 'JURIDICA') {
+            delete clone['pessoaFisica'];
+        }
+
         clone.cidade = {key: clone.cidade.key};
-        clone.pessoaFisica.cnhEmissaoCidade = {key: clone.pessoaFisica.cnhEmissaoCidade.key};
 
         return clone;
     }
 
     private prepararDadosParaReceber(response: any): any {
 
-        delete response['pessoaJuridica'];
-        response.pessoaFisica.cnhPrimeiraHabilitacao = moment(response['pessoaFisica']['cnhPrimeiraHabilitacao'], 'YYYY-MM-DD');
-        response.pessoaFisica.cnhEmissaoData = moment(response['pessoaFisica']['cnhEmissaoData'], 'YYYY-MM-DD');
-        response.pessoaFisica.dataNascimento = moment(response['pessoaFisica']['dataNascimento'], 'YYYY-MM-DD');
-        response.pessoaFisica.cnhVencimento = moment(response['pessoaFisica']['cnhVencimento'], 'YYYY-MM-DD');
+        if (response.tipo === 'FISICA') {
+            delete response['pessoaJuridica'];
+            response.pessoaFisica.cnhPrimeiraHabilitacao = moment(response['pessoaFisica']['cnhPrimeiraHabilitacao'], 'YYYY-MM-DD');
+            response.pessoaFisica.cnhEmissaoData = moment(response['pessoaFisica']['cnhEmissaoData'], 'YYYY-MM-DD');
+            response.pessoaFisica.dataNascimento = moment(response['pessoaFisica']['dataNascimento'], 'YYYY-MM-DD');
+            response.pessoaFisica.cnhVencimento = moment(response['pessoaFisica']['cnhVencimento'], 'YYYY-MM-DD');
+        } else if (response.tipo === 'JURIDICA') {
+            delete response['pessoaFisica'];
+        }
 
         return response;
     }

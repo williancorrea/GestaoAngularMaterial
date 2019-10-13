@@ -21,6 +21,15 @@ export const navigation: FuseNavigation[] = [
                 icon : 'perm_identity',
                 url  : '/cadastro/pessoa/motorista'
             },
+            {
+                id   : 'cliente_fornecedor',
+                title: 'Cliente / Fornecedor',
+                type : 'item',
+                icon : 'perm_identity',
+                url  : '/cadastro/pessoa/cliente-fornecedor'
+            }
+
+
 
             // ,
             // {

@@ -1,0 +1,134 @@
+<ngx-loading [show]="carregandoDados"></ngx-loading>
+
+<div class="page-layout carded fullwidth inner-scroll wcorrea-topo-pagina">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITULO -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    perm_identity
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Cliente / Fornecedor
+                </span>
+            </div>
+            <!-- / APP TITULO -->
+
+            <!-- PESQUISA -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="Pesquisar fretamento">
+                </div>
+            </div>
+            <!-- / PESQUISA -->
+
+            <a mat-raised-button [routerLink]="'/cadastro/pessoa/cliente-fornecedor/novo'" class="add-product-button fuse-white mt-24 mt-md-0">
+                <span>NOVO CLIENTE/FORNECEDOR</span>
+            </a>
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- MENSAGENS DE ERRO-->
+            <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
+
+            <mat-table #tabela [dataSource]="clitenFornecodorList"
+                       class="products-table"
+                       matSort
+                       [@animateStagger]="{value:'50'}"
+                       fusePerfectScrollbar>
+
+                <!-- Ativo -->
+<!--                <ng-container matColumnDef="ativo">-->
+<!--                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Ativo</mat-header-cell>-->
+<!--                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs>-->
+<!--                        <mat-icon *ngIf="!obj['inativo']" class="active-icon green-600 s-16">check</mat-icon>-->
+<!--                        <mat-icon *ngIf="obj['inativo']" class="active-icon red-500 s-16">close</mat-icon>-->
+<!--                    </mat-cell>-->
+<!--                </ng-container>-->
+
+                <!-- Imagem do Cliente -->
+                <ng-container matColumnDef="imagem">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let obj">
+                        <mat-icon *ngIf="!obj['imagem']" style="font-size: 52px; width: 52px; height: 52px; color: #CCC">account_circle</mat-icon>
+                        <img class="motorista-imagem" *ngIf="obj['imagem']" [src]="obj['imagem']"/>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Nome do Cliente -->
+                <ng-container matColumnDef="nome">
+                    <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" style="display: block" [ngStyle]="obj['inativo'] ? {color: 'red'} : ''">
+                        <p class="text-truncate">
+                            <b>{{obj['nome']}}  </b>
+                            <b *ngIf="obj['fantasia']">({{obj['fantasia']}})</b>
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Cidade/Estado -->
+                <ng-container matColumnDef="cidade_estado">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>Cidade</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-sm style="display: block">
+                        <p class="text-truncate">{{obj['cidade']['nome']}}/{{obj['cidade']['estado']['iniciais']}}</p>
+                        <p class="text-truncate">Endereço: {{obj['endereco']}}, Bairro: {{obj['bairro']}}</p>
+                        <p class="text-truncate">CEP: {{obj['cep']}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Telefone 1 -->
+                <ng-container matColumnDef="telefone1">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Telefone 1</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
+                        <p class="text-truncate" *ngIf="obj['telefone1Formatado']">{{obj['telefone1Formatado']}}</p>
+                        <p class="text-truncate" *ngIf="obj['telefone1Obs']" class="pr-4"
+                           style="margin-top: -15px; font-weight: bold; text-align: center; background: #ccc; width: 110px;">{{obj['telefone1Obs']}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Telefone 2 -->
+                <ng-container matColumnDef="telefone2">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Telefone 2</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
+                        <p class="text-truncate" *ngIf="obj['telefone2Formatado']">{{obj['telefone2Formatado']}}</p>
+                        <p class="text-truncate" *ngIf="obj['telefone2Obs']" style="margin-top: -15px; font-weight: bold; text-align: center; background: #ccc; width: 110px;">{{obj['telefone2Obs']}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let obj; columns: displayedColumns;"
+                         class="product"
+                         matRipple
+                         [routerLink]="'/cadastro/pessoa/cliente-fornecedor/'+ obj.key">
+                </mat-row>
+
+            </mat-table>
+
+            <mat-paginator #paginator
+                           [length]="120"
+                           [pageIndex]="0"
+                           [pageSize]="env['dataTable']['rows']"
+                           [pageSizeOptions]="env['dataTable']['rowsPerPageOptions']"
+                           (page)="paginadorEvento($event)">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

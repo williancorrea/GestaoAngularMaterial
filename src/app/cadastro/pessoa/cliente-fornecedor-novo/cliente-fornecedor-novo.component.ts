@@ -11,16 +11,15 @@ import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {PESSOA_TIPO} from '../../../core/modelos/PessoaTipo';
 import {PessoaService} from '../../../core/services/Pessoa.service';
 import {CidadeService} from '../../../core/services/cidade.service';
-import {ImageCropperComponent} from 'ngx-image-cropper';
 
 @Component({
-    selector: 'app-motorista-novo',
-    templateUrl: './motorista-novo.component.html',
-    styleUrls: ['./motorista-novo.component.scss'],
+    selector: 'app-cliente-fornecedor-novo',
+    templateUrl: './cliente-fornecedor-novo.component.html',
+    styleUrls: ['./cliente-fornecedor-novo.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class MotoristaNovoComponent implements OnInit {
+export class ClienteFornecedorNovoComponent implements OnInit {
 
     mensagemErro = '';
     mensagemAlerta = '';
@@ -58,9 +57,7 @@ export class MotoristaNovoComponent implements OnInit {
             this.tipoPagina = 'EDICAO';
             this.pessoaService.buscarPorKey(editando).then(response => {
                 this.form.patchValue(response);
-                this.form.get('pessoaFisica').get('cpf').disable();
                 this.imagemCliente = this.form.get('imagem').value ? this.form.get('imagem').value : '';
-
             }).catch(error => {
                 this.tipoPagina = 'NOVO';
                 this.mensagemErro = this.errorHandler.handle(error);
@@ -98,19 +95,38 @@ export class MotoristaNovoComponent implements OnInit {
                 key: [null],
                 cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],
                 rg: [''],
-                inativoMotorista: [false],
-                cnhNumero: ['', [Validators.required, Validators.maxLength(30)]],
-                orgaoRg: ['', [Validators.required, Validators.maxLength(10)]],
-                cnhPrimeiraHabilitacao: ['', [Validators.required]],
-                cnhEmissaoData: ['', [Validators.required]],
-                cnhEmissaoCidade: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
-                cnhVencimento: ['', [Validators.required]],
-                dataNascimento: ['', [Validators.required]],
-                nomeMae: [''],
-                nomePai: [''],
-                sexo: ['', [Validators.required]],
-                cnhCategoria: [null, [Validators.required]]
-            })
+            }),
+            pessoaJuridica: this.formBuild.group({
+                key: [null],
+                cnpj: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCNPJ]],
+                inscricaoEstadual: [''],
+            }),
+        });
+
+        this.form.get('tipo').valueChanges.subscribe(valor => {
+            if (valor === PESSOA_TIPO.JURIDICA.toString()) {
+                this.form.get('pessoaFisica').get('cpf').clearValidators();
+                this.form.get('pessoaJuridica').get('cnpj').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCNPJ]);
+                this.form.get('pessoaJuridica').get('inscricaoEstadual').setValidators([Validators.maxLength(15)]);
+            } else {
+                this.form.get('pessoaFisica').get('cpf').setValidators([Validators.required, ValidacaoGenericaWCorrea.validarCPF]);
+                this.form.get('pessoaJuridica').get('cnpj').clearValidators();
+                this.form.get('pessoaJuridica').get('inscricaoEstadual').clearValidators();
+            }
+
+            // DESABILITAR A EDICAO DO CPF E CNPJ
+            setTimeout(() => {
+                if (this.form.get('key').value) {
+                    this.form.get('pessoaFisica').get('cpf').disable();
+                    this.form.get('pessoaJuridica').get('cnpj').disable();
+                } else {
+                    this.form.get('pessoaFisica').get('cpf').enable();
+                    this.form.get('pessoaJuridica').get('cnpj').enable();
+                }
+            });
+            this.form.updateValueAndValidity(); // Forca a atualizacao do objeto
+            this.form.get('pessoaFisica').updateValueAndValidity(); // Forca a atualizacao do objeto
+            this.form.get('pessoaJuridica').updateValueAndValidity(); // Forca a atualizacao do objeto
         });
 
         this.form.get('cidade').valueChanges
@@ -142,34 +158,7 @@ export class MotoristaNovoComponent implements OnInit {
                 });
             });
 
-        this.form.get('pessoaFisica').get('cnhEmissaoCidade').valueChanges
-            .pipe(
-                debounceTime(this.env.comboBox.filtroDelay),
-                map(pesquisa => {
-                    if (typeof pesquisa === 'string') {
-                        return pesquisa.trim();
-                    }
-                }),
-                distinctUntilChanged(),
-                tap(pesquisa => {
-                    this.cmbCarregando = true;
-                })
-            )
-            .subscribe(pesquisa => {
-                this.cmbCidadeLista = [];
-                if (typeof pesquisa !== 'string') {
-                    this.cmbCarregando = false;
-                    return;
-                }
 
-                this.cidadeService.pesquisarCidadeCmb(pesquisa).then(resposta => {
-                    this.cmbCidadeLista = resposta;
-                }).catch(error => {
-                    this.mensagemErro = this.errorHandler.handle(error);
-                }).finally(() => {
-                    this.cmbCarregando = false;
-                });
-            });
     }
 
     gravar(): void {
@@ -191,17 +180,17 @@ export class MotoristaNovoComponent implements OnInit {
 
         if (this.tipoPagina === 'NOVO') {
             this.pessoaService.salvar(this.form.getRawValue()).then(response => {
-                this._matSnackBar.open('Motorista gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
-                this.router.navigateByUrl('/cadastro/pessoa/motorista');
+                this._matSnackBar.open('Cliente/Fornecedor gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
+                this.router.navigateByUrl('/cadastro/pessoa/cliente-fornecedor');
             }).catch(error => {
                 this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {
                 this.carregandoDados = false;
             });
         } else {
-            this.pessoaService.atualizarMotorista(this.form.getRawValue()).then(response => {
-                this._matSnackBar.open('Motorista atualizado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
-                this.router.navigateByUrl('/cadastro/pessoa/motorista');
+            this.pessoaService.atualizarClienteFornecedor(this.form.getRawValue()).then(response => {
+                this._matSnackBar.open('Cliente/Fornecedor atualizado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
+                this.router.navigateByUrl('/cadastro/pessoa/cliente-fornecedor');
             }).catch(error => {
                 this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {
@@ -228,6 +217,24 @@ export class MotoristaNovoComponent implements OnInit {
                     }).finally(() => {
                     this.carregandoDados = false;
                 });
+            }
+        }
+    }
+    buscarCnpjDigitado(): void {
+        if (!this.form.get('key').value) {
+            if (this.form.get('pessoaJuridica').get('cnpj').valid) {
+                this.carregandoDados = true;
+                this.pessoaService.buscarPorCNPJ(this.form.get('pessoaJuridica').get('cnpj').value)
+                    .then(response => {
+                        this.form.patchValue(response);
+                        this.form.get('pessoaJuridica').get('cnpj').disable();
+                    })
+                    .catch(error => {
+                        console.log('CNPJ não encontrado, vida que segue!');
+                    })
+                    .finally(() => {
+                        this.carregandoDados = false;
+                    });
             }
         }
     }

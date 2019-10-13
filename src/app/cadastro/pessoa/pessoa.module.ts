@@ -37,6 +37,8 @@ import {CoreModule} from '../../core/core.module';
 import {NgxMaskModule} from 'ngx-mask';
 import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {NgxLoadingModule} from 'ngx-loading';
+import {ClienteFornecedorPesquisaComponent} from './cliente-fornecedor-pesquisa/cliente-fornecedor-pesquisa.component';
+import {ClienteFornecedorNovoComponent} from './cliente-fornecedor-novo/cliente-fornecedor-novo.component';
 
 const routes = [
     {
@@ -56,6 +58,24 @@ const routes = [
         // canActivate: [AuthGuard],
         // data: {roles: ['ROLE_CMB-PADRAO']}
     },
+    {
+        path: 'cliente-fornecedor',
+        component: ClienteFornecedorPesquisaComponent,
+        // canActivate: [AuthGuard],
+        // data: {roles: ['ROLE_CMB-PADRAO']}
+    },
+    {
+        path: 'cliente-fornecedor/novo',
+        component: ClienteFornecedorNovoComponent,
+        // canActivate: [AuthGuard],
+        // data: {roles: ['ROLE_CMB-PADRAO']}
+    },
+    {
+        path: 'cliente-fornecedor/:key', component: ClienteFornecedorNovoComponent,
+        // canActivate: [AuthGuard],
+        // data: {roles: ['ROLE_CMB-PADRAO']}
+    },
+
     {path: '**', redirectTo: 'motorista'}
 ];
 
@@ -104,7 +124,9 @@ const routes = [
     ],
     declarations: [
         MotoristaPesquisaComponent,
-        MotoristaNovoComponent
+        MotoristaNovoComponent,
+        ClienteFornecedorPesquisaComponent,
+        ClienteFornecedorNovoComponent
     ],
     exports: []
 })
