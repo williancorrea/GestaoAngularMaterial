@@ -1,0 +1,144 @@
+<ngx-loading [show]="carregandoDados"></ngx-loading>
+
+<div class="page-layout carded fullwidth inner-scroll wcorrea-topo-pagina">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITULO -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    perm_identity
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Veículos
+                </span>
+            </div>
+            <!-- / APP TITULO -->
+
+            <!-- PESQUISA -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="Pesquisar fretamento">
+                </div>
+            </div>
+            <!-- / PESQUISA -->
+
+            <a mat-raised-button [routerLink]="'/cadastro/veiculo/novo'" class="add-product-button fuse-white mt-24 mt-md-0">
+                <span>NOVO VEÍCULO</span>
+            </a>
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- MENSAGENS DE ERRO-->
+            <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
+
+            <mat-table #tabela [dataSource]="listaDados"
+                       class="products-table"
+                       matSort
+                       [@animateStagger]="{value:'50'}"
+                       fusePerfectScrollbar>
+
+                <!-- Ativo -->
+                <ng-container matColumnDef="inativo">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Ativo</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="!obj['inativo']" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="obj['inativo']" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- FROTA-->
+                <ng-container matColumnDef="frota">
+                    <mat-header-cell *matHeaderCellDef>Frota</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" style="display: block" [ngStyle]="obj['inativo'] ? {color: 'red'} : ''">
+                        <p class="text-truncate">
+                            <b>{{obj['frota']}}  </b>
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- PLACA -->
+                <ng-container matColumnDef="placa">
+                    <mat-header-cell *matHeaderCellDef>Placa</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" style="display: block" [ngStyle]="obj['inativo'] ? {color: 'red'} : ''">
+                        <p class="text-truncate">
+                            <b>{{obj['placa']}}  </b>
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="qtd_lugares">
+                    <mat-header-cell *matHeaderCellDef>Qtd Lugares</mat-header-cell>
+                    <mat-cell *matCellDef="let obj"  style="display: block">
+                        <p class="text-truncate">{{obj['qtdLugares']}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="consumo">
+                    <mat-header-cell *matHeaderCellDef>Consumo</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" style="display: block">
+                        <p class="text-truncate"><b>Real:</b> {{obj['consumoReal']}} / <b>Atual:</b> {{obj['consumoAtual']}}</p>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Buttons Column -->
+                <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let obj; let indexColuna = index">
+                        <div fxFlex="row" fxLayoutAlign="end center">
+
+                            <button mat-icon-button [matMenuTriggerFor]="itensDoMenu" aria-label="Mais" (click)="$event.stopPropagation();">
+                                <mat-icon class="secondary-text">more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #itensDoMenu="matMenu">
+
+<!--                                <button mat-menu-item aria-label="remove"-->
+<!--                                        [ngStyle]="obj['pessoaFisica']['inativoMotorista'] ? {color: 'green'} : {color: 'orange'}"-->
+<!--                                        (click)="inativarotorista(obj['key'], !obj['pessoaFisica']['inativoMotorista'])">-->
+<!--                                    <mat-icon [ngStyle]="obj['pessoaFisica']['inativoMotorista'] ? {color: 'green'} : {color: 'orange'}">{{obj['pessoaFisica']['inativoMotorista'] ? 'check' : 'close'}}</mat-icon>-->
+<!--                                    <span><b>{{obj['pessoaFisica']['inativoMotorista'] ? 'Ativar' : 'Desativar'}} Motorista</b></span>-->
+<!--                                </button>-->
+                            </mat-menu>
+                        </div>
+
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let obj; columns: displayedColumns;"
+                         class="product"
+                         matRipple
+                         [routerLink]="'/cadastro/veiculo/'+ obj.key">
+                </mat-row>
+
+            </mat-table>
+
+            <mat-paginator #paginator
+                           [length]="120"
+                           [pageIndex]="0"
+                           [pageSize]="env['dataTable']['rows']"
+                           [pageSizeOptions]="env['dataTable']['rowsPerPageOptions']"
+                           (page)="paginadorEvento($event)">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

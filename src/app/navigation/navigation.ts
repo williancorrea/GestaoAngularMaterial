@@ -27,6 +27,13 @@ export const navigation: FuseNavigation[] = [
                 type : 'item',
                 icon : 'perm_identity',
                 url  : '/cadastro/pessoa/cliente-fornecedor'
+            },
+            {
+                id   : 'veiculo',
+                title: 'Veiculos',
+                type : 'item',
+                icon : 'directions_car',
+                url  : '/cadastro/veiculo'
             }
 
 

@@ -23,7 +23,6 @@ import {LayoutModule} from 'app/layout/layout.module';
 import {SegurancaModule} from './seguranca/seguranca.module';
 import {CoreModule} from './core/core.module';
 import {ngxLoadingAnimationTypes, NgxLoadingModule} from 'ngx-loading';
-import {PessoaModule} from './cadastro/pessoa/pessoa.module';
 
 
 const appRoutes: Routes = [
@@ -50,25 +49,13 @@ const appRoutes: Routes = [
     },
 
 
-    {
-        path: 'autenticacao',
-        loadChildren: './seguranca/autenticacao/login/login-2.module#Login2Module'
-    },
+    { path: 'autenticacao', loadChildren: './seguranca/autenticacao/login/login-2.module#Login2Module' },
+    { path: 'fretamento', loadChildren: './main/apps/fretamento/fretamento.module#FretamentoModule' },
 
-    {
-        path: 'fretamento',
-        loadChildren: './main/apps/fretamento/fretamento.module#FretamentoModule'
-    },
+    { path: 'cadastro/pessoa', loadChildren: './cadastro/pessoa/pessoa.module#PessoaModule' },
+    { path: 'cadastro/veiculo', loadChildren: './cadastro/veiculo/veiculo.module#VeiculoModule' },
 
-    {
-        path: 'cadastro/pessoa',
-        loadChildren: './cadastro/pessoa/pessoa.module#PessoaModule'
-    },
-
-    {
-        path: '**',
-        redirectTo: 'apps/dashboards/analytics'
-    }
+    { path: '**', redirectTo: 'apps/dashboards/analytics' }
 ];
 
 @NgModule({

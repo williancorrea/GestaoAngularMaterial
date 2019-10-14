@@ -1,0 +1,157 @@
+<ngx-loading [show]="carregandoDados"></ngx-loading>
+
+
+<div id="product" class="page-layout carded fullwidth inner-scroll">
+
+    <div class="top-bg accent"></div>
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <!-- BOTAO VOLTAR-->
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/cadastro/veiculo'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div class="product-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <mat-icon style="font-size: 60px">directions_bus</mat-icon>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        {{tipoPagina === 'EDICAO' ? 'Edição do veíuclo' : 'Novo veículo'}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Detalhes do veículo</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- BOTAO DE SALVAR -->
+            <button mat-raised-button class="save-product-button" (click)="gravar()">
+                <span>{{tipoPagina === 'NOVO' ? 'SALVAR VEÍCULO' : 'ATUALIZAR VEÍCULO'}}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div #conteudoScroll class="content" style="padding: 30px;" fusePerfectScrollbar>
+
+                <!-- MENSAGENS DE ERRO-->
+                <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
+                <app-error-service-message [(erro)]="mensagemAlerta" [erroTipo]="'warning'"></app-error-service-message>
+
+                <form fxLayout="column" [formGroup]="form">
+
+                    <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                        <mat-form-field id="txtCobrancaAutomatica" appearance="fill" fxFlex="25" class="pr-4">
+                            <input matInput style="display: none">
+                            <mat-slide-toggle formControlName="inativo">Desativado</mat-slide-toggle>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Placa</mat-label>
+                            <input matInput formControlName="placa" mask="SSS-0000" dropSpecialCharacters="false">
+                            <mat-icon matSuffix class="secondary-text">placa</mat-icon>
+                            <mat-error>
+                                <app-message [control]="form.get('placa')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Frota</mat-label>
+                            <input matInput formControlName="frota">
+                            <mat-error>
+                                <app-message [control]="form.get('frota')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Odometro Inicial</mat-label>
+                            <input matInput formControlName="odometroInicial" mask="0*">
+                            <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                            <mat-error>
+                                <app-message [control]="form.get('odometroInicial')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Consumo Real</mat-label>
+                            <input currencyMask matInput formControlName="consumoReal"
+                                   [options]="{ prefix: '', suffix: 'Lts', thousands: '', decimal: ',', precision: 1, allowNegative: false}">
+                            <mat-error>
+                                <app-message [control]="form.get('consumoReal')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Consumo Atual</mat-label>
+                            <input currencyMask matInput formControlName="consumoAtual"
+                                   [options]="{ prefix: '', suffix: 'Lts', thousands: '', decimal: ',', precision: 1, allowNegative: false}">
+                            <mat-error>
+                                <app-message [control]="form.get('consumoAtual')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Velocidade Média</mat-label>
+                            <input matInput formControlName="velocidadeMedia" mask="0*">
+                            <mat-error>
+                                <app-message [control]="form.get('velocidadeMedia')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Qtd. Lugares</mat-label>
+                            <input matInput formControlName="qtdLugares" mask="0*">
+                            <mat-error>
+                                <app-message [control]="form.get('qtdLugares')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Cap. Tanque Comb.</mat-label>
+                            <input matInput formControlName="capacidadeTanqueCombustivelLts" mask="0*">
+                            <mat-error>
+                                <app-message [control]="form.get('capacidadeTanqueCombustivelLts')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                        <mat-form-field appearance="outline" fxFlex="100">
+                            <mat-label>Observações</mat-label>
+                            <textarea #obs matInput formControlName="obs" rows="3" maxlength="500"></textarea>
+                            <mat-hint align="end">{{obs.value.length}} / 500</mat-hint>
+                            <mat-error>
+                                <app-message [control]="form.get('obs')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
