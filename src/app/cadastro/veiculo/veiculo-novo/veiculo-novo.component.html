@@ -91,7 +91,7 @@
                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                             <mat-label>Consumo Real</mat-label>
                             <input currencyMask matInput formControlName="consumoReal"
-                                   [options]="{ prefix: '', suffix: 'Lts', thousands: '', decimal: ',', precision: 1, allowNegative: false}">
+                                   [options]="{ prefix: '', suffix: ' Lts', thousands: '', decimal: ',', precision: 1, allowNegative: false}">
                             <mat-error>
                                 <app-message [control]="form.get('consumoReal')"></app-message>
                             </mat-error>
@@ -100,7 +100,7 @@
                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                             <mat-label>Consumo Atual</mat-label>
                             <input currencyMask matInput formControlName="consumoAtual"
-                                   [options]="{ prefix: '', suffix: 'Lts', thousands: '', decimal: ',', precision: 1, allowNegative: false}">
+                                   [options]="{ prefix: '', suffix: ' Lts', thousands: '', decimal: ',', precision: 1, allowNegative: false}">
                             <mat-error>
                                 <app-message [control]="form.get('consumoAtual')"></app-message>
                             </mat-error>

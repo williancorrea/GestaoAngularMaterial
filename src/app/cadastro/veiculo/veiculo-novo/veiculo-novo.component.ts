@@ -73,9 +73,9 @@ export class VeiculoNovoComponent implements OnInit {
             frota: ['', [Validators.maxLength(500)]],
             obs: ['', [Validators.maxLength(512)]],
             odometroInicial: ['', [Validators.required]],
-            consumoReal: ['', [Validators.required, Validators.min(0)]],
-            consumoAtual: ['', [Validators.required, Validators.min(0)]],
-            velocidadeMedia: ['', [Validators.required, Validators.max(100)]],
+            consumoReal: ['', [Validators.required, Validators.min(1.5)]],
+            consumoAtual: ['', [Validators.required, Validators.min(1.5)]],
+            velocidadeMedia: ['', [Validators.required, Validators.min(60), Validators.max(100)]],
             qtdLugares: [0, [Validators.required, Validators.min(5)]],
             capacidadeTanqueCombustivelLts: [0, [Validators.required, Validators.min(30)]],
             inativo: [false]
