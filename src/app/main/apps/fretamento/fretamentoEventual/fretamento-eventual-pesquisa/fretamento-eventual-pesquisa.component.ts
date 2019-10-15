@@ -55,6 +55,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
                 distinctUntilChanged(),
             )
             .subscribe(() => {
+                this.paginador.pageIndex = 0;
                 this.pesquisar();
             });
     }

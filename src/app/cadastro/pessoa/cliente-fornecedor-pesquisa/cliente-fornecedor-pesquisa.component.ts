@@ -49,6 +49,7 @@ export class ClienteFornecedorPesquisaComponent implements OnInit, AfterViewInit
                 distinctUntilChanged(),
             )
             .subscribe(() => {
+                this.paginador.pageIndex = 0;
                 this.pesquisar();
             });
     }

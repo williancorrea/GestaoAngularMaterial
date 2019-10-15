@@ -52,6 +52,7 @@ export class VeiculoPesquisaComponent implements OnInit, AfterViewInit, AfterVie
                 distinctUntilChanged(),
             )
             .subscribe(() => {
+                this.paginador.pageIndex = 0;
                 this.pesquisar();
             });
     }

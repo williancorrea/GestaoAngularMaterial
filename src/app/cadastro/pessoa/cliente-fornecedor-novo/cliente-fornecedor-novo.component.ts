@@ -88,9 +88,9 @@ export class ClienteFornecedorNovoComponent implements OnInit {
             endereco: ['', [Validators.required, Validators.minLength(5)]],
             bairro: ['', [Validators.required, Validators.minLength(5)]],
             telefone1: ['', [Validators.required]],
-            telefone1Obs: ['', [Validators.required]],
+            telefone1Obs: ['', [Validators.required, Validators.maxLength(10)]],
             telefone2: [''],
-            telefone2Obs: [''],
+            telefone2Obs: ['', [Validators.maxLength(10)]],
             pessoaFisica: this.formBuild.group({
                 key: [null],
                 cpf: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCPF]],

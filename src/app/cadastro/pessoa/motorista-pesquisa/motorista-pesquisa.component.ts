@@ -51,6 +51,7 @@ export class MotoristaPesquisaComponent implements OnInit, AfterViewInit, AfterV
                 distinctUntilChanged(),
             )
             .subscribe(() => {
+                this.paginador.pageIndex = 0;
                 this.pesquisar();
             });
     }
