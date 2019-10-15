@@ -26,7 +26,7 @@ export const fuseConfig: FuseConfig = {
         toolbar  : {
             customBackgroundColor: false,
             background           : 'fuse-white-500',
-            hidden               : false,
+            hidden               : true,
             position             : 'below-static'
         },
         footer   : {
