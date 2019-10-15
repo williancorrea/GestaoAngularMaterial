@@ -80,26 +80,27 @@ export class VeiculoService {
             .then(() => null);
     }
 
-    salvar(clone): Promise<any> {
+    salvar(obj): Promise<any> {
+        let clone = JSON.parse(JSON.stringify(obj));
+
         delete clone['key'];
 
         clone = this.prepararDadosParaSalvar(clone);
-        return this.http.post(this.apiUrl,
-            JSON.stringify(clone))
+        return this.http.post(this.apiUrl, clone)
             .toPromise()
             .then(response => {
                 return response;
             });
     }
 
-    atualizar(clone): Promise<any> {
-        const key = clone.key;
+    atualizar(obj): Promise<any> {
+        let clone = JSON.parse(JSON.stringify(obj));
+        const key = obj.key;
 
         delete clone['key'];
         clone = this.prepararDadosParaSalvar(clone);
 
-        return this.http.put(`${this.apiUrl}/${key}`,
-            JSON.stringify(clone))
+        return this.http.put(`${this.apiUrl}/${key}`, clone)
             .toPromise()
             .then(response => {
                 return response;

@@ -70,7 +70,7 @@ export class VeiculoNovoComponent implements OnInit {
         this.form = this.formBuild.group({
             key: [null],
             placa: ['', [Validators.required, Validators.maxLength(8)]],
-            frota: ['', [Validators.maxLength(500)]],
+            frota: ['', [Validators.required, Validators.maxLength(10)]],
             obs: ['', [Validators.maxLength(512)]],
             odometroInicial: ['', [Validators.required]],
             consumoReal: ['', [Validators.required, Validators.min(1.5)]],

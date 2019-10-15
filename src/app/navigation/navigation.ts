@@ -15,26 +15,35 @@ export const navigation: FuseNavigation[] = [
                 url  : '/fretamento/eventual'
             },
             {
-                id   : 'motorista',
-                title: 'Motoristas',
-                type : 'item',
-                icon : 'perm_identity',
-                url  : '/cadastro/pessoa/motorista'
-            },
-            {
-                id   : 'cliente_fornecedor',
-                title: 'Cliente / Fornecedor',
-                type : 'item',
-                icon : 'perm_identity',
-                url  : '/cadastro/pessoa/cliente-fornecedor'
-            },
-            {
-                id   : 'veiculo',
-                title: 'Veiculos',
-                type : 'item',
-                icon : 'directions_car',
-                url  : '/cadastro/veiculo'
+                id: 'cadastros_base',
+                title: 'Cadastros',
+                type: 'collapsable',
+                icon: 'library_books',
+                children: [
+                    {
+                        id   : 'motorista',
+                        title: 'Motoristas',
+                        type : 'item',
+                        icon : 'perm_identity',
+                        url  : '/cadastro/pessoa/motorista'
+                    },
+                    {
+                        id   : 'cliente_fornecedor',
+                        title: 'Cliente / Fornecedor',
+                        type : 'item',
+                        icon : 'perm_identity',
+                        url  : '/cadastro/pessoa/cliente-fornecedor'
+                    },
+                    {
+                        id   : 'veiculo',
+                        title: 'Veiculos',
+                        type : 'item',
+                        icon : 'directions_car',
+                        url  : '/cadastro/veiculo'
+                    }
+                ]
             }
+
 
 
 
