@@ -1,6 +1,6 @@
 <ngx-loading [show]="carregandoDados"></ngx-loading>
 
-<div class="page-layout carded fullwidth inner-scroll wcorrea-topo-pagina">
+<div class="page-layout carded fullwidth inner-scroll wcorrea-topo-pagina-veiculo">
 
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
@@ -13,7 +13,7 @@
         <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
 
             <!-- APP TITULO -->
-            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo mb-8 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     perm_identity
                 </mat-icon>
@@ -32,7 +32,7 @@
             </div>
             <!-- / PESQUISA -->
 
-            <a mat-raised-button [routerLink]="'/cadastro/veiculo/todos/novo'" class="add-product-button fuse-white mt-24 mt-md-0">
+            <a mat-raised-button [routerLink]="'/cadastro/veiculo/todos/novo'" class="add-product-button fuse-white mt-8 mt-md-0">
                 <span>NOVO VEÍCULO</span>
             </a>
 
@@ -91,31 +91,6 @@
                     <mat-header-cell *matHeaderCellDef>Consumo</mat-header-cell>
                     <mat-cell *matCellDef="let obj" style="display: block">
                         <p class="text-truncate"><b>Real:</b> {{obj['consumoReal']}} / <b>Atual:</b> {{obj['consumoAtual']}}</p>
-                    </mat-cell>
-                </ng-container>
-
-
-                <!-- Buttons Column -->
-                <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let obj; let indexColuna = index">
-                        <div fxFlex="row" fxLayoutAlign="end center">
-
-                            <button mat-icon-button [matMenuTriggerFor]="itensDoMenu" aria-label="Mais" (click)="$event.stopPropagation();">
-                                <mat-icon class="secondary-text">more_vert</mat-icon>
-                            </button>
-
-                            <mat-menu #itensDoMenu="matMenu">
-
-<!--                                <button mat-menu-item aria-label="remove"-->
-<!--                                        [ngStyle]="obj['pessoaFisica']['inativoMotorista'] ? {color: 'green'} : {color: 'orange'}"-->
-<!--                                        (click)="inativarotorista(obj['key'], !obj['pessoaFisica']['inativoMotorista'])">-->
-<!--                                    <mat-icon [ngStyle]="obj['pessoaFisica']['inativoMotorista'] ? {color: 'green'} : {color: 'orange'}">{{obj['pessoaFisica']['inativoMotorista'] ? 'check' : 'close'}}</mat-icon>-->
-<!--                                    <span><b>{{obj['pessoaFisica']['inativoMotorista'] ? 'Ativar' : 'Desativar'}} Motorista</b></span>-->
-<!--                                </button>-->
-                            </mat-menu>
-                        </div>
-
                     </mat-cell>
                 </ng-container>
 

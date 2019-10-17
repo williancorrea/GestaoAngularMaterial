@@ -37,8 +37,8 @@ export class VeiculoModeloService {
             .then(response => {
 
                 const lista = response;
-                for (let i = 0; i < response['content']['length']; i++) {
-                    lista['content'][i] = (this.prepararDadosParaReceber(response['content'][i]));
+                for (let i = 0; i < response['length']; i++) {
+                    lista[i] = (this.prepararDadosParaReceber(response[i]));
                 }
                 return lista;
             });

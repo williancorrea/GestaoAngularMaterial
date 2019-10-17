@@ -51,6 +51,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
     formacaoPreco: any;
 
     imagemCliente = '';
+    fretamentoClonado = false;
 
     constructor(private _matSnackBar: MatSnackBar,
                 private router: Router,
@@ -79,6 +80,9 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
                 this.carregandoDados = true;
                 const editando = this.activatedRoute.snapshot.params['key'];
+
+                this.fretamentoClonado = this.activatedRoute.snapshot.queryParams['clonado'];
+
                 if (editando) {
                     this.tipoPagina = 'EDICAO';
                     this.fretamentoService.buscarPorKey(editando).then(response => {
@@ -97,6 +101,18 @@ export class FretamentoEventualNovoComponent implements OnInit {
                         if (this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.CONTRATADO
                             || this.formFretamentoEventual.get('situacao').value !== FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO) {
                             this.imagemCliente = this.formFretamentoEventual.get('cliente').get('imagem').value ? this.formFretamentoEventual.get('cliente').get('imagem').value : '';
+                        }
+
+                        // FAZ O CLONE DO FRETAMENTO
+                        if (this.fretamentoClonado) {
+                            this.tipoPagina = 'NOVO';
+                            if (this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.CONTRATADO || this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CLIENTE){
+                                this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CLIENTE);
+                            }else if (this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO){
+                                this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO);
+                            }
+                            this.formFretamentoEventual.enable();
+                            this.cmbClienteForm.enable();
                         }
 
                     }).catch(error => {

@@ -45,23 +45,23 @@
     line-height: 30px;
 }
 
-.products-table {
+.veiculo-modelo-tabela {
     flex: 1 1 auto;
     border-bottom: 1px solid rgba(0, 0, 0, .12);
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 
     .mat-header-row { min-height: 64px; }
-    .product { position: relative; cursor: pointer; height: 84px; }
+    .product { position: relative; cursor: pointer; height: 48px }
     .mat-cell { min-width: 0; display: flex; align-items: center; }
 
-    .mat-column-numero_contrato{ flex: 0 1 120px; margin-right: 10px }
-    .mat-column-image {
-        flex: 0 1 65px;
-        .product-image { width: 52px; height: 52px; border: 1px solid rgba(0, 0, 0, .12); border-radius: 25px;}
-    }
-    .mat-column-itinerario_horarios { flex: 0 1 190px; }
-    .mat-column-itinerario_cidade{ flex: 0 1 220px; }
-    .mat-column-valor { flex: 0 1 100px; }
-    .mat-column-buttons { flex: 0 1 100px; }
+    .mat-column-inativo{ flex: 0 1 70px;}
+    .mat-column-nome{ flex: 0 1 280px;}
+
+
+    //.mat-column-cidade_estado{ flex: 0 1 400px;
+    //    p{ margin: 0px}
+    //}
+    //.mat-column-ativo{ flex: 0 1 70px; text-align: center;  mat-icon {border-radius: 50%;}}
+    //.mat-column-buttons { flex: 0 50px; }
 }

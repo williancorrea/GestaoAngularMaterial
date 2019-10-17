@@ -83,8 +83,8 @@ export class VeiculoNovoComponent implements OnInit {
             consumoReal: ['', [Validators.required, Validators.min(1.5)]],
             consumoAtual: ['', [Validators.required, Validators.min(1.5)]],
             velocidadeMedia: ['', [Validators.required, Validators.min(60), Validators.max(100)]],
-            qtdLugares: [0, [Validators.required, Validators.min(2)]],
-            capacidadeTanqueCombustivelLts: [0, [Validators.required, Validators.min(30)]],
+            qtdLugares: [0, [Validators.required, Validators.min(1)]],
+            capacidadeTanqueCombustivelLts: [0, [Validators.required, Validators.min(15)]],
             inativo: [false],
             veiculoMarca: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
             veiculoModelo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]]

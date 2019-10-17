@@ -15,7 +15,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
 
                 <!-- BOTAO VOLTAR-->
-                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/cadastro/veiculo/marca'">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/cadastro/veiculo/modelo'">
                     <mat-icon>arrow_back</mat-icon>
                 </button>
 
@@ -25,10 +25,10 @@
 
                 <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2">
-                        {{tipoPagina === 'EDICAO' ? 'Edição de marca/chassis' : 'Novo marca/chassis'}}
+                        {{tipoPagina === 'EDICAO' ? 'Edição de modelo/carroceria' : 'Novo modelo/carroceria'}}
                     </div>
                     <div class="subtitle secondary-text">
-                        <span>Detalhes do veículo</span>
+                        <span>Detalhes do modelo</span>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
 
             <!-- BOTAO DE SALVAR -->
             <button mat-raised-button class="save-product-button" (click)="gravar()">
-                <span>{{tipoPagina === 'NOVO' ? 'SALVAR MARCA/CHASSIS' : 'ATUALIZAR MARCA/CHASSIS'}}</span>
+                <span>{{tipoPagina === 'NOVO' ? 'SALVAR MODELO/CARROCERIA' : 'ATUALIZAR MODELO/CARROCERIA'}}</span>
             </button>
         </div>
         <!-- / HEADER -->

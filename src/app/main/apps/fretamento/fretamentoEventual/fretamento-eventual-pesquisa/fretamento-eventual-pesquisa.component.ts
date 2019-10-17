@@ -11,6 +11,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FuseConfirmDialogComponent} from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import {ErroManipuladorService} from '../../../../../core/componentes/erro-manipulador.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-fretamento-eventual-pesquisa',
@@ -43,6 +44,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     constructor(private fretamentoService: FretamentoService,
                 private errorHandler: ErroManipuladorService,
                 public dialog: MatDialog,
+                private router: Router,
                 private cdr: ChangeDetectorRef) {
     }
 
@@ -187,4 +189,9 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
             this.carregandoDados = false;
         });
     }
+
+    clonarFretamento(obj: any): void{
+        this.router.navigateByUrl('/fretamento/eventual/' + obj.key + '?clonado=true');
+    }
+
 }

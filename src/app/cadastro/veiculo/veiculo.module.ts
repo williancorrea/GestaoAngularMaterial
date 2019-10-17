@@ -38,18 +38,24 @@ import {NgxLoadingModule} from 'ngx-loading';
 import {VeiculoPesquisaComponent} from './veiculo-pesquisa/veiculo-pesquisa.component';
 import {VeiculoNovoComponent} from './veiculo-novo/veiculo-novo.component';
 import {VeiculoMarcaPesquisaComponent} from './veiculo-marca-pesquisa/veiculo-marca-pesquisa.component';
-import {VeiculoMarcaNovoComponent} from './veiculo-marca-novo/veiculo-novo.component';
+import {VeiculoMarcaNovoComponent} from './veiculo-marca-novo/veiculo-marca-novo.component';
+import {VeiculoModeloPesquisaComponent} from './veiculo-modelo-pesquisa/veiculo-modelo-pesquisa.component';
+import {VeiculoModeloNovoComponent} from './veiculo-modelo-novo/veiculo-modelo-novo.component';
 
 const routes = [
-    { path: 'todos', component: VeiculoPesquisaComponent },
-    { path: 'todos/novo', component: VeiculoNovoComponent },
-    { path: 'todos/:key', component: VeiculoNovoComponent },
+    {path: 'todos', component: VeiculoPesquisaComponent},
+    {path: 'todos/novo', component: VeiculoNovoComponent},
+    {path: 'todos/:key', component: VeiculoNovoComponent},
 
-    { path: 'marca', component: VeiculoMarcaPesquisaComponent  },
-    { path: 'marca/novo', component: VeiculoMarcaNovoComponent },
-    { path: 'marca/:key', component: VeiculoMarcaNovoComponent },
+    {path: 'marca', component: VeiculoMarcaPesquisaComponent},
+    {path: 'marca/novo', component: VeiculoMarcaNovoComponent},
+    {path: 'marca/:key', component: VeiculoMarcaNovoComponent},
 
-    {path: '**', redirectTo: 'todos'}
+    {path: 'modelo', component: VeiculoModeloPesquisaComponent},
+    {path: 'modelo/novo', component: VeiculoModeloNovoComponent},
+    {path: 'modelo/:key', component: VeiculoModeloNovoComponent},
+
+    // {path: '**', redirectTo: 'todos'}
 ];
 
 @NgModule({
@@ -99,7 +105,9 @@ const routes = [
         VeiculoPesquisaComponent,
         VeiculoNovoComponent,
         VeiculoMarcaPesquisaComponent,
-        VeiculoMarcaNovoComponent
+        VeiculoMarcaNovoComponent,
+        VeiculoModeloPesquisaComponent,
+        VeiculoModeloNovoComponent
     ],
     exports: []
 })

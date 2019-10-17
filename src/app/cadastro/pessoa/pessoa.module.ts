@@ -41,42 +41,15 @@ import {ClienteFornecedorPesquisaComponent} from './cliente-fornecedor-pesquisa/
 import {ClienteFornecedorNovoComponent} from './cliente-fornecedor-novo/cliente-fornecedor-novo.component';
 
 const routes = [
-    {
-        path: 'motorista',
-        component: MotoristaPesquisaComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
-    {
-        path: 'motorista/novo',
-        component: MotoristaNovoComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
-    {
-        path: 'motorista/:key', component: MotoristaNovoComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
-    {
-        path: 'cliente-fornecedor',
-        component: ClienteFornecedorPesquisaComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
-    {
-        path: 'cliente-fornecedor/novo',
-        component: ClienteFornecedorNovoComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
-    {
-        path: 'cliente-fornecedor/:key', component: ClienteFornecedorNovoComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
+    { path: 'motorista', component: MotoristaPesquisaComponent },
+    { path: 'motorista/novo', component: MotoristaNovoComponent },
+    { path: 'motorista/:key', component: MotoristaNovoComponent },
 
-    {path: '**', redirectTo: 'motorista'}
+    { path: 'cliente-fornecedor',      component: ClienteFornecedorPesquisaComponent },
+    { path: 'cliente-fornecedor/novo', component: ClienteFornecedorNovoComponent },
+    { path: 'cliente-fornecedor/:key', component: ClienteFornecedorNovoComponent },
+
+    // {path: '**', redirectTo: 'motorista'}
 ];
 
 @NgModule({

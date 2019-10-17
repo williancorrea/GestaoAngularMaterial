@@ -18,7 +18,7 @@
                     perm_identity
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Marca/Chassis
+                    Modelo/Carroceria
                 </span>
             </div>
             <!-- / APP TITULO -->
@@ -32,8 +32,8 @@
             </div>
             <!-- / PESQUISA -->
 
-            <a mat-raised-button [routerLink]="'/cadastro/veiculo/marca/novo'" class="add-product-button fuse-white mt-8 mt-md-0">
-                <span>NOVO MARCA/CHASSIS</span>
+            <a mat-raised-button [routerLink]="'/cadastro/veiculo/modelo/novo'" class="add-product-button fuse-white mt-8 mt-md-0">
+                <span>NOVO MODELO/CARROCERIA</span>
             </a>
 
         </div>
@@ -46,7 +46,7 @@
             <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
 
             <mat-table #tabela [dataSource]="listaDados"
-                       class="veiculo-marca-tabela"
+                       class="veiculo-modelo-tabela"
                        matSort
                        [@animateStagger]="{value:'50'}"
                        fusePerfectScrollbar>
@@ -75,7 +75,7 @@
                 <mat-row *matRowDef="let obj; columns: displayedColumns;"
                          class="product"
                          matRipple
-                         [routerLink]="'/cadastro/veiculo/marca/'+ obj.key">
+                         [routerLink]="'/cadastro/veiculo/modelo/'+ obj.key">
                 </mat-row>
 
             </mat-table>

@@ -6,21 +6,21 @@ import {ErroManipuladorService} from '../../../core/componentes/erro-manipulador
 import {environment} from '../../../../environments/environment';
 import {fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {VeiculoService} from '../../../core/services/veiculo.service';
+import {VeiculoModeloService} from '../../../core/services/veiculoModelo.service';
 
 @Component({
-    selector: 'app-veiculo-pesquisa',
-    templateUrl: './veiculo-pesquisa.component.html',
-    styleUrls: ['./veiculo-pesquisa.component.scss'],
+    selector: 'app-veiculo-modelo-pesquisa',
+    templateUrl: './veiculo-modelo-pesquisa.component.html',
+    styleUrls: ['./veiculo-modelo-pesquisa.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class VeiculoPesquisaComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked {
+export class VeiculoModeloPesquisaComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked {
 
     carregandoDados = false;
     mensagemErro = '';
     listaDados: null;
-    displayedColumns = ['inativo', 'frota', 'placa', 'qtd_lugares', 'consumo'];
+    displayedColumns = ['inativo', 'nome'];
 
     @ViewChild(MatPaginator, {static: true})
     paginador: MatPaginator;
@@ -36,7 +36,7 @@ export class VeiculoPesquisaComponent implements OnInit, AfterViewInit, AfterVie
     env: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    constructor(private veiculoService: VeiculoService,
+    constructor(private veiculoModeloService: VeiculoModeloService,
                 private errorHandler: ErroManipuladorService,
                 public dialog: MatDialog,
                 private cdr: ChangeDetectorRef) {
@@ -78,10 +78,10 @@ export class VeiculoPesquisaComponent implements OnInit, AfterViewInit, AfterVie
 
     pesquisar(): void {
         this.carregandoDados = true;
-        this.veiculoService.listar(this.paginador, this.filtro).then(response => {
+        this.veiculoModeloService.listar(this.paginador, this.filtro).then(response => {
 
-            this.listaDados = response['content'];
-            this.paginador.length = response['totalElements'];
+            this.listaDados = response;
+            this.paginador.length = response.length;
 
         }).catch(error => {
             this.mensagemErro = this.errorHandler.handle(error);

@@ -13,7 +13,7 @@
         <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
 
             <!-- APP TITULO -->
-            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo mb-8 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     directions_bus
                 </mat-icon>
@@ -32,7 +32,7 @@
             </div>
             <!-- / PESQUISA -->
 
-            <a mat-raised-button [routerLink]="'/fretamento/eventual/novo'" class="add-product-button fuse-white mt-24 mt-md-0">
+            <a mat-raised-button [routerLink]="'/fretamento/eventual/novo'" class="add-product-button fuse-white mt-8 mt-md-0">
                 <span>NOVO FRETAMENTO</span>
             </a>
 
@@ -151,6 +151,14 @@
                             </button>
 
                             <mat-menu #itensDoMenu="matMenu">
+
+                                <mat-divider></mat-divider>
+                                <button mat-menu-item aria-label="remove" (click)="clonarFretamento(obj)" style="color: darkblue">
+                                    <mat-icon style="color: darkblue">file_copy</mat-icon>
+                                    <span>CLONAR FRETAMENTO</span>
+                                </button>
+                                <mat-divider></mat-divider>
+
                                 <button mat-menu-item aria-label="remove" (click)="imprimirContrato(obj)"
                                         *ngIf="obj.situacao === 'CONTRATADO'">
                                     <mat-icon>print</mat-icon>

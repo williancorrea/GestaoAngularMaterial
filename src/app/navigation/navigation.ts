@@ -47,6 +47,13 @@ export const navigation: FuseNavigation[] = [
                         type : 'item',
                         icon : 'directions_car',
                         url  : '/cadastro/veiculo/marca'
+                    },
+                    {
+                        id   : 'veiculo_modelo',
+                        title: 'Veiculos Modelo',
+                        type : 'item',
+                        icon : 'directions_car',
+                        url  : '/cadastro/veiculo/modelo'
                     }
                 ]
             }

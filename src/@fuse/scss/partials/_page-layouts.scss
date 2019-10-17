@@ -80,7 +80,7 @@
 // -----------------------------------------------------------------------------------------------------
 // @ Page Layouts
 // -----------------------------------------------------------------------------------------------------
-$carded-header-height: 200px !default;
+$carded-header-height: 155px !default;
 $carded-toolbar-height: 64px !default;
 $header-height: 120px !default;
 
@@ -127,9 +127,9 @@ $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-h
                 max-height: 100%;
 
                 > .header {
-                    height: $carded-header-height-without-toolbar !important;
-                    min-height: $carded-header-height-without-toolbar !important;
-                    max-height: $carded-header-height-without-toolbar !important;
+                    height: $carded-header-height-without-toolbar ;
+                    min-height: $carded-header-height-without-toolbar ;
+                    max-height: $carded-header-height-without-toolbar ;
                 }
 
                 > .content-card {

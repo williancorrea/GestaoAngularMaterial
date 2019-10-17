@@ -21,6 +21,8 @@ export class VeiculoMarcaService {
         // TODO: REmover a autenticacao FIXA DAQUI
 
         const httpParams = new HttpParams()
+            .set('size', paginador.pageSize.toString())
+            .set('page', paginador.pageIndex.toString())
             .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '');
 
         const headers = new HttpHeaders();
