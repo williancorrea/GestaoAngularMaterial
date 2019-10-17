@@ -23,6 +23,8 @@ import {ImageCropperModule} from 'ngx-image-cropper';
 import {NgxLoadingModule} from 'ngx-loading';
 import {PessoaService} from './services/Pessoa.service';
 import {CidadeService} from './services/cidade.service';
+import {VeiculoMarcaService} from './services/veiculoMarca.service';
+import {VeiculoModeloService} from './services/veiculoModelo.service';
 
 export const APP_DATE_FORMATS = {
     parse: {
@@ -135,9 +137,11 @@ registerLocaleData(pt, 'pt');
         ErroManipuladorService,
 
         FretamentoService,
-        VeiculoService,
         PessoaService,
-        CidadeService
+        CidadeService,
+        VeiculoService,
+        VeiculoMarcaService,
+        VeiculoModeloService
 
         // ControleKmService,
         // CombustivelService,

@@ -7,6 +7,10 @@ import {ErroManipuladorService} from '../../../core/componentes/erro-manipulador
 import * as moment from 'moment';
 import {environment} from '../../../../environments/environment';
 import {VeiculoService} from '../../../core/services/veiculo.service';
+import {ValidacaoGenericaWCorrea} from '../../../core/utils/ValidacaoGenericaWCorrea';
+import {VeiculoMarcaService} from '../../../core/services/veiculoMarca.service';
+import {VeiculoModeloService} from '../../../core/services/veiculoModelo.service';
+import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-motorista-novo',
@@ -25,7 +29,8 @@ export class VeiculoNovoComponent implements OnInit {
     env: any;
 
     cmbCarregando = false;
-    cmbCidadeLista: any;
+    cmbVeiculoMarcaLista: any;
+    cmbVeiculoModeloLista: any;
 
     @ViewChild('conteudoScroll', {static: true}) conteudoScroll: ElementRef;
 
@@ -34,6 +39,8 @@ export class VeiculoNovoComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private formBuild: FormBuilder,
                 private veiculoService: VeiculoService,
+                private veiculoMarcaService: VeiculoMarcaService,
+                private veiculoModeloService: VeiculoModeloService,
                 private errorHandler: ErroManipuladorService) {
     }
 
@@ -62,8 +69,8 @@ export class VeiculoNovoComponent implements OnInit {
         }
     }
 
-    mostrarNomeCidade(obj?: any): string | undefined {
-        return obj ? obj.nome + ' / ' + obj.estado.nome : undefined;
+    mostrarNome(obj?: any): string | undefined {
+        return obj ? obj.nome : undefined;
     }
 
     configurarForm(): void {
@@ -78,37 +85,68 @@ export class VeiculoNovoComponent implements OnInit {
             velocidadeMedia: ['', [Validators.required, Validators.min(60), Validators.max(100)]],
             qtdLugares: [0, [Validators.required, Validators.min(2)]],
             capacidadeTanqueCombustivelLts: [0, [Validators.required, Validators.min(30)]],
-            inativo: [false]
+            inativo: [false],
+            veiculoMarca: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+            veiculoModelo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]]
         });
 
-        // this.form.get('cidade').valueChanges
-        //     .pipe(
-        //         debounceTime(this.env.comboBox.filtroDelay),
-        //         map(pesquisa => {
-        //             if (typeof pesquisa === 'string') {
-        //                 return pesquisa.trim();
-        //             }
-        //         }),
-        //         distinctUntilChanged(),
-        //         tap(pesquisa => {
-        //             this.cmbCarregando = true;
-        //         })
-        //     )
-        //     .subscribe(pesquisa => {
-        //         this.cmbCidadeLista = [];
-        //         if (typeof pesquisa !== 'string') {
-        //             this.cmbCarregando = false;
-        //             return;
-        //         }
-        //
-        //         this.cidadeService.pesquisarCidadeCmb(pesquisa).then(resposta => {
-        //             this.cmbCidadeLista = resposta;
-        //         }).catch(error => {
-        //             this.mensagemErro = this.errorHandler.handle(error);
-        //         }).finally(() => {
-        //             this.cmbCarregando = false;
-        //         });
-        //     });
+        this.form.get('veiculoMarca').valueChanges
+            .pipe(
+                debounceTime(this.env.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbVeiculoMarcaLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCarregando = false;
+                    return;
+                }
+
+                this.veiculoMarcaService.pesquisarVeiculoMarcaCmb(pesquisa).then(resposta => {
+                    this.cmbVeiculoMarcaLista = resposta;
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
+                }).finally(() => {
+                    this.cmbCarregando = false;
+                });
+            });
+
+        this.form.get('veiculoModelo').valueChanges
+            .pipe(
+                debounceTime(this.env.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbVeiculoModeloLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCarregando = false;
+                    return;
+                }
+
+                this.veiculoModeloService.pesquisarVeiculoMarcaCmb(pesquisa).then(resposta => {
+                    this.cmbVeiculoModeloLista = resposta;
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
+                }).finally(() => {
+                    this.cmbCarregando = false;
+                });
+            });
     }
 
     gravar(): void {
