@@ -21,12 +21,7 @@ export class VeiculoMarcaService {
         // TODO: REmover a autenticacao FIXA DAQUI
 
         const httpParams = new HttpParams()
-            .set('size', paginador.pageSize.toString())
-            .set('page', paginador.pageIndex.toString())
-            .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '')
-            .set('ordemClassificacao', 'ASC')
-            .set('campoOrdenacao', 'nome');
-
+            .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '');
 
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
@@ -37,8 +32,8 @@ export class VeiculoMarcaService {
             .then(response => {
 
                 const lista = response;
-                for (let i = 0; i < response['content']['length']; i++) {
-                    lista['content'][i] = (this.prepararDadosParaReceber(response['content'][i]));
+                for (let i = 0; i < response['length']; i++) {
+                    lista[i] = (this.prepararDadosParaReceber(response[i]));
                 }
                 return lista;
             });
@@ -50,10 +45,6 @@ export class VeiculoMarcaService {
         headers.append('Content-Type', 'application/json');
 
         const params = new HttpParams()
-            .set('size', String(environment.comboBox.linhas))
-            .set('page', String(0))
-            .set('ordemClassificacao', 'ASC')
-            .set('campoOrdenacao', 'nome')
             .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
         return this.http.get(`${this.apiUrl}/cmb`, {headers: headers, params: params}).toPromise().then(response => {

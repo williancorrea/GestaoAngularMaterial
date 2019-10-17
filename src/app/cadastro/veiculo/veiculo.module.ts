@@ -37,24 +37,19 @@ import {CurrencyMaskModule} from 'ng2-currency-mask';
 import {NgxLoadingModule} from 'ngx-loading';
 import {VeiculoPesquisaComponent} from './veiculo-pesquisa/veiculo-pesquisa.component';
 import {VeiculoNovoComponent} from './veiculo-novo/veiculo-novo.component';
+import {VeiculoMarcaPesquisaComponent} from './veiculo-marca-pesquisa/veiculo-marca-pesquisa.component';
+import {VeiculoMarcaNovoComponent} from './veiculo-marca-novo/veiculo-novo.component';
 
 const routes = [
-    {
-        path: '', component: VeiculoPesquisaComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
-    {
-        path: 'novo', component: VeiculoNovoComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
-    {
-        path: ':key', component: VeiculoNovoComponent,
-        // canActivate: [AuthGuard],
-        // data: {roles: ['ROLE_CMB-PADRAO']}
-    },
-    {path: '**', redirectTo: ''}
+    { path: 'todos', component: VeiculoPesquisaComponent },
+    { path: 'todos/novo', component: VeiculoNovoComponent },
+    { path: 'todos/:key', component: VeiculoNovoComponent },
+
+    { path: 'marca', component: VeiculoMarcaPesquisaComponent  },
+    { path: 'marca/novo', component: VeiculoMarcaNovoComponent },
+    { path: 'marca/:key', component: VeiculoMarcaNovoComponent },
+
+    {path: '**', redirectTo: 'todos'}
 ];
 
 @NgModule({
@@ -102,7 +97,9 @@ const routes = [
     ],
     declarations: [
         VeiculoPesquisaComponent,
-        VeiculoNovoComponent
+        VeiculoNovoComponent,
+        VeiculoMarcaPesquisaComponent,
+        VeiculoMarcaNovoComponent
     ],
     exports: []
 })

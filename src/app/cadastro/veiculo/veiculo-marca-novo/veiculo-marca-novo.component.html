@@ -1,0 +1,86 @@
+<ngx-loading [show]="carregandoDados"></ngx-loading>
+
+
+<div id="product" class="page-layout carded fullwidth inner-scroll">
+
+    <div class="top-bg accent"></div>
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <!-- BOTAO VOLTAR-->
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/cadastro/veiculo/marca'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div class="product-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <mat-icon style="font-size: 60px">directions_bus</mat-icon>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        {{tipoPagina === 'EDICAO' ? 'Edição de marca/chassis' : 'Novo marca/chassis'}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Detalhes do veículo</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- BOTAO DE SALVAR -->
+            <button mat-raised-button class="save-product-button" (click)="gravar()">
+                <span>{{tipoPagina === 'NOVO' ? 'SALVAR MARCA/CHASSIS' : 'ATUALIZAR MARCA/CHASSIS'}}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div #conteudoScroll class="content" style="padding: 30px;" fusePerfectScrollbar>
+
+                <!-- MENSAGENS DE ERRO-->
+                <app-error-service-message [(erro)]="mensagemErro" [erroTipo]="'error'"></app-error-service-message>
+                <app-error-service-message [(erro)]="mensagemAlerta" [erroTipo]="'warning'"></app-error-service-message>
+
+                <form fxLayout="column" [formGroup]="form">
+
+                    <div fxFlex="1 0 auto" fxLayoutAlign="start center">
+                        <mat-form-field id="txtCobrancaAutomatica" appearance="fill" fxFlex="25" class="pr-4">
+                            <input matInput style="display: none">
+                            <mat-slide-toggle formControlName="inativo">Desativado</mat-slide-toggle>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                            <mat-label>Placa</mat-label>
+                            <input matInput formControlName="nome" maxlength="100">
+                            <mat-icon matSuffix class="secondary-text">placa</mat-icon>
+                            <mat-error>
+                                <app-message [control]="form.get('nome')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

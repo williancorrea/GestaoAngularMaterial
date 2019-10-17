@@ -13,7 +13,7 @@ import {VeiculoModeloService} from '../../../core/services/veiculoModelo.service
 import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 
 @Component({
-    selector: 'app-motorista-novo',
+    selector: 'app-veiculo-novo',
     templateUrl: './veiculo-novo.component.html',
     styleUrls: ['./veiculo-novo.component.scss'],
     encapsulation: ViewEncapsulation.None,
@@ -166,7 +166,7 @@ export class VeiculoNovoComponent implements OnInit {
         if (this.tipoPagina === 'NOVO') {
             this.veiculoService.salvar(this.form.getRawValue()).then(response => {
                 this._matSnackBar.open('Veículo gravado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
-                this.router.navigateByUrl('/cadastro/veiculo');
+                this.router.navigateByUrl('/cadastro/veiculo/todos');
             }).catch(error => {
                 this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {
@@ -175,7 +175,7 @@ export class VeiculoNovoComponent implements OnInit {
         } else {
             this.veiculoService.atualizar(this.form.getRawValue()).then(response => {
                 this._matSnackBar.open('Veículo atualizado com sucesso', 'OK', {verticalPosition: 'bottom', duration: 5000});
-                this.router.navigateByUrl('/cadastro/veiculo');
+                this.router.navigateByUrl('/cadastro/veiculo/todos');
             }).catch(error => {
                 this.mensagemErro = this.errorHandler.handle(error);
             }).finally(() => {

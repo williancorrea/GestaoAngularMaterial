@@ -32,7 +32,7 @@
             </div>
             <!-- / PESQUISA -->
 
-            <a mat-raised-button [routerLink]="'/cadastro/veiculo/novo'" class="add-product-button fuse-white mt-24 mt-md-0">
+            <a mat-raised-button [routerLink]="'/cadastro/veiculo/todos/novo'" class="add-product-button fuse-white mt-24 mt-md-0">
                 <span>NOVO VEÍCULO</span>
             </a>
 
@@ -124,7 +124,7 @@
                 <mat-row *matRowDef="let obj; columns: displayedColumns;"
                          class="product"
                          matRipple
-                         [routerLink]="'/cadastro/veiculo/'+ obj.key">
+                         [routerLink]="'/cadastro/veiculo/todos/'+ obj.key">
                 </mat-row>
 
             </mat-table>
