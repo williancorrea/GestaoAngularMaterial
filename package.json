@@ -9,7 +9,7 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "postinstall": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --prod --stats-json",
+        "postinstall": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --prod",
         "bundle-report": "webpack-bundle-analyzer dist/stats.json"
     },
     "private": true,
