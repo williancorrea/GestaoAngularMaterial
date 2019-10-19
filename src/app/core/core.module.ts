@@ -75,7 +75,7 @@ export function getPaginadorTraducao(): any {
     return paginatorIntl;
 }
 
-export let options: Partial<IConfig> | (() => Partial<IConfig>);
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
 // REGISRANDO A APLICACAO PARA PT-BR
 registerLocaleData(pt, 'pt');
@@ -91,6 +91,7 @@ registerLocaleData(pt, 'pt');
 
         // Mascaras dos Campos
         NgxMaskModule.forRoot(options),
+
         MatIconModule,
         MatCardModule,
 
