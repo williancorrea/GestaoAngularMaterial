@@ -49,13 +49,13 @@ const appRoutes: Routes = [
     },
 
 
-    { path: 'autenticacao', loadChildren: './seguranca/autenticacao/login/login-2.module#Login2Module' },
-    { path: 'fretamento', loadChildren: './main/apps/fretamento/fretamento.module#FretamentoModule' },
+    {path: 'autenticacao', loadChildren: './seguranca/autenticacao/login/login-2.module#Login2Module'},
+    {path: 'fretamento', loadChildren: './main/apps/fretamento/fretamento.module#FretamentoModule'},
 
-    { path: 'cadastro/pessoa', loadChildren: './cadastro/pessoa/pessoa.module#PessoaModule' },
-    { path: 'cadastro/veiculo', loadChildren: './cadastro/veiculo/veiculo.module#VeiculoModule' },
+    {path: 'cadastro/pessoa', loadChildren: './cadastro/pessoa/pessoa.module#PessoaModule'},
+    {path: 'cadastro/veiculo', loadChildren: './cadastro/veiculo/veiculo.module#VeiculoModule'},
 
-    { path: '**', redirectTo: 'apps/dashboards/analytics' }
+    {path: '**', redirectTo: 'apps/dashboards/analytics'}
 ];
 
 @NgModule({
@@ -66,7 +66,13 @@ const appRoutes: Routes = [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        RouterModule.forRoot(appRoutes),
+
+        /**
+         * HABILITA A UTILIZAÇÃO DO # DEPOIS DO CONTEXTO DA APLICACAO, PARA AS DEMAIS ROTAS DO PROJETO
+         * FOI NECESSARIO UTILIZAR POR CAUSA DO SERVIDOR DE APLICACAO TOMCAT
+         * POIS QUANDO DAVA UM REFRESH NA PAGINA O TOMCAT NAO CONSEGUI ACHAR O CAMINHO
+         */
+        RouterModule.forRoot(appRoutes, {useHash: true}),
 
         TranslateModule.forRoot(),
         InMemoryWebApiModule.forRoot(FakeDbService, {
