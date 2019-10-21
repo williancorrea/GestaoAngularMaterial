@@ -2,11 +2,11 @@ export const environment = {
     production: true,
     hmr: false,
 
-    apiUrl: 'https://gestao-api-wcorrea.herokuapp.com',
+    apiUrl: 'https://www.rosinhatransportes.com.br/gestao-api',
     // Verificar arquivo de proxy - proxy.config.json
     // apiUrl: '/api',
 
-    tokenWhitelistedDomains: [new RegExp('gestao-api-wcorrea.herokuapp.com')],
+    tokenWhitelistedDomains: [new RegExp('https://www.rosinhatransportes.com.br/gestao-api')],
     tokenBlacklistedRoutes: [ new RegExp('\/oauth\/token') ],
 
     dataTable: {
