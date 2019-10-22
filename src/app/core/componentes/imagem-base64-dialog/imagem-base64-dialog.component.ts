@@ -1,4 +1,4 @@
-import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterContentChecked, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ImageCroppedEvent, ImageCropperComponent} from 'ngx-image-cropper';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {Utils} from '../../utils/Utils';
@@ -8,7 +8,7 @@ import {Utils} from '../../utils/Utils';
     templateUrl: './imagem-base64-dialog.component.html',
     styleUrls: ['./imagem-base64-dialog.component.scss']
 })
-export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked {
+export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked, OnDestroy {
 
     carregandoDados = false;
 
@@ -18,6 +18,8 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
 
     imagemSelecionada = false;
     imagemCameraAberta = false;
+
+    localstreamCamera: any;
 
     @ViewChild(ImageCropperComponent, {static: false}) imageCropper: ImageCropperComponent;
 
@@ -29,8 +31,13 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
 
     }
 
+
     ngOnInit(): void {
         // console.log('IMAGEM DA FONTE: ', this.data.imagem);
+    }
+
+    ngOnDestroy(): void {
+        this.pararStreamDaCamera();
     }
 
     ngAfterViewInit(): void {
@@ -124,6 +131,10 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
             // navigator.mediaDevices.getUserMedia({audio: false, video: { facingMode: { exact: "environment" } }})
 
                 .then(stream => {
+
+                    // Usado para fechar o stream depois
+                    this.localstreamCamera = stream;
+
                     // Definir o elemento vídeo a carregar o capturado pela webcam
                     video['srcObject'] = stream;
                     this.carregandoDados = false;
@@ -138,7 +149,7 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
 
                     alert('Oooopps... Falhou : \'(');
                 });
-        }else{
+        } else {
             this.carregandoDados = false;
             this.imagemCameraAberta = false;
 
@@ -211,7 +222,15 @@ export class ImagemBase64DialogComponent implements OnInit, AfterViewInit, After
         this.croppedImage = '';
         this.showCropper = false;
 
+        this.pararStreamDaCamera();
         this.cdr.detectChanges();
+    }
+
+    pararStreamDaCamera(): void {
+        if (this.localstreamCamera) {
+            this.localstreamCamera.getTracks().forEach(track => track.stop());
+            this.localstreamCamera = null;
+        }
     }
 
     // https://stackoverflow.com/questions/3129099/how-to-flip-images-horizontally-with-html5
