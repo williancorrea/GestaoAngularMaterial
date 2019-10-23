@@ -87,7 +87,24 @@ export class VeiculoNovoComponent implements OnInit {
             capacidadeTanqueCombustivelLts: [0, [Validators.required, Validators.min(15)]],
             inativo: [false],
             veiculoMarca: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
-            veiculoModelo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]]
+            veiculoModelo: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+            podeSerFretado: [true],
+            anoModelo: ['', [Validators.required, Validators.maxLength(9)]],
+            cor: ['', [Validators.required]],
+
+
+            tipoVeiculo: ['', [Validators.required]],
+            combustivel: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+            renavamNumero: ['', [Validators.required]],
+            chassiNumero: ['', [Validators.required]],
+            motorNumero: [''],
+            motorModelo: [''],
+            qtdPneus: ['', [Validators.required]],
+            cambioTipo: [''],
+            cambioModelo: [''],
+            capacidadeOleoMotorLts: [''],
+            capacidadeOleoCambioLts: [''],
+            capacidadeOleoDiferencialLts: ['']
         });
 
         this.form.get('veiculoMarca').valueChanges

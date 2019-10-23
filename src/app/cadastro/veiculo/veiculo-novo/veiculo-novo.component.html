@@ -54,9 +54,14 @@
                 <form fxLayout="column" [formGroup]="form">
 
                     <div fxFlex="1 0 auto" fxLayoutAlign="start center">
-                        <mat-form-field id="txtCobrancaAutomatica" appearance="fill" fxFlex="25" class="pr-4">
+                        <mat-form-field id="txtItemInativo" appearance="fill" fxFlex="25" class="pr-4">
                             <input matInput style="display: none">
                             <mat-slide-toggle formControlName="inativo">Desativado</mat-slide-toggle>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill" fxFlex="25" class="pr-4">
+                            <input matInput style="display: none">
+                            <mat-slide-toggle formControlName="podeSerFretado">Pode ser Fretado?</mat-slide-toggle>
                         </mat-form-field>
                     </div>
 
@@ -65,7 +70,7 @@
                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                             <mat-label>Placa</mat-label>
                             <input matInput formControlName="placa"  onkeyup="this.value = this.value.toUpperCase();" mask="SSS-0000" dropSpecialCharacters="false" >
-                            <mat-icon matSuffix class="secondary-text">placa</mat-icon>
+                            <mat-icon matSuffix class="secondary-text">keyboard</mat-icon>
                             <mat-error>
                                 <app-message [control]="form.get('placa')"></app-message>
                             </mat-error>
@@ -74,6 +79,7 @@
                         <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
                             <mat-label>Frota</mat-label>
                             <input matInput formControlName="frota">
+                            <mat-icon matSuffix class="secondary-text">keyboard</mat-icon>
                             <mat-error>
                                 <app-message [control]="form.get('frota')"></app-message>
                             </mat-error>
@@ -168,6 +174,38 @@
                             </mat-error>
                         </mat-form-field>
 
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Ano/Modelo</mat-label>
+                            <input matInput formControlName="anoModelo" mask="0000/0000" dropSpecialCharacters="false" >
+                            <mat-icon matSuffix class="secondary-text">date_range</mat-icon>
+                            <mat-error>
+                                <app-message [control]="form.get('anoModelo')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Cor</mat-label>
+                            <input matInput formControlName="cor">
+                            <mat-icon matSuffix class="secondary-text">color_lens</mat-icon>
+                            <mat-error>
+                                <app-message [control]="form.get('cor')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                            <mat-label>Renavam</mat-label>
+                            <input matInput formControlName="renavanNumero" mask="0*">
+                            <mat-error>
+                                <app-message [control]="form.get('renavanNumero')"></app-message>
+                            </mat-error>
+                        </mat-form-field>
+
+
+
+
+
                     </div>
 
                     <div fxFlex="1 0 auto" fxLayoutAlign="start center">
@@ -180,7 +218,6 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-
                 </form>
 
             </div>
