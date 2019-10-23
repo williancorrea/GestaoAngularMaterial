@@ -7,10 +7,10 @@ export const environment = {
     hmr: false,
 
 
-    // apiUrl: 'http://192.168.5.10:8080',
-    // tokenWhitelistedDomains: [ new RegExp('192.168.5.10:8080') ],
-    apiUrl: 'http://localhost:8080',
-    tokenWhitelistedDomains: [ new RegExp('localhost:8080') ],
+    apiUrl: 'http://192.168.5.11:8080',
+    tokenWhitelistedDomains: [ new RegExp('192.168.5.11:8080') ],
+    // apiUrl: 'http://localhost:8080',
+    // tokenWhitelistedDomains: [ new RegExp('localhost:8080') ],
 
 
     tokenBlacklistedRoutes: [ new RegExp('\/oauth\/token') ],

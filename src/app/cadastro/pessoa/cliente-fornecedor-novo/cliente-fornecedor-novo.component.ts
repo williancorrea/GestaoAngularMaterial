@@ -98,7 +98,7 @@ export class ClienteFornecedorNovoComponent implements OnInit {
             }),
             pessoaJuridica: this.formBuild.group({
                 key: [null],
-                cnpj: ['', [Validators.required, ValidacaoGenericaWCorrea.validarCNPJ]],
+                cnpj: [''],
                 inscricaoEstadual: [''],
             }),
         });
@@ -167,6 +167,8 @@ export class ClienteFornecedorNovoComponent implements OnInit {
 
         this.form.markAllAsTouched();
         this.form.updateValueAndValidity();
+
+        console.log(this.form);
 
         if (this.form.invalid) {
             this.conteudoScroll.nativeElement.scrollTop = 0;
