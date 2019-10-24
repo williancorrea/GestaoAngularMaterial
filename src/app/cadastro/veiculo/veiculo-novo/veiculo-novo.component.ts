@@ -11,6 +11,7 @@ import {ValidacaoGenericaWCorrea} from '../../../core/utils/ValidacaoGenericaWCo
 import {VeiculoMarcaService} from '../../../core/services/veiculoMarca.service';
 import {VeiculoModeloService} from '../../../core/services/veiculoModelo.service';
 import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
+import {CombustivelService} from '../../../core/services/combustivel.service';
 
 @Component({
     selector: 'app-veiculo-novo',
@@ -31,6 +32,7 @@ export class VeiculoNovoComponent implements OnInit {
     cmbCarregando = false;
     cmbVeiculoMarcaLista: any;
     cmbVeiculoModeloLista: any;
+    cmbCombustivelList: any;
 
     @ViewChild('conteudoScroll', {static: true}) conteudoScroll: ElementRef;
 
@@ -41,6 +43,7 @@ export class VeiculoNovoComponent implements OnInit {
                 private veiculoService: VeiculoService,
                 private veiculoMarcaService: VeiculoMarcaService,
                 private veiculoModeloService: VeiculoModeloService,
+                private combustivelService: CombustivelService,
                 private errorHandler: ErroManipuladorService) {
     }
 
@@ -50,23 +53,34 @@ export class VeiculoNovoComponent implements OnInit {
         this.configurarForm();
 
         this.carregandoDados = true;
-
         const editando = this.activatedRoute.snapshot.params['key'];
-        if (editando) {
-            this.carregandoDados = true;
-            this.tipoPagina = 'EDICAO';
-            this.veiculoService.buscarPorKey(editando).then(response => {
-                this.form.patchValue(response);
-            }).catch(error => {
+
+        this.combustivelService.cmb().then(combustivellist => {
+            this.cmbCombustivelList = combustivellist;
+
+            if (editando) {
+                this.carregandoDados = true;
+                this.tipoPagina = 'EDICAO';
+                this.veiculoService.buscarPorKey(editando).then(response => {
+                    this.form.patchValue(response);
+                }).catch(error => {
+                    this.tipoPagina = 'NOVO';
+                    this.mensagemErro = this.errorHandler.handle(error);
+                }).finally(() => {
+                    this.carregandoDados = false;
+                });
+            } else {
                 this.tipoPagina = 'NOVO';
-                this.mensagemErro = this.errorHandler.handle(error);
-            }).finally(() => {
                 this.carregandoDados = false;
-            });
-        } else {
-            this.tipoPagina = 'NOVO';
+            }
+        }).catch(error => {
+            this.mensagemErro = this.errorHandler.handle(error);
             this.carregandoDados = false;
-        }
+        });
+    }
+
+    compararObjetosMatSelect(f1: any, f2: any): any {
+        return f1 && f2 && f1.key === f2.key;
     }
 
     mostrarNome(obj?: any): string | undefined {
@@ -91,20 +105,18 @@ export class VeiculoNovoComponent implements OnInit {
             podeSerFretado: [true],
             anoModelo: ['', [Validators.required, Validators.maxLength(9)]],
             cor: ['', [Validators.required]],
-
-
             tipoVeiculo: ['', [Validators.required]],
-            combustivel: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+            capacidadeOleoMotorLts: [''],
+            capacidadeOleoCambioLts: [''],
+            capacidadeOleoDiferencialLts: [''],
+            qtdPneus: [null, [Validators.required, Validators.min(1)]],
             renavamNumero: ['', [Validators.required]],
             chassiNumero: ['', [Validators.required]],
             motorNumero: [''],
             motorModelo: [''],
-            qtdPneus: ['', [Validators.required]],
-            cambioTipo: [''],
             cambioModelo: [''],
-            capacidadeOleoMotorLts: [''],
-            capacidadeOleoCambioLts: [''],
-            capacidadeOleoDiferencialLts: ['']
+            cambioTipo: ['', [Validators.required]],
+            combustivel: [null, [Validators.required, ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]]
         });
 
         this.form.get('veiculoMarca').valueChanges

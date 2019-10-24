@@ -112,6 +112,9 @@ export class VeiculoService {
     }
 
     prepararDadosParaSalvar(clone: any): any {
+        clone.combustivel = {key: clone.combustivel.key};
+        clone.veiculoMarca = {key: clone.veiculoMarca.key};
+        clone.veiculoModelo = {key: clone.veiculoModelo.key};
         return clone;
     }
 
