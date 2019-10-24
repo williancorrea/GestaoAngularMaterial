@@ -40,12 +40,14 @@ export class PessoaService {
     }
 
     buscarPorCPF(key): any {
+        const clone = JSON.parse(JSON.stringify(key));
+
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
         headers.append('Content-Type', 'application/json');
 
-        return this.http.get(`${this.apiUrl}/cmbClientes/cpf/${key}`, {headers})
+        return this.http.get(`${this.apiUrl}/cmbClientes/cpf/${clone.replace('.', '').replace('.', '').replace('-', '')}`, {headers})
             .toPromise()
             .then(response => {
                 return response;
@@ -53,12 +55,14 @@ export class PessoaService {
     }
 
     buscarPorCNPJ(key): any {
+        const clone = JSON.parse(JSON.stringify(key));
+
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
         headers.append('Content-Type', 'application/json');
 
-        return this.http.get(`${this.apiUrl}/cmbClientes/cnpj/${key}`, {headers})
+        return this.http.get(`${this.apiUrl}/cmbClientes/cnpj/${clone.replace('.', '').replace('.', '').replace('-', '').replace('/', '')}`, {headers})
             .toPromise()
             .then(response => {
                 return response;

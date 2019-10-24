@@ -208,34 +208,37 @@ export class ClienteFornecedorNovoComponent implements OnInit {
                 this.pessoaService.buscarPorCPF(this.form.get('pessoaFisica').get('cpf').value)
                     .then(response => {
                         this.tipoPagina = 'EDICAO';
-
+                        this.imagemCliente = response['imagem'] ? response['imagem'] : '';
+                        delete response['pessoaJuridica'];
                         this.form.patchValue(response);
-                        this.form.get('pessoaFisica').get('cpf').disable();
-
-                        this.imagemCliente = this.form.get('imagem').value ? this.form.get('imagem').value : '';
                     })
                     .catch(error => {
                         console.log('CPF não encontrado, vida que segue!');
                     }).finally(() => {
                     this.carregandoDados = false;
+                    this.form.updateValueAndValidity();
                 });
             }
         }
     }
+
     buscarCnpjDigitado(): void {
         if (!this.form.get('key').value) {
             if (this.form.get('pessoaJuridica').get('cnpj').valid) {
                 this.carregandoDados = true;
                 this.pessoaService.buscarPorCNPJ(this.form.get('pessoaJuridica').get('cnpj').value)
                     .then(response => {
+                        this.tipoPagina = 'EDICAO';
+                        this.imagemCliente = response['imagem'] ? response['imagem'] : '';
+                        delete response['pessoaFisica'];
                         this.form.patchValue(response);
-                        this.form.get('pessoaJuridica').get('cnpj').disable();
                     })
                     .catch(error => {
                         console.log('CNPJ não encontrado, vida que segue!');
                     })
                     .finally(() => {
                         this.carregandoDados = false;
+                        this.form.updateValueAndValidity();
                     });
             }
         }

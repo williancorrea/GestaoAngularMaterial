@@ -218,7 +218,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                        <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
                             <mat-label>Combustível</mat-label>
                             <mat-select formControlName="combustivel" [compareWith]="compararObjetosMatSelect">
                                 <mat-option *ngFor="let combustivel of cmbCombustivelList" [value]="combustivel">
@@ -268,14 +268,6 @@
                             <input matInput formControlName="qtdPneus" mask="0*">
                             <mat-error>
                                 <app-message [control]="form.get('qtdPneus')"></app-message>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
-                            <mat-label>Renavam</mat-label>
-                            <input matInput formControlName="renavamNumero">
-                            <mat-error>
-                                <app-message [control]="form.get('renavamNumero')"></app-message>
                             </mat-error>
                         </mat-form-field>
 

@@ -705,6 +705,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 this.carregandoDados = true;
                 this.pessoaService.buscarPorCPF(this.formFretamentoEventual.get('cliente').get('pessoaFisica').get('cpf').value)
                     .then(response => {
+                        this.imagemCliente = response['imagem'] ? response['imagem'] : '';
+                        delete response['pessoaJuridica'];
                         this.formFretamentoEventual.get('cliente').patchValue(response);
                     })
                     .catch(error => {
@@ -722,6 +724,8 @@ export class FretamentoEventualNovoComponent implements OnInit {
                 this.carregandoDados = true;
                 this.pessoaService.buscarPorCNPJ(this.formFretamentoEventual.get('cliente').get('pessoaJuridica').get('cnpj').value)
                     .then(response => {
+                        this.imagemCliente = response['imagem'] ? response['imagem'] : '';
+                        delete response['pessoaFisica'];
                         this.formFretamentoEventual.get('cliente').patchValue(response);
                     })
                     .catch(error => {
