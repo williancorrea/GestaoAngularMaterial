@@ -1,6 +1,6 @@
 <ngx-loading [show]="carregandoDados"></ngx-loading>
 
-<div class="page-layout carded fullwidth inner-scroll wcorrea-topo-pagina">
+<div #paginaCompleta class="page-layout carded fullwidth inner-scroll wcorrea-topo-pagina">
 
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
@@ -24,10 +24,53 @@
             <!-- / APP TITULO -->
 
             <!-- PESQUISA -->
-            <div class="search-wrapper mx-32 mx-md-0">
-                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>search</mat-icon>
-                    <input #filter placeholder="Pesquisar">
+            <div fxFlex fxLayout="column" fxLayoutAlign="start center">
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="Pesquisar">
+
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="!mostrarFiltroAvancado" (click)="btnFiltroAvancado($event)">
+                            <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="mostrarFiltroAvancado">
+                            <mat-icon style="color: red">close</mat-icon>
+                        </button>
+
+                        <!--                        <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">-->
+                        <!--                            <mat-icon>close</mat-icon>-->
+                        <!--                        </button>-->
+                    </div>
+                </div>
+                <div #filtroAvancado class="buscaPersonalizada" [ngStyle]="mostrarFiltroAvancado ? {display: 'block'}: {display: 'none'}">
+
+                    <form fxLayout="column" [formGroup]="form">
+                        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                <mat-label>Data de Partida</mat-label>
+                                <input matInput formControlName="partidaData" [matDatepicker]="dpPartidaData">
+                                <mat-datepicker-toggle matSuffix [for]="dpPartidaData"></mat-datepicker-toggle>
+                                <mat-datepicker #dpPartidaData></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                <mat-label>Data de Retorno</mat-label>
+                                <input matInput formControlName="retornoData" [matDatepicker]="dpRetornoData">
+                                <mat-datepicker-toggle matSuffix [for]="dpRetornoData"></mat-datepicker-toggle>
+                                <mat-datepicker #dpRetornoData></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="100" fxLayout="row center" fxLayoutAlign="start center">
+                            <button mat-button>Limpar</button>
+
+                            {{mostrarFiltroAvancado}}
+
+                            <button mat-raised-button style="margin-left: auto;">Filtrar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <!-- / PESQUISA -->
@@ -77,8 +120,8 @@
                 <ng-container matColumnDef="image">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let obj">
-                        <mat-icon *ngIf="obj['contato'] || (obj['cliente']['imagem'] == null )" style="font-size: 52px; width: 52px; height: 52px; color: #CCC">account_circle</mat-icon>
-                        <img class="product-image" *ngIf="!obj['contato'] && (obj['cliente']['imagem'] != null )" [src]="obj['cliente']['imagem']"/>
+                        <mat-icon *ngIf="obj['contato'] || !obj['cliente']['imagem']" style="font-size: 52px; width: 52px; height: 52px; color: #CCC">account_circle</mat-icon>
+                        <img class="product-image" *ngIf="!obj['contato'] && obj['cliente']['imagem']" [src]="obj['cliente']['imagem']"/>
                     </mat-cell>
                 </ng-container>
 

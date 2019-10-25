@@ -12,6 +12,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FuseConfirmDialogComponent} from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import {ErroManipuladorService} from '../../../../../core/componentes/erro-manipulador.service';
 import {Router} from '@angular/router';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-fretamento-eventual-pesquisa',
@@ -27,6 +28,8 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     fretamentoList: null;
     displayedColumns = ['numero_contrato', 'image', 'name', 'itinerario_horarios', 'itinerario_cidade', 'valor', 'buttons'];
 
+    form: FormGroup;
+
     @ViewChild(MatPaginator, {static: true})
     paginador: MatPaginator;
 
@@ -35,6 +38,14 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
 
     @ViewChild('filter', {static: true})
     filtro: ElementRef;
+
+    @ViewChild('filtroAvancado', {static: true})
+    filtroAvancado: ElementRef;
+    mostrarFiltroAvancado: boolean;
+
+    @ViewChild('paginaCompleta', {static: true})
+    paginaCompleta: ElementRef;
+
 
     @ViewChild('tabela', {read: ElementRef, static: true}) tabela: ElementRef;
 
@@ -45,6 +56,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
                 private errorHandler: ErroManipuladorService,
                 public dialog: MatDialog,
                 private router: Router,
+                private formBuild: FormBuilder,
                 private cdr: ChangeDetectorRef) {
     }
 
@@ -60,11 +72,42 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
                 this.paginador.pageIndex = 0;
                 this.pesquisar();
             });
+
+        fromEvent(this.paginaCompleta.nativeElement, 'click')
+            .subscribe(resposta => {
+                resposta['stopPropagation']();
+                this.mostrarFiltroAvancado = false;
+
+                console.log('Clicou fora', false);
+            });
+
+        fromEvent(this.filtroAvancado.nativeElement, 'click').subscribe(r2 => {
+            r2['stopPropagation']();
+            this.mostrarFiltroAvancado = true;
+
+            console.log('Clicou dentro', true);
+        });
+
+        this.mostrarFiltroAvancado = false;
+        this.configurarForm();
+    }
+
+    configurarForm(): void {
+        this.form = this.formBuild.group({
+            partidaData: [''],
+            retornoData: [''],
+            situacao: [null]
+        });
     }
 
     ngAfterViewInit(): void {
         this.pesquisar();
         this.cdr.detectChanges();
+    }
+
+    btnFiltroAvancado(event: any): void {
+        this.mostrarFiltroAvancado = true;
+        event['stopPropagation']();
     }
 
     ngAfterViewChecked(): void {
@@ -190,7 +233,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         });
     }
 
-    clonarFretamento(obj: any): void{
+    clonarFretamento(obj: any): void {
         this.router.navigateByUrl('/fretamento/eventual/' + obj.key + '?clonado=true');
     }
 
