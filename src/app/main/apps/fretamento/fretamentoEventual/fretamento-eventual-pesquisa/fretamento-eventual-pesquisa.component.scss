@@ -84,8 +84,9 @@
         flex: 0 1 65px;
         .product-image { width: 52px; height: 52px; border: 1px solid rgba(0, 0, 0, .12); border-radius: 25px;}
     }
-    .mat-column-itinerario_horarios { flex: 0 1 190px; }
-    .mat-column-itinerario_cidade{ flex: 0 1 220px; }
+    .mat-column-frota { flex: 0 1 150px; }
+    .mat-column-itinerario_horarios { flex: 0 1 190px; p{margin: 3px 0px}}
+    .mat-column-itinerario_cidade{ flex: 0 1 220px; p{margin: 3px 0px}}
     .mat-column-valor { flex: 0 1 100px; }
     .mat-column-buttons { flex: 0 1 100px; }
 }

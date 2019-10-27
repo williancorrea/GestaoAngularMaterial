@@ -26,7 +26,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     carregandoDados = false;
     mensagemErro = '';
     fretamentoList: null;
-    displayedColumns = ['numero_contrato', 'image', 'name', 'itinerario_horarios', 'itinerario_cidade', 'valor', 'buttons'];
+    displayedColumns = ['numero_contrato', 'image', 'name', 'frota', 'itinerario_horarios', 'itinerario_cidade', 'valor', 'buttons'];
 
     form: FormGroup;
 

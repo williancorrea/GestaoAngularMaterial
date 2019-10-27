@@ -134,10 +134,20 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- Frota -->
+                <ng-container matColumnDef="frota">
+                    <mat-header-cell fxHide fxShow.gt-md *matHeaderCellDef mat-sort-header>Veículo</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-md style="display: block">
+                        <p class="text-truncate">Frota: {{obj['itinerario']['veiculo']['frota']}}</p>
+                        <p class="text-truncate">Placa: {{obj['itinerario']['veiculo']['placa']}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- Data da Viagem -->
                 <ng-container matColumnDef="itinerario_horarios">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Horários</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
+                        <p class="text-truncate" style="color: blue">Veículo: {{obj['itinerario']['veiculo']['frota']}} - {{obj['itinerario']['veiculo']['placa']}}</p>
                         <p class="text-truncate">Partida: {{obj['itinerario']['partidaData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['partidaHora']}}</p>
                         <p class="text-truncate">Retorno: {{obj['itinerario']['retornoData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['retornoHora']}}</p>
                     </mat-cell>
@@ -147,6 +157,7 @@
                 <ng-container matColumnDef="itinerario_cidade">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Itinerário</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
+                        <p style="color: transparent">.</p>
                         <p class="text-truncate">{{obj['itinerario']['partidaCidade']['nome']}}/{{obj['itinerario']['partidaCidade']['estado']['iniciais']}}</p>
                         <p class="text-truncate">{{obj['itinerario']['retornoCidade']['nome']}}/{{obj['itinerario']['retornoCidade']['estado']['iniciais']}}</p>
                     </mat-cell>
@@ -171,6 +182,7 @@
                             <button mat-icon-button
                                     *ngIf="obj.situacao === 'CONTRATADO'"
                                     matTooltip="Contratado"
+                                    [matMenuTriggerFor]="itensDoMenu"
                                     (click)="$event.stopPropagation();" aria-label="Toggle star">
                                 <mat-icon class="green-fg">how_to_reg</mat-icon>
                             </button>
@@ -178,6 +190,7 @@
                             <button mat-icon-button
                                     *ngIf="obj.situacao === 'ORCAMENTO_CONTATO' || obj.situacao === 'ORCAMENTO_CLIENTE'"
                                     matTooltip="Orçado / Agendado"
+                                    [matMenuTriggerFor]="itensDoMenu"
                                     (click)="$event.stopPropagation();" aria-label="Toggle star">
                                 <mat-icon class="amber-fg">departure_board</mat-icon>
                             </button>
@@ -185,11 +198,12 @@
                             <button mat-icon-button
                                     *ngIf="obj.situacao === 'NAO_CONTRATADO_CONTATO' || obj.situacao === 'NAO_CONTRATADO_CLIENTE'"
                                     matTooltip="Não Contratado"
+                                    [matMenuTriggerFor]="itensDoMenu"
                                     (click)="$event.stopPropagation();" aria-label="Toggle star">
                                 <mat-icon class="red-fg">remove_circle</mat-icon>
                             </button>
 
-                            <button mat-icon-button [matMenuTriggerFor]="itensDoMenu" aria-label="Mais" (click)="$event.stopPropagation();">
+                            <button mat-icon-button aria-label="Mais" [matMenuTriggerFor]="itensDoMenu"  (click)="$event.stopPropagation();">
                                 <mat-icon class="secondary-text">more_vert</mat-icon>
                             </button>
 
