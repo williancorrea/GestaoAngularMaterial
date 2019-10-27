@@ -20,7 +20,7 @@ export class VeiculoPesquisaComponent implements OnInit, AfterViewInit, AfterVie
     carregandoDados = false;
     mensagemErro = '';
     listaDados: null;
-    displayedColumns = ['inativo', 'frota', 'placa', 'qtd_lugares', 'consumo'];
+    displayedColumns = ['inativo', 'podeSerFretado', 'frota', 'placa', 'qtd_lugares', 'consumo'];
 
     @ViewChild(MatPaginator, {static: true})
     paginador: MatPaginator;

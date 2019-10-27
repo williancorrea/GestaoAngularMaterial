@@ -525,7 +525,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                     this.cmbCarregando = false;
                     return;
                 }
-                this.veiculoService.pesquisarVeiculoCmb(pesquisa).then(resposta => {
+                this.veiculoService.pesquisarVeiculoCmbFretamento(pesquisa).then(resposta => {
                     this.cmbVeiculoLista = resposta;
                 }).catch(error => {
                     this.mensagemErro = this.errorHandler.handle(error);
