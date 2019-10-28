@@ -33,7 +33,6 @@ export class FretamentoService {
     }
 
 
-
     salvar(obj: any): Promise<any> {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
@@ -70,7 +69,7 @@ export class FretamentoService {
             });
     }
 
-    listarTodos(paginador: MatPaginator, filtro: ElementRef): Promise<any> {
+    listarTodos(paginador: MatPaginator, filtro: ElementRef, filtroAvancado: any): Promise<any> {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
@@ -83,6 +82,20 @@ export class FretamentoService {
             .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '')
             .set('campoOrdenacao', 'id')
             .set('ordemClassificacao', 'DESC');
+
+        // Filtrar por veiculos
+        if (filtroAvancado && filtroAvancado.veiculo) {
+            httpParams.set('veiculoKey', filtroAvancado.veiculo.key);
+        }
+
+        // Filtrar por veiculos
+        if (filtroAvancado && filtroAvancado.dataPartida) {
+            httpParams.set('dataPartida', filtroAvancado.dataPartida.format('YYYY-MM-DD').toString() + '00:00');
+        }
+        // Filtrar por veiculos
+        if (filtroAvancado && filtroAvancado.dataRetorno) {
+            httpParams.set('dataRetorno', filtroAvancado.dataRetorno.format('YYYY-MM-DD').toString() + '23:59');
+        }
 
         return this.http.get(`${this.apiUrl}`, {params: httpParams, headers: headers})
             .toPromise()
@@ -147,6 +160,7 @@ export class FretamentoService {
                 return this.prepararDadosParaReceber(response);
             });
     }
+
     gerarTermoResponsabilidadeMotorista(key): any {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();
@@ -159,6 +173,7 @@ export class FretamentoService {
                 return response;
             });
     }
+
     gerarRelatorioViagem(key): any {
         // TODO: REmover a autenticacao FIXA DAQUI
         const headers = new HttpHeaders();

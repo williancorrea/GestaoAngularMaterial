@@ -29,18 +29,15 @@
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
                         <input #filter placeholder="Pesquisar">
+                        <span matSuffix>Teste</span>
 
-                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="!mostrarFiltroAvancado" (click)="btnFiltroAvancado($event)">
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="!temFiltroAtivo" (click)="btnPesquisaFiltroAvancadoAbrir($event)">
                             <mat-icon>arrow_drop_down</mat-icon>
                         </button>
 
-                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="mostrarFiltroAvancado">
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="temFiltroAtivo" (click)="btnLimparFiltro($event)">
                             <mat-icon style="color: red">close</mat-icon>
                         </button>
-
-                        <!--                        <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">-->
-                        <!--                            <mat-icon>close</mat-icon>-->
-                        <!--                        </button>-->
                     </div>
                 </div>
                 <div #filtroAvancado class="buscaPersonalizada" [ngStyle]="mostrarFiltroAvancado ? {display: 'block'}: {display: 'none'}">
@@ -50,25 +47,22 @@
 
                             <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
                                 <mat-label>Data de Partida</mat-label>
-                                <input matInput formControlName="partidaData" [matDatepicker]="dpPartidaData">
+                                <input matInput formControlName="dataPartida" [matDatepicker]="dpPartidaData">
                                 <mat-datepicker-toggle matSuffix [for]="dpPartidaData"></mat-datepicker-toggle>
                                 <mat-datepicker #dpPartidaData></mat-datepicker>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
                                 <mat-label>Data de Retorno</mat-label>
-                                <input matInput formControlName="retornoData" [matDatepicker]="dpRetornoData">
+                                <input matInput formControlName="dataRetorno" [matDatepicker]="dpRetornoData">
                                 <mat-datepicker-toggle matSuffix [for]="dpRetornoData"></mat-datepicker-toggle>
                                 <mat-datepicker #dpRetornoData></mat-datepicker>
                             </mat-form-field>
                         </div>
 
                         <div fxFlex="100" fxLayout="row center" fxLayoutAlign="start center">
-                            <button mat-button>Limpar</button>
-
-                            {{mostrarFiltroAvancado}}
-
-                            <button mat-raised-button style="margin-left: auto;">Filtrar</button>
+                            <button mat-button (click)="btnLimparFiltro($event)">Limpar</button>
+                            <button mat-raised-button style="margin-left: auto;" (click)="btnFiltrar($event)">Filtrar</button>
                         </div>
                     </form>
                 </div>
@@ -203,7 +197,7 @@
                                 <mat-icon class="red-fg">remove_circle</mat-icon>
                             </button>
 
-                            <button mat-icon-button aria-label="Mais" [matMenuTriggerFor]="itensDoMenu"  (click)="$event.stopPropagation();">
+                            <button mat-icon-button aria-label="Mais" [matMenuTriggerFor]="itensDoMenu" (click)="$event.stopPropagation();">
                                 <mat-icon class="secondary-text">more_vert</mat-icon>
                             </button>
 
