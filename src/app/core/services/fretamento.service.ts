@@ -76,7 +76,7 @@ export class FretamentoService {
         headers.append('Content-Type', 'application/json');
 
 
-        const httpParams = new HttpParams()
+        let httpParams = new HttpParams()
             .set('size', paginador.pageSize.toString())
             .set('page', paginador.pageIndex.toString())
             .set('filtroGlobal', filtro.nativeElement.value && filtro.nativeElement.value.length > 0 ? filtro.nativeElement.value.trim() : '')
@@ -84,18 +84,25 @@ export class FretamentoService {
             .set('ordemClassificacao', 'DESC');
 
         // Filtrar por veiculos
-        if (filtroAvancado && filtroAvancado.veiculo) {
-            httpParams.set('veiculoKey', filtroAvancado.veiculo.key);
+        if (filtroAvancado.veiculo) {
+            httpParams = httpParams.set('veiculoKey', filtroAvancado.veiculo.key);
+        }
+        if (filtroAvancado.dataPartida) {
+            httpParams = httpParams.set('dataPartida', filtroAvancado.dataPartida.format('YYYY-MM-DD').toString() + ' 00:00');
+        }
+        if (filtroAvancado.dataRetorno) {
+            httpParams = httpParams.set('dataRetorno', filtroAvancado.dataRetorno.format('YYYY-MM-DD').toString() + ' 23:59');
+        }
+        if (filtroAvancado.situacaoNaoContratado) {
+            httpParams = httpParams.set('situacaoNaoContratado', String(1));
+        }
+        if (filtroAvancado.situacaoContratado) {
+            httpParams = httpParams.set('situacaoContratado', String(1));
+        }
+        if (filtroAvancado.situacaoOrcamento) {
+            httpParams = httpParams.set('situacaoOrcamento', String(1));
         }
 
-        // Filtrar por veiculos
-        if (filtroAvancado && filtroAvancado.dataPartida) {
-            httpParams.set('dataPartida', filtroAvancado.dataPartida.format('YYYY-MM-DD').toString() + '00:00');
-        }
-        // Filtrar por veiculos
-        if (filtroAvancado && filtroAvancado.dataRetorno) {
-            httpParams.set('dataRetorno', filtroAvancado.dataRetorno.format('YYYY-MM-DD').toString() + '23:59');
-        }
 
         return this.http.get(`${this.apiUrl}`, {params: httpParams, headers: headers})
             .toPromise()

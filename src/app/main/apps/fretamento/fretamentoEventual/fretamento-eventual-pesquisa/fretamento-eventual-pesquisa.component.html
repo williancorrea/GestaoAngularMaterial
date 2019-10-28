@@ -29,13 +29,9 @@
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
                         <input #filter placeholder="Pesquisar">
-                        <span matSuffix>Teste</span>
+                        <span matSuffix style="color: red; width: 50px; cursor:pointer;" *ngIf="temFiltroAtivo" (click)="btnLimparFiltro($event)">Filtrado</span>
 
-                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="!temFiltroAtivo" (click)="btnPesquisaFiltroAvancadoAbrir($event)">
-                            <mat-icon>arrow_drop_down</mat-icon>
-                        </button>
-
-                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="temFiltroAtivo" (click)="btnLimparFiltro($event)">
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear" style="cursor:pointer;" *ngIf="temFiltroAtivo" (click)="btnLimparFiltro($event)">
                             <mat-icon style="color: red">close</mat-icon>
                         </button>
                     </div>
@@ -43,24 +39,52 @@
                 <div #filtroAvancado class="buscaPersonalizada" [ngStyle]="mostrarFiltroAvancado ? {display: 'block'}: {display: 'none'}">
 
                     <form fxLayout="column" [formGroup]="form">
-                        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
+                        <div fxFlex="100" fxLayout="row center" fxLayoutAlign="start center">
+                            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                                <mat-label>Veículo</mat-label>
+                                <mat-icon matSuffix class="secondary-text">search</mat-icon>
+                                <input matInput type="text" placeholder="Pesquisar veículo ..."
+                                       style="color: black"
+                                       formControlName="veiculo" [matAutocomplete]="autoCompleteVeiculo">
+                                <mat-autocomplete autoActiveFirstOption #autoCompleteVeiculo="matAutocomplete" [displayWith]="mostrarNomeVeiculo">
+                                    <mat-option *ngIf="cmbCarregando" class="is-loading">
+                                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                    </mat-option>
+                                    <ng-container *ngIf="!cmbCarregando">
+                                        <mat-option *ngFor="let veiculo of cmbVeiculoLista" [value]="veiculo">
+                                            <span><b>{{veiculo['frota'] | uppercase}} - {{veiculo['placa'] | uppercase}}</b></span>
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-autocomplete>
+                                <mat-error>
+                                    <app-message [control]="form.get('veiculo')"></app-message>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
 
+                        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
                             <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
-                                <mat-label>Data de Partida</mat-label>
+                                <mat-label>De</mat-label>
                                 <input matInput formControlName="dataPartida" [matDatepicker]="dpPartidaData">
                                 <mat-datepicker-toggle matSuffix [for]="dpPartidaData"></mat-datepicker-toggle>
                                 <mat-datepicker #dpPartidaData></mat-datepicker>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
-                                <mat-label>Data de Retorno</mat-label>
+                                <mat-label>Até</mat-label>
                                 <input matInput formControlName="dataRetorno" [matDatepicker]="dpRetornoData">
                                 <mat-datepicker-toggle matSuffix [for]="dpRetornoData"></mat-datepicker-toggle>
                                 <mat-datepicker #dpRetornoData></mat-datepicker>
                             </mat-form-field>
                         </div>
 
-                        <div fxFlex="100" fxLayout="row center" fxLayoutAlign="start center">
+                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-around center">
+                            <mat-checkbox formControlName="situacaoNaoContratado" style="color: red">Não Contratado</mat-checkbox>
+                            <mat-checkbox formControlName="situacaoOrcamento" style="color: orange">Orçamento</mat-checkbox>
+                            <mat-checkbox formControlName="situacaoContratado" style="color: green">Contratado</mat-checkbox>
+                        </div>
+
+                        <div fxFlex="100" fxLayout="row center" fxLayoutAlign="start center" class="pt-16">
                             <button mat-button (click)="btnLimparFiltro($event)">Limpar</button>
                             <button mat-raised-button style="margin-left: auto;" (click)="btnFiltrar($event)">Filtrar</button>
                         </div>
@@ -125,15 +149,6 @@
                     <mat-cell *matCellDef="let obj" style="display: block">
                         <p class="text-truncate">{{obj['contato'] ? obj['contato']['nome'] : obj['cliente']['nome']}}</p>
                         <p *ngIf="obj['contato'] != null" class="red-fg text-truncate" style="margin: -17px 0px 0px 0px; font-size: smaller;">(Cliente não cadastrado)</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Frota -->
-                <ng-container matColumnDef="frota">
-                    <mat-header-cell fxHide fxShow.gt-md *matHeaderCellDef mat-sort-header>Veículo</mat-header-cell>
-                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-md style="display: block">
-                        <p class="text-truncate">Frota: {{obj['itinerario']['veiculo']['frota']}}</p>
-                        <p class="text-truncate">Placa: {{obj['itinerario']['veiculo']['placa']}}</p>
                     </mat-cell>
                 </ng-container>
 

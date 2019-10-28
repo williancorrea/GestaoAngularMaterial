@@ -11,8 +11,10 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FuseConfirmDialogComponent} from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import {ErroManipuladorService} from '../../../../../core/componentes/erro-manipulador.service';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
+import {VeiculoService} from '../../../../../core/services/veiculo.service';
+import {ValidacaoGenericaWCorrea} from '../../../../../core/utils/ValidacaoGenericaWCorrea';
 
 @Component({
     selector: 'app-fretamento-eventual-pesquisa',
@@ -24,9 +26,12 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked {
 
     carregandoDados = false;
+    cmbCarregando = false;
+    cmbVeiculoLista = [];
+
     mensagemErro = '';
     fretamentoList: null;
-    displayedColumns = ['numero_contrato', 'image', 'name', 'frota', 'itinerario_horarios', 'itinerario_cidade', 'valor', 'buttons'];
+    displayedColumns = ['numero_contrato', 'image', 'name', 'itinerario_horarios', 'itinerario_cidade', 'valor', 'buttons'];
 
     form: FormGroup;
 
@@ -55,6 +60,7 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     constructor(private fretamentoService: FretamentoService,
+                private veiculoService: VeiculoService,
                 private errorHandler: ErroManipuladorService,
                 public dialog: MatDialog,
                 private router: Router,
@@ -109,8 +115,39 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
         this.form = this.formBuild.group({
             dataPartida: [''],
             dataRetorno: [''],
-            situacao: [null]
+            veiculo: [null, [ValidacaoGenericaWCorrea.SelecionarItemObrigatorioCmb]],
+            situacaoNaoContratado: [false],
+            situacaoOrcamento: [false],
+            situacaoContratado: [false]
         });
+
+        this.form.get('veiculo').valueChanges
+            .pipe(
+                debounceTime(this.env.comboBox.filtroDelay),
+                map(pesquisa => {
+                    if (typeof pesquisa === 'string') {
+                        return pesquisa.trim();
+                    }
+                }),
+                distinctUntilChanged(),
+                tap(pesquisa => {
+                    this.cmbCarregando = true;
+                })
+            )
+            .subscribe(pesquisa => {
+                this.cmbVeiculoLista = [];
+                if (typeof pesquisa !== 'string') {
+                    this.cmbCarregando = false;
+                    return;
+                }
+                this.veiculoService.pesquisarVeiculoCmbFretamento(pesquisa).then(resposta => {
+                    this.cmbVeiculoLista = resposta;
+                }).catch(error => {
+                    this.mensagemErro = this.errorHandler.handle(error);
+                }).finally(() => {
+                    this.cmbCarregando = false;
+                });
+            });
     }
 
     ngAfterViewInit(): void {
@@ -168,7 +205,8 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
 
     verificaSeTemFiltrosAtivos(): void {
         if ((this.filtro.nativeElement.value && this.filtro.nativeElement.value.trim().length > 0) ||
-            this.form.get('dataPartida').value || this.form.get('dataRetorno').value) {
+            this.form.get('dataPartida').value || this.form.get('dataRetorno').value || this.form.get('veiculo').value != null ||
+        this.form.get('situacaoNaoContratado').value || this.form.get('situacaoOrcamento').value || this.form.get('situacaoContratado').value) {
             this.temFiltroAtivo = true;
         } else {
             this.temFiltroAtivo = false;
@@ -193,6 +231,10 @@ export class FretamentoEventualPesquisaComponent implements OnInit, AfterViewIni
             }
             this.confirmDialogRef = null;
         });
+    }
+
+    mostrarNomeVeiculo(obj?: any): string | undefined {
+        return obj ? obj.frota + ' - ' + obj.placa : undefined;
     }
 
     /**
