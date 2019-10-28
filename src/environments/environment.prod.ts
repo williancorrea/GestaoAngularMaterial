@@ -2,11 +2,11 @@ export const environment = {
     production: true,
     hmr: false,
 
-    apiUrl: 'https://www.rosinhatransportes.com.br/gestao-api',
+    apiUrl: 'http://192.168.5.15:8080/gestao-api',
     // Verificar arquivo de proxy - proxy.config.json
     // apiUrl: '/api',
 
-    tokenWhitelistedDomains: [new RegExp('https://www.rosinhatransportes.com.br/gestao-api')],
+    tokenWhitelistedDomains: [new RegExp('http://192.168.5.15:8080/gestao-api')],
     tokenBlacklistedRoutes: [ new RegExp('\/oauth\/token') ],
 
     dataTable: {
