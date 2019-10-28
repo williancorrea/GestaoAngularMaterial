@@ -60,6 +60,16 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- Ativo -->
+                <ng-container matColumnDef="podeSerFretado">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Pode ser Fretado</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs>
+                        {{!obj['podeSerFretado'] ? 'Não' : 'Sim'}}
+                    </mat-cell>
+                </ng-container>
+
+
+
                 <!-- FROTA-->
                 <ng-container matColumnDef="frota">
                     <mat-header-cell *matHeaderCellDef>Frota</mat-header-cell>

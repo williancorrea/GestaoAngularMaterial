@@ -44,7 +44,7 @@ export class VeiculoService {
             });
     }
 
-    pesquisarVeiculoCmb(pesquisa: string): Promise<any> {
+    pesquisarVeiculoCmbFretamento(pesquisa: string): Promise<any> {
         const headers = new HttpHeaders();
         headers.append('Authorization', 'Basic d2lsbGlhbi52YWdAZ21haWwuY29tOmFkbWlu');
         headers.append('Content-Type', 'application/json');
@@ -56,7 +56,7 @@ export class VeiculoService {
             .set('campoOrdenacao', 'frota')
             .set('filtroGlobal', pesquisa && pesquisa.trim().length > 0 ? pesquisa.trim() : '');
 
-        return this.http.get(`${this.apiUrl}/cmb`, {headers: headers, params: params}).toPromise().then(response => {
+        return this.http.get(`${this.apiUrl}/cmbFretamento`, {headers: headers, params: params}).toPromise().then(response => {
             return response;
         });
     }

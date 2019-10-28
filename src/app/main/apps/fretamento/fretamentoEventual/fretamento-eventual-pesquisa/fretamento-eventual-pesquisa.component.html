@@ -29,18 +29,15 @@
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
                         <input #filter placeholder="Pesquisar">
+                        <span matSuffix>Teste</span>
 
-                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="!mostrarFiltroAvancado" (click)="btnFiltroAvancado($event)">
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="!temFiltroAtivo" (click)="btnPesquisaFiltroAvancadoAbrir($event)">
                             <mat-icon>arrow_drop_down</mat-icon>
                         </button>
 
-                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="mostrarFiltroAvancado">
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="temFiltroAtivo" (click)="btnLimparFiltro($event)">
                             <mat-icon style="color: red">close</mat-icon>
                         </button>
-
-                        <!--                        <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">-->
-                        <!--                            <mat-icon>close</mat-icon>-->
-                        <!--                        </button>-->
                     </div>
                 </div>
                 <div #filtroAvancado class="buscaPersonalizada" [ngStyle]="mostrarFiltroAvancado ? {display: 'block'}: {display: 'none'}">
@@ -50,25 +47,22 @@
 
                             <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
                                 <mat-label>Data de Partida</mat-label>
-                                <input matInput formControlName="partidaData" [matDatepicker]="dpPartidaData">
+                                <input matInput formControlName="dataPartida" [matDatepicker]="dpPartidaData">
                                 <mat-datepicker-toggle matSuffix [for]="dpPartidaData"></mat-datepicker-toggle>
                                 <mat-datepicker #dpPartidaData></mat-datepicker>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
                                 <mat-label>Data de Retorno</mat-label>
-                                <input matInput formControlName="retornoData" [matDatepicker]="dpRetornoData">
+                                <input matInput formControlName="dataRetorno" [matDatepicker]="dpRetornoData">
                                 <mat-datepicker-toggle matSuffix [for]="dpRetornoData"></mat-datepicker-toggle>
                                 <mat-datepicker #dpRetornoData></mat-datepicker>
                             </mat-form-field>
                         </div>
 
                         <div fxFlex="100" fxLayout="row center" fxLayoutAlign="start center">
-                            <button mat-button>Limpar</button>
-
-                            {{mostrarFiltroAvancado}}
-
-                            <button mat-raised-button style="margin-left: auto;">Filtrar</button>
+                            <button mat-button (click)="btnLimparFiltro($event)">Limpar</button>
+                            <button mat-raised-button style="margin-left: auto;" (click)="btnFiltrar($event)">Filtrar</button>
                         </div>
                     </form>
                 </div>
@@ -134,10 +128,20 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- Frota -->
+                <ng-container matColumnDef="frota">
+                    <mat-header-cell fxHide fxShow.gt-md *matHeaderCellDef mat-sort-header>Veículo</mat-header-cell>
+                    <mat-cell *matCellDef="let obj" fxHide fxShow.gt-md style="display: block">
+                        <p class="text-truncate">Frota: {{obj['itinerario']['veiculo']['frota']}}</p>
+                        <p class="text-truncate">Placa: {{obj['itinerario']['veiculo']['placa']}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- Data da Viagem -->
                 <ng-container matColumnDef="itinerario_horarios">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Horários</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
+                        <p class="text-truncate" style="color: blue">Veículo: {{obj['itinerario']['veiculo']['frota']}} - {{obj['itinerario']['veiculo']['placa']}}</p>
                         <p class="text-truncate">Partida: {{obj['itinerario']['partidaData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['partidaHora']}}</p>
                         <p class="text-truncate">Retorno: {{obj['itinerario']['retornoData'] | date: 'dd/MM/yyyy'}} {{obj['itinerario']['retornoHora']}}</p>
                     </mat-cell>
@@ -147,6 +151,7 @@
                 <ng-container matColumnDef="itinerario_cidade">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Itinerário</mat-header-cell>
                     <mat-cell *matCellDef="let obj" fxHide fxShow.gt-xs style="display: block">
+                        <p style="color: transparent">.</p>
                         <p class="text-truncate">{{obj['itinerario']['partidaCidade']['nome']}}/{{obj['itinerario']['partidaCidade']['estado']['iniciais']}}</p>
                         <p class="text-truncate">{{obj['itinerario']['retornoCidade']['nome']}}/{{obj['itinerario']['retornoCidade']['estado']['iniciais']}}</p>
                     </mat-cell>
@@ -171,6 +176,7 @@
                             <button mat-icon-button
                                     *ngIf="obj.situacao === 'CONTRATADO'"
                                     matTooltip="Contratado"
+                                    [matMenuTriggerFor]="itensDoMenu"
                                     (click)="$event.stopPropagation();" aria-label="Toggle star">
                                 <mat-icon class="green-fg">how_to_reg</mat-icon>
                             </button>
@@ -178,6 +184,7 @@
                             <button mat-icon-button
                                     *ngIf="obj.situacao === 'ORCAMENTO_CONTATO' || obj.situacao === 'ORCAMENTO_CLIENTE'"
                                     matTooltip="Orçado / Agendado"
+                                    [matMenuTriggerFor]="itensDoMenu"
                                     (click)="$event.stopPropagation();" aria-label="Toggle star">
                                 <mat-icon class="amber-fg">departure_board</mat-icon>
                             </button>
@@ -185,11 +192,12 @@
                             <button mat-icon-button
                                     *ngIf="obj.situacao === 'NAO_CONTRATADO_CONTATO' || obj.situacao === 'NAO_CONTRATADO_CLIENTE'"
                                     matTooltip="Não Contratado"
+                                    [matMenuTriggerFor]="itensDoMenu"
                                     (click)="$event.stopPropagation();" aria-label="Toggle star">
                                 <mat-icon class="red-fg">remove_circle</mat-icon>
                             </button>
 
-                            <button mat-icon-button [matMenuTriggerFor]="itensDoMenu" aria-label="Mais" (click)="$event.stopPropagation();">
+                            <button mat-icon-button aria-label="Mais" [matMenuTriggerFor]="itensDoMenu" (click)="$event.stopPropagation();">
                                 <mat-icon class="secondary-text">more_vert</mat-icon>
                             </button>
 
