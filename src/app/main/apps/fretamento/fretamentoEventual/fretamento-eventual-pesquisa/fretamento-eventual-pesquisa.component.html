@@ -146,9 +146,10 @@
                 <!-- Nome do cliente -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
-                    <mat-cell *matCellDef="let obj" style="display: block">
-                        <p class="text-truncate">{{obj['contato'] ? obj['contato']['nome'] : obj['cliente']['nome']}}</p>
-                        <p *ngIf="obj['contato'] != null" class="red-fg text-truncate" style="margin: -17px 0px 0px 0px; font-size: smaller;">(Cliente não cadastrado)</p>
+                    <mat-cell *matCellDef="let obj" style="display: flex">
+                        <p class="text-truncate" style="font-weight: bold">{{obj['contato'] ? obj['contato']['nome'] : obj['cliente']['nome']}}</p>
+                        <span *ngIf="obj['contato'] == null && obj['cliente']['fantasia'] && obj['cliente']['fantasia'].length > 0" class="ml-8 text-truncate" >({{obj['cliente']['fantasia']}})</span>
+                        <p *ngIf="obj['contato'] != null" class="ml-8 red-fg text-truncate" style="font-size: smaller;">(Cliente não cadastrado)</p>
                     </mat-cell>
                 </ng-container>
 
