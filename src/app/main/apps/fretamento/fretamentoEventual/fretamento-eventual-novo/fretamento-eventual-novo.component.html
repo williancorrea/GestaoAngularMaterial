@@ -41,6 +41,7 @@
             <!--                <span>{{tipoPagina === 'NOVO' ? 'SALVAR FRETAMENTO' : 'ATUALIZAR FRETAMENTO'}}</span>-->
             <!--            </button>-->
             <p class="clonado" *ngIf="fretamentoClonado">CLONADO</p>
+            <p class="fretamento-novo-contrato" *ngIf="formFretamentoEventual.get('numeroContrato')?.value != null">Contrato {{formFretamentoEventual.get('numeroContrato').value}}</p>
         </div>
         <!-- / HEADER -->
 

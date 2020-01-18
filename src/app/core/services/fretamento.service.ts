@@ -206,6 +206,7 @@ export class FretamentoService {
         delete clone.itinerario.partidaHora;
         delete clone.itinerario.retornoData;
         delete clone.itinerario.retornoHora;
+        delete clone.numeroContrato;
 
         clone.itinerario.partida = obj.itinerario.partidaData.format('YYYY-MM-DD').toString() + ' ' + obj.itinerario.partidaHora;
         clone.itinerario.retorno = obj.itinerario.retornoData.format('YYYY-MM-DD').toString() + ' ' + obj.itinerario.retornoHora;

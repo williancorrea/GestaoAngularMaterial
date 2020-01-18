@@ -106,6 +106,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
                         // FAZ O CLONE DO FRETAMENTO
                         if (this.fretamentoClonado) {
                             this.tipoPagina = 'NOVO';
+                            this.formFretamentoEventual.get('numeroContrato').setValue(null);
                             if (this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.CONTRATADO || this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CLIENTE){
                                 this.formFretamentoEventual.get('situacao').setValue(FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CLIENTE);
                             }else if (this.formFretamentoEventual.get('situacao').value === FRETAMENTO_EVENTUAL_SITUACAO_ENUM.NAO_CONTRATADO_CONTATO){
@@ -230,6 +231,7 @@ export class FretamentoEventualNovoComponent implements OnInit {
 
         this.formFretamentoEventual = this.formBuild.group({
             key: [null],
+            numeroContrato: [null],
             situacao: [FRETAMENTO_EVENTUAL_SITUACAO_ENUM.ORCAMENTO_CONTATO, [Validators.required]],
             situacaoData: [null],
             contato: this.formBuild.group({
